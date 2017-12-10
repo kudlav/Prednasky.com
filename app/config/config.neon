@@ -10,7 +10,7 @@ php:
 application:
 	errorPresenter: Error
 	mapping:
-		*: App\*Module\Presenters\*Presenter
+		*: App\Presenters\*Presenter
 
 
 session:
@@ -19,3 +19,9 @@ session:
 
 services:
 	router: App\RouterFactory::createRouter
+
+	- App\Model\Parameters(@container::getParameters())
+	- App\Model\Submitter
+	- App\Model\Worker
+	- App\Model\Template
+	- App\Model\Token
