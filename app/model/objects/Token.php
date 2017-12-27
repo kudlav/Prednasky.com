@@ -14,9 +14,9 @@ class Token
 	use Nette\SmartObject;
 
 	const
-		PATH_TEMPLATES = 'C:/xampp/htdocs/prednasky.com/processing/spokendata-submitter/TEMPLATES/BLOCKSET',
-		PATH_EXPORT = 'C:/xampp/htdocs/prednasky.com/processing/spokendata-submitter/DATA-EXPORT',
-		PATH_WAIT = 'C:/xampp/htdocs/prednasky.com/processing/spokendata-submitter/PROCESSES/005_submitter/A_WAIT'
+		PATH_TEMPLATES = '/domains/prednasky.com/processing/spokendata-submitter/TEMPLATES/BLOCKSET',
+		PATH_EXPORT = '/domains/prednasky.com/processing/spokendata-submitter/DATA-EXPORT',
+		PATH_WAIT = '/domains/prednasky.com/processing/spokendata-submitter/PROCESSES/005_submitter/A_WAIT'
 	;
 
 	/**
@@ -29,7 +29,7 @@ class Token
 	private $values, $template, $videoId, $created, $tokenManager;
 
 	/**
-	 * Token constructor
+	 * Token constructor.
 	 *
 	 * @param      integer       $videoId       The video identifier
 	 * @param      TokenManager  $tokenManager  The token manager
@@ -51,26 +51,49 @@ class Token
 		$this->template = $template.'.ini';
 
 		if (is_readable(self::PATH_TEMPLATES.'/'.$this->template)) {
+			\Tracy\Debugger::log("Token.php: Unable to set template '".$this->template."'", \Tracy\ILogger::ERROR);
 			return TRUE;
 		}
 		return FALSE;
 	}
 
+	/**
+	 * Add new values to the existing ones. If already exist, ovewrite it.
+	 *
+	 * @param      array  $newValues  The new values
+	 */
 	public function setValues(array $newValues)
 	{
 		$this->values = array_merge($this->values, $newValues);
 	}
 
+	/**
+	 * Get value of specific key.
+	 *
+	 * @param      string  $key    The key of value
+	 *
+	 * @return     mixed  The values.
+	 */
 	public function getValues(string $key)
 	{
 		return $this->values[$key];
 	}
 
+	/**
+	 * Getter of the $videoIf.
+	 *
+	 * @return     integer  Value of $videoId
+	 */
 	public function getVideoId()
 	{
 		return $this->videoId;
 	}
 
+	/**
+	 * Getter of the $created.
+	 *
+	 * @return     integer  Value of  $created
+	 */
 	public function getCreated()
 	{
 		return $this->created;
@@ -78,6 +101,8 @@ class Token
 
 	/**
 	 * Move and fill template .ini file, submit prepared token.
+	 *
+	 * @return     integer  Return FALSE if failed or positive number on succeed (of written bytes).
 	 */
 	public function submit()
 	{
@@ -88,6 +113,9 @@ class Token
 		if ($file === FALSE) {
 			return FALSE;
 		}
+
+		$this->created = microtime(true);
+		$micro = sprintf("%03d",($this->created - floor($this->created)) * 1000);
 
 		// Generate unique folder inside DATA-EXPORT
 		$token_path= date('/Y/m/d/', $this->created);
@@ -105,9 +133,6 @@ class Token
 		if (!mkdir($token_path, 0373, TRUE)) {
 			return FALSE;
 		}
-
-		$this->created = microtime(true);
-		$micro = sprintf("%03d",($this->created - floor($this->created)) * 1000);
 
 		// Set job_id (prioriry-date-time-subsec-userid-hash)
 		$this->values['job_id'] = sprintf('%02d', $this->values['sge_priority']);

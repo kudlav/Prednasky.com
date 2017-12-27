@@ -63,6 +63,13 @@ class VideoManager
 		return NULL;
 	}
 
+	/**
+	 * Get all videos.
+	 *
+	 * @param string $orderBy The order of videos
+	 *
+	 * @return Nette\Database\Table\Selection All videos.
+	 */
 	public function getAllVideos(string $orderBy='id DESC')
 	{
 		return $this->database->table(self::TABLE_VIDEO)->order($orderBy);
