@@ -11,8 +11,26 @@
 
 <body>
 	<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
-	<p>{$czech}</p>
 	{include content}
+
+	<table n:ifset="$videos" class="table table-striped table-bordered">
+		<thead>
+			<tr><th>Name</th><th>Created</th><th>State</th><th>Published</th><th>Recorded</th><th>Duration</th><th>Abstract</th><th>Public link</th></tr>
+		</thead>
+		<tbody>
+			<tr n:foreach="$videos as $video">
+				<td>{$video->name}</td>
+				<td>{$video->created|date:'j. n. Y - H:i:s'}</td>
+				<td>{$video->ref('video_state', 'state')->name}</td>
+				<td>{$video->published}</td>
+				<td>{$video->record_begin} - {$video->record_end}</td>
+				<td>{$video->duration}</td>
+				<td>{$video->abstract}</td>
+				<td>{$video->public_link}</td>
+			</tr>
+			<tr n:if="!count($videos)"><td colspan="7">No videos yet.<td></tr>
+		</tbody>
+	</table>
 
 	{block scripts}
 	<script src="https://nette.github.io/resources/js/netteForms.min.js"></script>

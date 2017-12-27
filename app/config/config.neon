@@ -21,7 +21,5 @@ services:
 	router: App\RouterFactory::createRouter
 
 	- App\Model\Parameters(@container::getParameters())
-	- App\Model\Submitter
-	- App\Model\Worker
-	- App\Model\Template
-	- App\Model\Token
+	- App\Model\VideoManager
+	- App\Model\TokenManager
