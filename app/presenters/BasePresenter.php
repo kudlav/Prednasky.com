@@ -3,6 +3,7 @@
 namespace App\Presenters;
 
 use Nette;
+use App\Model\Parameters;
 
 
 /**
@@ -10,4 +11,10 @@ use Nette;
  */
 abstract class BasePresenter extends Nette\Application\UI\Presenter
 {
+	/** @var Parameters */
+	protected $parameters;
+
+	public function injectParameters(Parameters $parameters) {
+		$this->parameters = $parameters->getParam();
+	}
 }

@@ -52,4 +52,16 @@ class TokenManager
 
 		return $row;
 	}
+
+	/**
+	 * Gets tokens by video id.
+	 *
+	 * @param      integer  $video_id  The video identifier
+	 *
+	 * @return     Nette\Database\Table\Selection   The tokens by video.
+	 */
+	public function getTokensByVideo(int $video_id)
+	{
+		return $this->database->table(self::TABLE_TOKEN)->where('video', $video_id);
+	}
 }

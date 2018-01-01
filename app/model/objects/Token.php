@@ -13,31 +13,28 @@ class Token
 {
 	use Nette\SmartObject;
 
-	const
-		PATH_TEMPLATES = '/domains/prednasky.com/processing/spokendata-submitter/TEMPLATES/BLOCKSET',
-		PATH_EXPORT = '/domains/prednasky.com/processing/spokendata-submitter/DATA-EXPORT',
-		PATH_WAIT = '/domains/prednasky.com/processing/spokendata-submitter/PROCESSES/005_submitter/A_WAIT'
-	;
-
 	/**
 	 * @var array $values
 	 * @var string $template
 	 * @var integer $videoId
 	 * @var float $created
 	 * @var TokenManager $tokenManager
+	 * @var array $parameters
 	 */
-	private $values, $template, $videoId, $created, $tokenManager;
+	private $values, $template, $videoId, $created, $tokenManager, $parameters;
 
 	/**
 	 * Token constructor.
 	 *
 	 * @param      integer       $videoId       The video identifier
 	 * @param      TokenManager  $tokenManager  The token manager
+	 * @param      aray          $parameters    Configuration of nette framework
 	 */
-	public function __construct(int $videoId, TokenManager $tokenManager)
+	public function __construct(int $videoId, TokenManager $tokenManager, array $parameters)
 	{
 		$this->videoId = $videoId;
 		$this->tokenManager = $tokenManager;
+		$this->parameters = $parameters;
 
 		// Default values
 		$this->values = [
@@ -50,7 +47,7 @@ class Token
 	{
 		$this->template = $template.'.ini';
 
-		if (is_readable(self::PATH_TEMPLATES.'/'.$this->template)) {
+		if (is_readable($this->parameters['paths']['path_templates'].'/'.$this->template)) {
 			\Tracy\Debugger::log("Token.php: Unable to set template '".$this->template."'", \Tracy\ILogger::ERROR);
 			return TRUE;
 		}
@@ -107,7 +104,7 @@ class Token
 	public function submit()
 	{
 		// Load template
-		$file = file_get_contents(self::PATH_TEMPLATES.'/'.$this->template);
+		$file = file_get_contents($this->parameters['paths']['path_templates'].'/'.$this->template);
 
 		// Check if successfully loaded
 		if ($file === FALSE) {
@@ -128,7 +125,7 @@ class Token
 		$token_path.= bin2hex(random_bytes(16));
 		if (!isset($this->values['private_datadir'])) $this->values['private_datadir'] = $token_path.'/';
 
-		$token_path = self::PATH_EXPORT.$token_path;
+		$token_path = $this->parameters['paths']['path_export'].$token_path;
 
 		if (!mkdir($token_path, 0373, TRUE)) {
 			return FALSE;
@@ -153,12 +150,12 @@ class Token
 		// Fill template with values
 		if (!$this->fillTemplate($file, $token_path)) {
 			rmdir($token_path);
-			rmdir(self::PATH_EXPORT.$this->values['public_datadir']);
+			rmdir($this->parameters['paths']['path_export'].$this->values['public_datadir']);
 			return FALSE;
 		}
 
 		// Submit prepared token. Create token containg path to .ini file.
-		return file_put_contents(self::PATH_WAIT.'/'.$this->values['job_id'], $token_path.'/config.ini', LOCK_EX);
+		return file_put_contents($this->parameters['paths']['path_wait'].'/'.$this->values['job_id'], $token_path.'/config.ini', LOCK_EX);
 	}
 
 	/**

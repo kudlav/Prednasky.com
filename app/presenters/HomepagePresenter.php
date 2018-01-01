@@ -26,7 +26,7 @@ class HomepagePresenter extends BasePresenter
 		if (isset($video_url)) {
 			$videoId = $this->videoManager->newVideo();
 
-			$token = new Token($videoId, $this->tokenManager);
+			$token = new Token($videoId, $this->tokenManager, $this->parameters);
 			if (!$token->setTemplate('config_youtube_downloader')) {
 				\Tracy\Debugger::log("HomepagePresenter: Unable to create token. Template 'config_youtube_downloader' doesn't exist", \Tracy\ILogger::ERROR);
 				$this->error("HomepagePresenter: Unable to create token. Template 'config_youtube_downloader' doesn't exist", 500);
@@ -43,6 +43,11 @@ class HomepagePresenter extends BasePresenter
 		}
 		else {
 			$this->template->videos = $this->videoManager->getAllVideos();
+			$this->template->tokens = [];
+
+			foreach ($this->template->videos as $row) {
+				$this->template->tokens[$row->id] = $this->tokenManager->getTokensByVideo($row->id);
+			}
 		}
 	}
 }
