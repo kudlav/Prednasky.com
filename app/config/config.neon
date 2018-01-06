@@ -23,3 +23,7 @@ services:
 	- App\Model\Parameters(@container::getParameters())
 	- App\Model\VideoManager
 	- App\Model\TokenManager
+
+
+extensions:
+	mailing: Ublaboo\Mailing\DI\MailingExtension
