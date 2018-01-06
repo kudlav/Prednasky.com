@@ -3,40 +3,41 @@
 namespace App\Presenters;
 
 use Nette;
-use App\Model\Repository\ProcessingRepository;
-use App\Model\Repository\RecordingRepository;
-use App\Model\Entity\Processing;
-use App\Model\Entity\Recording;
-use DateTime;
-use Tracy\Debugger;
-use Ublaboo\Mailing\MailFactory;
 use App\Utilities;
+use App\Model\TokenManager;
 use Nette\Http\Request;
-use App\Model\SgeInfo;
+use Nette\Http\Response;
+use Tracy\Debugger;
+use Tracy\ILogger;
+use Ublaboo\Mailing\MailFactory;
 
 
-class CallbackPresenter extends Nette\Application\UI\Presenter
+class CallbackPresenter extends BasePresenter
 {
-	/** @var ProcessingRepository @inject */
-	public $processingRepository;
+	/**
+	 * @var MailFactory $mailFactory
+	 * @var TokenManager $tokenManager
+	 */
+	private $mailFactory, $tokenManager;
 
-	/** @var RecordingRepository @inject */
-	public $recordingRepository;
-
-	/** @var MailFactory @inject */
-	public $mailFactory;
-
-	/** @var SgeInfo @inject */
-	public $sgeInfo;
-
+	public function __construct(MailFactory $mailFactory, TokenManager $tokenManager)
+	{
+		$this->mailFactory = $mailFactory;
+		$this->tokenManager = $tokenManager;
+	}
 
 	public function actionDefault()
 	{
+		$httpResponse = $this->getHttpResponse();
+		$httpResponse->setContentType('text/plain', 'UTF-8');
+
 		$httpRequest = $this->getHttpRequest();
 
 		switch ($httpRequest->getMethod()) {
 			case 'POST':
-				$this->processPost($httpRequest);
+				//$this->processPost($httpRequest);
+				Debugger::log('CallbackPresenter: POST request not implemented!', ILogger::ERROR);
+				$this->setView('error');
 				break;
 			case 'GET':
 				$this->processGet($httpRequest);
@@ -57,8 +58,7 @@ class CallbackPresenter extends Nette\Application\UI\Presenter
 		$sgeJobId = intval($httpRequest->getQuery('sge_job_id'));
 		$sign = $httpRequest->getQuery('sign') ?: '';
 
-
-		if ($this->context->parameters['signVerification']) {
+		if ($this->parameters['sign_verification']) {
 			$query = $_SERVER['QUERY_STRING'];
 			$strToSign = trim(substr($query, 0, strpos($query, 'sign=')-1));
 			if (!$this->verifySignature($strToSign, $sign)) {
@@ -67,38 +67,36 @@ class CallbackPresenter extends Nette\Application\UI\Presenter
 			}
 		}
 
-		$recording = $this->recordingRepository->getByJobId($jobId);
+		$recording = $this->tokenManager->getTokenById($jobId);
 		if ($recording) {
-			$entity = new Processing([
-			    'recording' => $recording,
-			    'datetime' => new DateTime,
-			    'block' => $block,
+			$entity = [
+			    'datetime' =>  date('Y-m-d H:i:s'),
 			    'status' => $status,
-			    'process' => $process,
 			    'message' => $message,
+			    'process' => $process,
+			    'block' => $block,
 			    'hostIp' => $hostIp,
 			    'hostName' => $hostName,
 			    'sgeJobId' => $sgeJobId
-			]);
+			];
 
-			$this->processingRepository->insert($entity);
-			$diffArray = $this->recordingRepository->updateByProcessing($recording, FALSE);
+			$diffArray = $this->tokenManager->updateToken($recording, $entity);
 
-			if (isset($diffArray['status']) && in_array($recording->getStatus(), [Recording::STATUS_DONE, Recording::STATUS_ERROR])) {
-
+			if (isset($diffArray['status'])) {
 				// invoke callback url
-				Utilities::callUrl($recording->getCallbackUrl(TRUE));
+				//Utilities::callUrl($recording->getCallbackUrl(TRUE));
 
-				if ($recording->getStatus() == Recording::STATUS_DONE) {
+				if ($entity['status'] == TokenManager::STATE_DONE) {
 					$mailClass = 'App\Model\Mail\ProcessingDoneMail';
-				} elseif ($recording->getStatus() == Recording::STATUS_ERROR) {
+				}
+				elseif ($entity['status'] == TokenManager::STATE_ERROR) {
 					$mailClass = 'App\Model\Mail\ProcessingErrorMail';
 				}
 
 				if (isset($mailClass)) {
 					$params = ['recording' => $recording];
-					$mail = $this->mailFactory->createByType($mailClass, $params);
-					$mail->send();
+				//	$mail = $this->mailFactory->createByType($mailClass, $params);
+				//	$mail->send();
 				}
 			}
 
@@ -107,13 +105,13 @@ class CallbackPresenter extends Nette\Application\UI\Presenter
 			$this->setView('error');
 		}
 	}
-
+/*
 	public function processPost(Request $httpRequest)
 	{
 		$sign = $httpRequest->getQuery('sign') ?: '';
 
 		// potreba upravit
-		if ($this->context->parameters['signVerification']) {
+		if ($this->parameters['sign_verification']) {
 			$strToSign = $httpRequest->getRawBody();
 			if (!$this->verifySignature($strToSign, $sign)) {
 				$this->setView('error-signature');
@@ -128,11 +126,19 @@ class CallbackPresenter extends Nette\Application\UI\Presenter
 			$this->setView('error');
 		}
 	}
-
+*/
+	/**
+	 * Verify signature of request
+	 *
+	 * @param      string  $strToSign  String thas is signed
+	 * @param      string  $signature  The signature
+	 *
+	 * @return     bool    TRUE if signature is OK, otherwise return FALSE.
+	 */
 	private function verifySignature($strToSign, $signature)
 	{
-		if ($signature !== sha1($strToSign . $this->context->parameters['salt'])) {
-			Debugger::log('Signature error ' . $signature . ' :: ' .$strToSign);
+		if ($signature !== sha1($strToSign . $this->parameters['salt'])) {
+			Debugger::log('CallbackPresenter: Signature error ' . $signature . ' :: ' .$strToSign);
 			return FALSE;
 		}
 		return TRUE;
