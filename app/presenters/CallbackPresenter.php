@@ -6,7 +6,6 @@ use Nette;
 use App\Utilities;
 use App\Model\TokenManager;
 use Nette\Http\Request;
-use Nette\Http\Response;
 use Tracy\Debugger;
 use Tracy\ILogger;
 use Ublaboo\Mailing\MailFactory;
@@ -28,8 +27,7 @@ class CallbackPresenter extends BasePresenter
 
 	public function actionDefault()
 	{
-		$httpResponse = $this->getHttpResponse();
-		$httpResponse->setContentType('text/plain', 'UTF-8');
+		Debugger::$showBar = false;
 
 		$httpRequest = $this->getHttpRequest();
 
