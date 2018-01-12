@@ -52,13 +52,16 @@ class TokenManager
 	 */
 	public function newToken(Token $token, int $state=1, int $type=1)
 	{
+		$public_hash = explode('/', $token->getValues('public_datadir'));
+		$private_hash = explode('/', $token->getValues('private_datadir'));
+
 		$row = $this->database->table(self::TABLE_TOKEN)->insert([
 			self::TOKEN_ID => $token->getValues('job_id'),
 			self::TOKEN_STATE => $state,
 			self::TOKEN_TYPE => $type,
-			self::TOKEN_PUBLIC_HASH => substr($token->getValues('public_datadir'), 12, -1),
-			self::TOKEN_PRIVATE_HASH => substr($token->getValues('private_datadir'), 45, -1),
-			self::TOKEN_CREATED => date('Y-m-d H:i:s', $token->getCreated()),
+			self::TOKEN_PUBLIC_HASH => $public_hash[4],
+			self::TOKEN_PRIVATE_HASH => $private_hash[5],
+			self::TOKEN_CREATED => $token->getCreated(),
 			self::TOKEN_VIDEO => $token->getVideoId(),
 		]);
 
@@ -104,13 +107,20 @@ class TokenManager
 		if ($stateId === FALSE) {
 			\Tracy\Debugger::log("TokenManager: Tried to update token with unknown state '".$values['status']."'", \Tracy\ILogger::ERROR);
 		}
-		elseif ($row->state != $stateId) {
+		elseif ($row->state != $stateId) { // Update status and datetime
 			$success = $row->update([
 				self::TOKEN_STATE => $stateId,
 				self::TOKEN_LAST_UDPATED => $values['datetime']
 			]);
 
-			if ($success) return ['status' => TRUE];
+			if ($success) return ['status' => TRUE, 'datetime' => TRUE];
+		}
+		else { // Just update datetime
+			$success = $row->update([
+				self::TOKEN_LAST_UDPATED => $values['datetime']
+			]);
+
+			if ($success) return ['datetime' => TRUE];
 		}
 
 		return [];

@@ -5,6 +5,7 @@ namespace App\Presenters;
 use Nette;
 use App\Utilities;
 use App\Model\TokenManager;
+use Nette\Http\Response;
 use Nette\Http\Request;
 use Tracy\Debugger;
 use Tracy\ILogger;
@@ -27,7 +28,8 @@ class CallbackPresenter extends BasePresenter
 
 	public function actionDefault()
 	{
-		Debugger::$showBar = false;
+		$httpResponse = $this->getHttpResponse();
+		$httpResponse->setContentType('text/plain', 'UTF-8');
 
 		$httpRequest = $this->getHttpRequest();
 
@@ -60,6 +62,7 @@ class CallbackPresenter extends BasePresenter
 			$query = $_SERVER['QUERY_STRING'];
 			$strToSign = trim(substr($query, 0, strpos($query, 'sign=')-1));
 			if (!$this->verifySignature($strToSign, $sign)) {
+				Debugger::log('CallbackPresenter: Recieved callback, SignatureError.', ILogger::INFO);
 				$this->setView('error-signature');
 				return;
 			}
@@ -98,8 +101,10 @@ class CallbackPresenter extends BasePresenter
 				}
 			}
 
+			Debugger::log('CallbackPresenter: Recieved callback, StatusAccepted.', ILogger::INFO);
 			$this->setView('success');
 		} else {
+			Debugger::log('CallbackPresenter: Recieved callback, Error.', ILogger::INFO);
 			$this->setView('error');
 		}
 	}
@@ -136,7 +141,6 @@ class CallbackPresenter extends BasePresenter
 	private function verifySignature($strToSign, $signature)
 	{
 		if ($signature !== sha1($strToSign . $this->parameters['salt'])) {
-			Debugger::log('CallbackPresenter: Signature error ' . $signature . ' :: ' .$strToSign);
 			return FALSE;
 		}
 		return TRUE;
