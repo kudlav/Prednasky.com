@@ -4,8 +4,37 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "293d9342273fd9bce0d579f4d7036cfb",
+    "content-hash": "af83237cf3f5c2e1f2562d617afe21f3",
     "packages": [
+        {
+            "name": "dg/adminer-custom",
+            "version": "v1.9.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dg/adminer-custom.git",
+                "reference": "f1982e3b59d1435e70c0f58a78d3b417a4887ccd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dg/adminer-custom/zipball/f1982e3b59d1435e70c0f58a78d3b417a4887ccd",
+                "reference": "f1982e3b59d1435e70c0f58a78d3b417a4887ccd",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "Customization for Adminer, the best database management tool written in PHP.",
+            "keywords": [
+                "database",
+                "elasticsearch",
+                "mongodb",
+                "mssql",
+                "mysql",
+                "oracle",
+                "postgresql",
+                "sqlite"
+            ],
+            "time": "2017-08-30T07:41:05+00:00"
+        },
         {
             "name": "latte/latte",
             "version": "v2.4.6",
