@@ -2,7 +2,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2018-01-20T00:18:24+01:00\n"
+"POT-Creation-Date: 2018-01-21T00:17:24+01:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,46 +11,135 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: ../../../app/presenters/templates/Homepage/default.latte:8
+#: ../../../app/presenters/templates/@layout.latte:18
+msgid "en"
+msgstr ""
+
+#: ../../../app/presenters/templates/@layout.latte:18
+msgid "FIT_color_RGB_EN"
+msgstr ""
+
+#: ../../../app/presenters/templates/@layout.latte:19
+msgid "Videoportal"
+msgstr ""
+
+#: ../../../app/presenters/templates/@layout.latte:25
+msgid "User"
+msgstr ""
+
+#: ../../../app/presenters/templates/@layout.latte:25
+msgid "Not logged"
+msgstr ""
+
+#: ../../../app/presenters/templates/@layout.latte:26
+msgid "Sign in"
+msgstr ""
+
+#: ../../../app/presenters/templates/@layout.latte:29
+msgid "Dashboard"
+msgstr ""
+
+#: ../../../app/presenters/templates/@layout.latte:31
+msgid "Language"
+msgstr ""
+
+#: ../../../app/presenters/templates/@layout.latte:33
+msgid "Czech"
+msgstr ""
+
+#: ../../../app/presenters/templates/@layout.latte:34
+msgid "English"
+msgstr ""
+
+#: ../../../app/presenters/templates/@layout.latte:53
+msgid " • Czech Republic"
+msgstr ""
+
+#: ../../../app/presenters/templates/@layout.latte:54
+msgid "Faculty of Information Technology, BUT"
+msgstr ""
+
+#: ../../../app/presenters/templates/Error/403.latte:2
+msgid "Access Denied"
+msgstr ""
+
+#: ../../../app/presenters/templates/Error/403.latte:4
+msgid "You do not have permission to view this page. Please try contact the web site administrator if you believe you should be able to view this page."
+msgstr ""
+
+#: ../../../app/presenters/templates/Error/404.latte:2
+#: ../../../app/presenters/templates/Error/410.latte:2
+msgid "Page Not Found"
+msgstr ""
+
+#: ../../../app/presenters/templates/Error/404.latte:4
+msgid "The page you requested could not be found. It is possible that the address is incorrect, or that the page no longer exists."
+msgstr ""
+
+#: ../../../app/presenters/templates/Error/405.latte:2
+msgid "Method Not Allowed"
+msgstr ""
+
+#: ../../../app/presenters/templates/Error/405.latte:4
+msgid "The requested method is not allowed for the URL."
+msgstr ""
+
+#: ../../../app/presenters/templates/Error/410.latte:4
+msgid "The page you requested has been taken off the site. We apologize for the inconvenience."
+msgstr ""
+
+#: ../../../app/presenters/templates/Error/4xx.latte:2
+msgid "Oops..."
+msgstr ""
+
+#: ../../../app/presenters/templates/Error/4xx.latte:4
+msgid "Your browser sent a request that this server could not understand or process."
+msgstr ""
+
+#: ../../../app/presenters/templates/Homepage/default.latte:3
+msgid "Educational videos"
+msgstr ""
+
+#: ../../../app/presenters/templates/Homepage/default.latte:5
 msgid "At this moment, you can see just a mockups."
 msgstr ""
 
-#: ../../../app/presenters/templates/Homepage/default.latte:12
+#: ../../../app/presenters/templates/Homepage/default.latte:9
 msgid "Name"
 msgstr ""
 
-#: ../../../app/presenters/templates/Homepage/default.latte:12
+#: ../../../app/presenters/templates/Homepage/default.latte:9
 msgid "Created"
 msgstr ""
 
-#: ../../../app/presenters/templates/Homepage/default.latte:12
+#: ../../../app/presenters/templates/Homepage/default.latte:9
 msgid "State"
 msgstr ""
 
-#: ../../../app/presenters/templates/Homepage/default.latte:12
+#: ../../../app/presenters/templates/Homepage/default.latte:9
 msgid "Published"
 msgstr ""
 
-#: ../../../app/presenters/templates/Homepage/default.latte:12
+#: ../../../app/presenters/templates/Homepage/default.latte:9
 msgid "Recorded"
 msgstr ""
 
-#: ../../../app/presenters/templates/Homepage/default.latte:12
+#: ../../../app/presenters/templates/Homepage/default.latte:9
 msgid "Duration"
 msgstr ""
 
-#: ../../../app/presenters/templates/Homepage/default.latte:12
+#: ../../../app/presenters/templates/Homepage/default.latte:9
 msgid "Abstract"
 msgstr ""
 
-#: ../../../app/presenters/templates/Homepage/default.latte:12
+#: ../../../app/presenters/templates/Homepage/default.latte:9
 msgid "Public link"
 msgstr ""
 
-#: ../../../app/presenters/templates/Homepage/default.latte:12
+#: ../../../app/presenters/templates/Homepage/default.latte:9
 msgid "Tokens"
 msgstr ""
 
-#: ../../../app/presenters/templates/Homepage/default.latte:31
+#: ../../../app/presenters/templates/Homepage/default.latte:28
 msgid "No videos yet."
 msgstr ""
