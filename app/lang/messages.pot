@@ -1,0 +1,56 @@
+# Gettext keys exported by GettextExtractor
+#, fuzzy
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2018-01-20T00:18:24+01:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: ../../../app/presenters/templates/Homepage/default.latte:8
+msgid "At this moment, you can see just a mockups."
+msgstr ""
+
+#: ../../../app/presenters/templates/Homepage/default.latte:12
+msgid "Name"
+msgstr ""
+
+#: ../../../app/presenters/templates/Homepage/default.latte:12
+msgid "Created"
+msgstr ""
+
+#: ../../../app/presenters/templates/Homepage/default.latte:12
+msgid "State"
+msgstr ""
+
+#: ../../../app/presenters/templates/Homepage/default.latte:12
+msgid "Published"
+msgstr ""
+
+#: ../../../app/presenters/templates/Homepage/default.latte:12
+msgid "Recorded"
+msgstr ""
+
+#: ../../../app/presenters/templates/Homepage/default.latte:12
+msgid "Duration"
+msgstr ""
+
+#: ../../../app/presenters/templates/Homepage/default.latte:12
+msgid "Abstract"
+msgstr ""
+
+#: ../../../app/presenters/templates/Homepage/default.latte:12
+msgid "Public link"
+msgstr ""
+
+#: ../../../app/presenters/templates/Homepage/default.latte:12
+msgid "Tokens"
+msgstr ""
+
+#: ../../../app/presenters/templates/Homepage/default.latte:31
+msgid "No videos yet."
+msgstr ""

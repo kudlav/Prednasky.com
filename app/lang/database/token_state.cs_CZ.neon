@@ -1,0 +1,12 @@
+# Project: 'prednasky.com'
+# Language-Team: 'Vladan Kudlac <vladankudlac@gmail.com>'
+# Content-Type: 'text/plain; charset=UTF-8'
+#
+# Database: 'v1.0'
+# Language: 'cs_CZ'
+# Table: 'token_state'
+
+'submitted' : 'připraveno'
+'start' : 'zpracovává se'
+'error' : 'chyba'
+'done' : 'dokončeno'

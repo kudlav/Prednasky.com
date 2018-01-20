@@ -1,0 +1,68 @@
+# Gettext keys exported by GettextExtractor
+msgid ""
+msgstr ""
+"Project-Id-Version: prednasky.com\n"
+"POT-Creation-Date: 2018-01-20T00:15:27+01:00\n"
+"PO-Revision-Date: 2018-01-20 00:16+0100\n"
+"Last-Translator: \n"
+"Language-Team: Vladan Kudlac <vladankudlac@gmail.com>\n"
+"Language: cs_CZ\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Generator: Poedit 2.0.6\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+
+#: ../../../app/presenters/templates/Homepage/default.latte:8
+msgid "At this moment, you can see just a mockups."
+msgstr "Prozatím se můžete podívat na mockupy."
+
+#: ../../../app/presenters/templates/Homepage/default.latte:12
+msgid "Name"
+msgstr "Název"
+
+#: ../../../app/presenters/templates/Homepage/default.latte:12
+msgid "Created"
+msgstr "Vytvořeno"
+
+#: ../../../app/presenters/templates/Homepage/default.latte:12
+msgid "State"
+msgstr "Stav"
+
+#: ../../../app/presenters/templates/Homepage/default.latte:12
+msgid "Published"
+msgstr "Zveřejněno"
+
+#: ../../../app/presenters/templates/Homepage/default.latte:12
+msgid "Recorded"
+msgstr "Pořízeno"
+
+#: ../../../app/presenters/templates/Homepage/default.latte:12
+msgid "Duration"
+msgstr "Délka"
+
+#: ../../../app/presenters/templates/Homepage/default.latte:12
+msgid "Abstract"
+msgstr "Abstrakt"
+
+#: ../../../app/presenters/templates/Homepage/default.latte:12
+msgid "Public link"
+msgstr "Veřejný odkaz"
+
+#: ../../../app/presenters/templates/Homepage/default.latte:12
+msgid "Tokens"
+msgstr "Tokeny"
+
+#: ../../../app/presenters/templates/Homepage/default.latte:31
+msgid "No videos yet."
+msgstr "Zatím žádná videa."
+
+#~ msgid "Nette Web"
+#~ msgstr "Nette Web"
+
+#~ msgid "(no title)"
+#~ msgstr "(bez titulky)"
+
+#~ msgid "Nam"
+#~ msgstr "Název"

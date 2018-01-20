@@ -1,0 +1,9 @@
+# Project: 'prednasky.com'
+# Language-Team: 'Vladan Kudlac <vladankudlac@gmail.com>'
+# Content-Type: 'text/plain; charset=UTF-8'
+#
+# Database: 'v1.0'
+# Language: 'en_GB'
+# Table: 'token_type'
+
+'video' : 'Video'

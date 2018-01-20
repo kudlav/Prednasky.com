@@ -17,7 +17,18 @@ class RouterFactory
 	public static function createRouter()
 	{
 		$router = new RouteList;
-		$router[] = new Route('<presenter>/<action>[/<id>]', 'Homepage:default');
+		$router[] = new Route('[<locale=cs cs|en>/]<presenter>/<action>[/<id>]',[
+			'presenter' => 'Homepage',
+			'action' => 'default',
+			'id' => null,
+			'locale' => [
+				Route::FILTER_TABLE => [
+					'cz' => 'cs_CZ',
+					'en' => 'en_GB'
+				]
+			]
+		]);
+
 		return $router;
 	}
 }

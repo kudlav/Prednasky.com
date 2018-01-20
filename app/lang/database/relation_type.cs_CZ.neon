@@ -1,0 +1,11 @@
+# Project: 'prednasky.com'
+# Language-Team: 'Vladan Kudlac <vladankudlac@gmail.com>'
+# Content-Type: 'text/plain; charset=UTF-8'
+#
+# Database: 'v1.0'
+# Language: 'cs_CZ'
+# Table: 'relation_type'
+
+'next_video' : 'Další video|Další videa'
+'prev_video' : 'Předchozí video|Předchozí videa'
+'related_video' : 'Související video|Související videa'

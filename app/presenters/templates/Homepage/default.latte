@@ -2,17 +2,20 @@
 
 <h1>Prednasky.com</h1>
 
-<p><a href="mockup">At this moment, you can see just a mockups.</a></p>
+<a n:href="default locale=>cs">cs</a>
+<a n:href="default locale=>en">en</a>
+
+<p><a href="mockup">{_'At this moment, you can see just a mockups.'}</a></p>
 
 	<table n:ifset="$videos" class="table table-striped table-bordered">
 		<thead>
-			<tr><th>Name</th><th>Created</th><th>State</th><th>Published</th><th>Recorded</th><th>Duration</th><th>Abstract</th><th>Public link</th><th>Tokens</th></tr>
+			<tr><th>{_'Name'}</th><th>{_'Created'|capitalize}</th><th>{_'State'}</th><th>{_'Published'}</th><th>{_'Recorded'}</th><th>{_'Duration'}</th><th>{_'Abstract'}</th><th>{_'Public link'}</th><th>{_'Tokens'}</th></tr>
 		</thead>
 		<tbody>
 			<tr n:foreach="$videos as $video">
 				<td>{$video->name}</td>
 				<td>{$video->created|date:'j. n. Y - H:i:s'}</td>
-				<td>{$video->ref('state')->name}</td>
+				<td>{_'video_state.'.$video->ref('state')->name}</td>
 				<td>{$video->published}</td>
 				<td>{$video->record_begin} - {$video->record_end}</td>
 				<td>{$video->duration}</td>
@@ -21,10 +24,10 @@
 				<td>
 					({count($tokens[$video->id])})<br>
 					{foreach $tokens[$video->id] as $token}
-						{$token->ref('state')->name}<br>
+						{_'token_state.'.$token->ref('state')->name}<br>
 					{/foreach}
 				</td>
 			</tr>
-			<tr n:if="!count($videos)"><td colspan="7">No videos yet.<td></tr>
+			<tr n:if="!count($videos)"><td colspan="7">{_'No videos yet.'}<td></tr>
 		</tbody>
 	</table>

@@ -1,0 +1,13 @@
+# Project: 'prednasky.com'
+# Language-Team: 'Vladan Kudlac <vladankudlac@gmail.com>'
+# Content-Type: 'text/plain; charset=UTF-8'
+#
+# Database: 'v1.0'
+# Language: 'en_GB'
+# Table: 'video_state'
+
+'created' : 'created'
+'processing' : 'processing'
+'done_private' : 'done, private'
+'done_logged_in' : 'done, logged in'
+'done_public' : 'done, public'
