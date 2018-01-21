@@ -21,33 +21,43 @@ class Token
 	 * @var \DateTime $created
 	 * @var TokenManager $tokenManager
 	 * @var array $parameters
+	 * @var int $priority
 	 */
-	private $values, $template, $videoId, $created, $tokenManager, $parameters;
+	private $values, $template, $videoId, $created, $tokenManager, $parameters, $priority;
 
 
 	/**
 	 * Token constructor.
 	 *
-	 * @param      integer       $videoId       The video identifier
-	 * @param      TokenManager  $tokenManager  The token manager
-	 * @param      aray          $parameters    Configuration of Nette framework
+	 * @param  int  $videoId  The video identifier
+	 * @param  TokenManager  $tokenManager  The token manager
+	 * @param  aray  $parameters  Configuration of Nette framework
+	 * @param  int  $priority  Priority of token, this is not SGE priority. Legacy, leave blank.
 	 */
-	public function __construct(int $videoId, TokenManager $tokenManager, array $parameters)
+	public function __construct(int $videoId, TokenManager $tokenManager, array $parameters, int $priority=1)
 	{
 		$this->videoId = $videoId;
 		$this->tokenManager = $tokenManager;
 		$this->parameters = $parameters;
+		$this->priority = $priority;
 
 		$this->created = new \Datetime();
 
 		// Default values
 		$this->values = [
 			'callback_base_url' => 'http://www.prednasky.com',
-			'sge_priority' => 1
+			'sge_priority' => 0
 		];
 	}
 
 
+	/**
+	 * Sets the template.
+	 *
+	 * @param      string  $template  Filename of template.
+	 *
+	 * @return     bool  Return TRUE when file exists and is readable, otherwise FALSE.
+	 */
 	public function setTemplate(string $template)
 	{
 		$this->template = $template.'.ini';
@@ -137,9 +147,9 @@ class Token
 			return FALSE;
 		}
 
-		// Set job_id (prioriry-date-time-subsec-XX-userid-hash)
+		// Set job_id (prioriry-date-time-subsec-01-userid-hash)
 		$idWithoutHash =
-			sprintf('%02d', $this->values['sge_priority']). '-'
+			sprintf('%02d', $this->priority). '-'
 			.$this->created->format('Ymd-His') . '-'
 			.substr($this->created->format("u"), 0, 3). '-'
 			.'01'. '-'
