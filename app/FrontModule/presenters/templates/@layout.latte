@@ -23,7 +23,9 @@
 	<nav class="navbar navbar-expand-md bg-primary navbar-dark p-1">
 		<div class="container">
 			<div class="navbar-brand"><i class="fa fa-lg fa-user"></i><b> {_'User'}: </b>{_'Not logged'}</div>
-			<a class="btn btn-secondary" href="#"><i class="fa fa-lg fa-sign-in"></i> {_'Sign in'}</a>
+			<a class="btn btn-secondary" href="#">
+				{if $user->loggedIn}{_'Logout'} <i class="fa fa-lg fa-sign-out"></i>{else}<i class="fa fa-lg fa-sign-in"></i> {_'Sign in'}{/if}
+			</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar2SupportedContent" aria-controls="navbar2SupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
 			<div class="collapse navbar-collapse text-center justify-content-end" id="navbar2SupportedContent">
 			  <a class="btn btn-primary mx-2" href=""><i class="fa fa-tachometer fa-lg"></i> {_'Dashboard'}</a>

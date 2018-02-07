@@ -8,9 +8,9 @@ php:
 
 
 application:
-	errorPresenter: Error
+	errorPresenter: Front:Error
 	mapping:
-		*: App\Presenters\*Presenter
+		*: App\*Module\Presenters\*Presenter
 
 
 session:

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Presenters;
+namespace App\FrontModule\Presenters;
 
 use App\Model\Token;
+use App\Model\TokenManager;
 use App\Model\VideoManager;
-use \App\Model\TokenManager;
 
 class HomepagePresenter extends BasePresenter
 {
@@ -21,7 +21,39 @@ class HomepagePresenter extends BasePresenter
 		$this->tokenManager = $tokenManager;
 	}
 
-	public function renderDefault($video_url)
+	public function renderDefault($path)
+	{
+		$tags = explode('/', $path);
+		$path = $path ? $path.'/' : '';
+
+		$actualTag = 0;
+		$tagValues = [];
+
+		foreach ($tags as $tagValue) {
+			if ($tagValue != '' && isset($this->parameters['required_tags'][$actualTag])) {
+				\Tracy\Debugger::barDump($actualTag);
+				if ($this->videoManager->issetTagValue($this->parameters['required_tags'][$actualTag], $tagValue)) {
+					$actualTag++;
+				}
+				else {
+					$this->error();
+				}
+			}
+		}
+		$tagValues = $this->videoManager->getTagValues($this->parameters['required_tags'][$actualTag]);
+
+		$this->template->listGroupTitle = $this->parameters['required_tags'][$actualTag];
+		$this->template->listGroup = [];
+		foreach ($tagValues as $value) {
+			$this->template->listGroup[$value] = $path.$value;
+		}
+
+		if ($actualTag > 0) {
+			$this->template->listGroup['<i class="fa fa-share fa-lg">&nbsp;</i>Back to '.$this->parameters['required_tags'][$actualTag-1]] = implode('/', array_slice($tags, 0, -1));
+		}
+	}
+
+	public function renderDownload($video_url)
 	{
 		if (isset($video_url)) {
 			$videoId = $this->videoManager->newVideo();
