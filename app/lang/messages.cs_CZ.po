@@ -2,9 +2,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: prednasky.com\n"
-"POT-Creation-Date: 2018-01-21T00:17:24+01:00\n"
-"PO-Revision-Date: 2018-01-21 00:17+0100\n"
-"Last-Translator: \n"
+"POT-Creation-Date: 2018-02-09T00:25:22+01:00\n"
+"PO-Revision-Date: 2018-02-09 00:48+0100\n"
+"Last-Translator: Vladan Kudlac <vladankudlac@gmail.com>\n"
 "Language-Team: Vladan Kudlac <vladankudlac@gmail.com>\n"
 "Language: cs_CZ\n"
 "MIME-Version: 1.0\n"
@@ -14,59 +14,63 @@ msgstr ""
 "X-Generator: Poedit 2.0.6\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
-#: ../../../app/presenters/templates/@layout.latte:18
+#: app/FrontModule/presenters/templates/@layout.latte:18
 msgid "en"
 msgstr "cs"
 
-#: ../../../app/presenters/templates/@layout.latte:18
+#: app/FrontModule/presenters/templates/@layout.latte:18
 msgid "FIT_color_RGB_EN"
 msgstr "FIT_color_RGB_CZ"
 
-#: ../../../app/presenters/templates/@layout.latte:19
+#: app/FrontModule/presenters/templates/@layout.latte:19
 msgid "Videoportal"
 msgstr "Videoportál"
 
-#: ../../../app/presenters/templates/@layout.latte:25
+#: app/FrontModule/presenters/templates/@layout.latte:25
 msgid "User"
 msgstr "Uživatel"
 
-#: ../../../app/presenters/templates/@layout.latte:25
+#: app/FrontModule/presenters/templates/@layout.latte:25
 msgid "Not logged"
 msgstr "Nepřihlášen"
 
-#: ../../../app/presenters/templates/@layout.latte:26
+#: app/FrontModule/presenters/templates/@layout.latte:27
+msgid "Logout"
+msgstr "Odhlásit se"
+
+#: app/FrontModule/presenters/templates/@layout.latte:27
 msgid "Sign in"
 msgstr "Přihlásit se"
 
-#: ../../../app/presenters/templates/@layout.latte:29
+#: app/FrontModule/presenters/templates/@layout.latte:31
 msgid "Dashboard"
 msgstr "Administrace"
 
-#: ../../../app/presenters/templates/@layout.latte:31
+#: app/FrontModule/presenters/templates/@layout.latte:33
 msgid "Language"
 msgstr "Jazyk"
 
-#: ../../../app/presenters/templates/@layout.latte:33
+#: app/FrontModule/presenters/templates/@layout.latte:35
 msgid "Czech"
 msgstr "Čeština"
 
-#: ../../../app/presenters/templates/@layout.latte:34
+#: app/FrontModule/presenters/templates/@layout.latte:36
 msgid "English"
 msgstr "English"
 
-#: ../../../app/presenters/templates/@layout.latte:53
+#: app/FrontModule/presenters/templates/@layout.latte:55
 msgid " • Czech Republic"
 msgstr ""
 
-#: ../../../app/presenters/templates/@layout.latte:54
+#: app/FrontModule/presenters/templates/@layout.latte:56
 msgid "Faculty of Information Technology, BUT"
 msgstr "Fakulta informačních technologií VUT v Brně"
 
-#: ../../../app/presenters/templates/Error/403.latte:2
+#: app/FrontModule/presenters/templates/Error/403.latte:2
 msgid "Access Denied"
 msgstr "Přístup odmítnut"
 
-#: ../../../app/presenters/templates/Error/403.latte:4
+#: app/FrontModule/presenters/templates/Error/403.latte:4
 msgid ""
 "You do not have permission to view this page. Please try contact the web "
 "site administrator if you believe you should be able to view this page."
@@ -74,12 +78,12 @@ msgstr ""
 "Nemáte oprávnění k zobrazení této stránky. Pokud se domníváte, že byste měli "
 "tuto stránku zobrazit, zkuste se obrátit na správce webu."
 
-#: ../../../app/presenters/templates/Error/404.latte:2
-#: ../../../app/presenters/templates/Error/410.latte:2
+#: app/FrontModule/presenters/templates/Error/404.latte:2
+#: app/FrontModule/presenters/templates/Error/410.latte:2
 msgid "Page Not Found"
 msgstr "Stránka nenalezena"
 
-#: ../../../app/presenters/templates/Error/404.latte:4
+#: app/FrontModule/presenters/templates/Error/404.latte:4
 msgid ""
 "The page you requested could not be found. It is possible that the address "
 "is incorrect, or that the page no longer exists."
@@ -87,76 +91,88 @@ msgstr ""
 "Požadovaná stránka nebyla nalezena. Je možné, že je adresa nesprávná, nebo "
 "že stránka již neexistuje."
 
-#: ../../../app/presenters/templates/Error/405.latte:2
+#: app/FrontModule/presenters/templates/Error/405.latte:2
 msgid "Method Not Allowed"
 msgstr "Nepovolená metoda"
 
-#: ../../../app/presenters/templates/Error/405.latte:4
+#: app/FrontModule/presenters/templates/Error/405.latte:4
 msgid "The requested method is not allowed for the URL."
 msgstr "Požadovaná metoda není pro danou URL povolena."
 
-#: ../../../app/presenters/templates/Error/410.latte:4
+#: app/FrontModule/presenters/templates/Error/410.latte:4
 msgid ""
 "The page you requested has been taken off the site. We apologize for the "
 "inconvenience."
 msgstr ""
 "Požadovaná stránka byla ze stránek odebrána. Omlouváme se za nepříjemnosti."
 
-#: ../../../app/presenters/templates/Error/4xx.latte:2
+#: app/FrontModule/presenters/templates/Error/4xx.latte:2
 msgid "Oops..."
 msgstr "Oops..."
 
-#: ../../../app/presenters/templates/Error/4xx.latte:4
+#: app/FrontModule/presenters/templates/Error/4xx.latte:4
 msgid ""
 "Your browser sent a request that this server could not understand or process."
 msgstr ""
 "Váš prohlížeč odeslal požadavek, který tento server nedokáže zpracovat."
 
-#: ../../../app/presenters/templates/Homepage/default.latte:3
+#: app/FrontModule/presenters/templates/Homepage/default.latte:10
+msgid "Back to"
+msgstr "Zpět na"
+
+#: app/FrontModule/presenters/templates/Homepage/default.latte:15
+msgid "New videos"
+msgstr "Nová videa"
+
+#: app/FrontModule/presenters/templates/Homepage/default.latte:17
+msgid "Search"
+msgstr "Hledat"
+
+#: app/FrontModule/presenters/templates/Homepage/download.latte:3
 msgid "Educational videos"
 msgstr "Výuková videa"
 
-#: ../../../app/presenters/templates/Homepage/default.latte:5
+#: app/FrontModule/presenters/templates/Homepage/download.latte:5
 msgid "At this moment, you can see just a mockups."
 msgstr "Prozatím se můžete podívat na mockupy."
 
-#: ../../../app/presenters/templates/Homepage/default.latte:9
+#: app/FrontModule/presenters/templates/Homepage/download.latte:9
 msgid "Name"
 msgstr "Název"
 
-#: ../../../app/presenters/templates/Homepage/default.latte:9
+#: app/FrontModule/presenters/templates/Homepage/download.latte:9
 msgid "Created"
 msgstr "Vytvořeno"
 
-#: ../../../app/presenters/templates/Homepage/default.latte:9
+#: app/FrontModule/presenters/templates/Homepage/download.latte:9
 msgid "State"
 msgstr "Stav"
 
-#: ../../../app/presenters/templates/Homepage/default.latte:9
+#: app/FrontModule/presenters/templates/Homepage/download.latte:9
 msgid "Published"
 msgstr "Zveřejněno"
 
-#: ../../../app/presenters/templates/Homepage/default.latte:9
+#: app/FrontModule/presenters/templates/Homepage/download.latte:9
 msgid "Recorded"
 msgstr "Pořízeno"
 
-#: ../../../app/presenters/templates/Homepage/default.latte:9
+#: app/FrontModule/presenters/templates/Homepage/download.latte:9
 msgid "Duration"
 msgstr "Délka"
 
-#: ../../../app/presenters/templates/Homepage/default.latte:9
+#: app/FrontModule/presenters/templates/Homepage/download.latte:9
 msgid "Abstract"
 msgstr "Abstrakt"
 
-#: ../../../app/presenters/templates/Homepage/default.latte:9
+#: app/FrontModule/presenters/templates/Homepage/download.latte:9
 msgid "Public link"
 msgstr "Veřejný odkaz"
 
-#: ../../../app/presenters/templates/Homepage/default.latte:9
+#: app/FrontModule/presenters/templates/Homepage/download.latte:9
 msgid "Tokens"
 msgstr "Tokeny"
 
-#: ../../../app/presenters/templates/Homepage/default.latte:28
+#: app/FrontModule/presenters/templates/Homepage/download.latte:28
 msgid "No videos yet."
 msgstr "Zatím žádná videa."
 

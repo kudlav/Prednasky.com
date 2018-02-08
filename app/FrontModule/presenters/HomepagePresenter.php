@@ -23,33 +23,23 @@ class HomepagePresenter extends BasePresenter
 
 	public function renderDefault($path)
 	{
-		$tags = explode('/', $path);
+		$tags = array_filter(explode('/', $path));
 		$path = $path ? $path.'/' : '';
 
-		$actualTag = 0;
-		$tagValues = [];
-
-		foreach ($tags as $tagValue) {
-			if ($tagValue != '' && isset($this->parameters['required_tags'][$actualTag])) {
-				\Tracy\Debugger::barDump($actualTag);
-				if ($this->videoManager->issetTagValue($this->parameters['required_tags'][$actualTag], $tagValue)) {
-					$actualTag++;
-				}
-				else {
-					$this->error();
-				}
-			}
+		$tagValues = $this->videoManager->getNestedTagValues($tags);
+		if ($tagValues === NULL) {
+			$this->error();
 		}
-		$tagValues = $this->videoManager->getTagValues($this->parameters['required_tags'][$actualTag]);
 
-		$this->template->listGroupTitle = $this->parameters['required_tags'][$actualTag];
+		$this->template->listGroupTitle = $this->parameters['required_tags'][count($tags)] ?? NULL; // If doesn't exist, set null.
 		$this->template->listGroup = [];
 		foreach ($tagValues as $value) {
 			$this->template->listGroup[$value] = $path.$value;
 		}
 
-		if ($actualTag > 0) {
-			$this->template->listGroup['<i class="fa fa-share fa-lg">&nbsp;</i>Back to '.$this->parameters['required_tags'][$actualTag-1]] = implode('/', array_slice($tags, 0, -1));
+		if (count($tags) > 0) {
+			$this->template->listGroupBackText = $this->parameters['required_tags'][count($tags)-1];
+			$this->template->listGroupBackLink = implode('/', array_slice($tags, 0, -1));
 		}
 	}
 

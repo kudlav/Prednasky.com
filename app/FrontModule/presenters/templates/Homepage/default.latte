@@ -3,9 +3,12 @@
     <div class="py-4 container">
     <div class="row">
       <div class="col-md-3">
-        <h2>{_$listGroupTitle}</h2>
+        {ifset $listGroupTitle}<h2>{_'config.'.$listGroupTitle|capitalize}</h2>{/ifset}
         <ul class="list-group">
           <li n:foreach="$listGroup as $item => $path" class="list-group-item"><a n:href="Homepage:default $path" class="text-dark d-block">{$item|noescape}</a></li>
+          {ifset $listGroupBackText}
+          	<li class="list-group-item"><a n:href="Homepage:default $listGroupBackLink" class="text-dark d-block"><i class="fa fa-share fa-lg">&nbsp;</i>{_'Back to'} {_'config.'.$listGroupBackText}</a></li>
+          {/ifset}
         </ul>
       </div>
       <div class="col-md-9">

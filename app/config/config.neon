@@ -2,6 +2,7 @@
 # WARNING: it is CRITICAL that this file & directory are NOT accessible directly via a web browser!
 # https://nette.org/security-warning
 #
+# Config: 'v1.0'
 
 php:
 	date.timezone: Europe/Prague
@@ -21,7 +22,7 @@ services:
 	router: App\RouterFactory::createRouter
 
 	- App\Model\Parameters(@container::getParameters())
-	- App\Model\VideoManager
+	- App\Model\VideoManager(@container::getParameters())
 	- App\Model\TokenManager
 
 
@@ -32,3 +33,13 @@ extensions:
 translation:
 	default: cs_CZ
 	fallback: [en_GB]
+
+
+parameters:
+
+	required_tags:
+		- branch
+		- semester
+		- course
+		- type
+	available_tags:

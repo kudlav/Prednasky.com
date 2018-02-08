@@ -22,16 +22,25 @@ class VideoManager
 		VIDEO_ABSTRACT = 'abstract',
 		VIDEO_PLANE_POINTS = 'plane_points',
 		VIDEO_PLANE_WIDTH = 'plane_width',
-		VIDEO_PUBLIC_LINK = 'plane_public_link'
+		VIDEO_PUBLIC_LINK = 'plane_public_link',
+
+		TABLE_TAG = 'tag',
+		TAG_ID = 'id',
+		TAG_NAME = 'name',
+		TAG_VALUE = 'value',
+
+		TABLE_VIDEO_TAG = 'video_has_tag'
 	;
 
 	/** @var Nette\Database\Context */
-	private $database;
+	private $parameters, $database;
 
-	public function __construct(Nette\Database\Context $database)
+	public function __construct($parameters, Nette\Database\Context $database)
 	{
+		$this->parameters = $parameters;
 		$this->database = $database;
 	}
+
 
 	/**
 	 * Insert video into database
@@ -73,5 +82,69 @@ class VideoManager
 	public function getAllVideos(string $orderBy='id DESC')
 	{
 		return $this->database->table(self::TABLE_VIDEO)->order($orderBy);
+	}
+
+	/* Tags */
+
+	public function getTagValues($tag)
+	{
+		return $this->database->table(self::TABLE_TAG)->where(self::TAG_NAME, $tag)->fetchPairs(self::TAG_ID, self::TAG_VALUE);
+	}
+
+
+	public function getNestedTagValues(array $tags)
+	{
+		$valuesId = [];
+		$tagLevel = 0;
+
+		// Get ID's of row in `tag` table.
+		foreach ($tags as $tagValue) {
+			if (isset($this->parameters['required_tags'][$tagLevel])) {
+
+				$id = $this->issetTagValue($this->parameters['required_tags'][$tagLevel], $tagValue);
+				if ($id === NULL) {
+					return NULL;
+				}
+				$valuesId[] = $id;
+				$tagLevel++;
+			}
+		}
+
+		// The lowest level, no nested tags (fastest)
+		if (!isset($this->parameters['required_tags'][$tagLevel])) {
+			$nestedTagValues = [];
+		}
+		// Top level - returning all values of root tag (fast)
+		elseif ($tagLevel == 0) {
+			$nestedTagValues = $this->getTagValues($this->parameters['required_tags'][0]);
+		}
+		// Return nested values containing some video (slow)
+		else {
+			$selection = $this->database->table(self::TABLE_VIDEO_TAG);
+			foreach ($valuesId as $id) {
+				$videosId = $selection->where('tag_id', $id)->fetchPairs(NULL, 'video_id'); // Get list of suitable videos
+				$selection = $this->database->table(self::TABLE_VIDEO_TAG)->where('video_id', $videosId); // Get rows of suitable videos
+			}
+			$nestedTagValues = $selection->select('tag.name AS name, tag.value AS value')
+				->where('name', $this->parameters['required_tags'][$tagLevel])
+				->fetchPairs(NULL, 'value')
+			;
+		}
+
+		return $nestedTagValues;
+	}
+
+	public function issetTagValue(string $tag, string $value)
+	{
+		$row = $this->database->table(self::TABLE_TAG)
+			->where(self::TAG_NAME, $tag)
+			->where(self::TAG_VALUE, $value)
+			->fetch()
+		;
+
+		if ($row !== FALSE) {
+			return $row->id;
+		}
+		return NULL;
 	}
 }
