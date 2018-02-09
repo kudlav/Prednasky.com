@@ -92,43 +92,57 @@ class VideoManager
 	}
 
 
-	public function getNestedTagValues(array $tags)
+	public function getNestedTagValues(array $path)
 	{
+		// RETURN: Top level - returning all values of root tag (fast)
+		if (empty($path)) {
+			$nestedTagValues['lvl'] = $this->parameters['required_tags'][0];
+			$nestedTagValues['val'] = $this->getTagValues($this->parameters['required_tags'][0]);
+			return $nestedTagValues;
+		}
+
 		$valuesId = [];
 		$tagLevel = 0;
+		$pathIndex = 0;
 
-		// Get ID's of row in `tag` table.
-		foreach ($tags as $tagValue) {
-			if (!isset($this->parameters['required_tags'][$tagLevel])) {
-				return NULL;
+		// Get get list of required tags. Videos have to contain all of them.
+		for ($tagLevel; $tagLevel<count($this->parameters['required_tags']); $tagLevel++) {
+			$id = $this->issetTagValue($this->parameters['required_tags'][$tagLevel], $path[$pathIndex]);
+			if ($id !== NULL) {
+				$valuesId[] = $id;
+				$pathIndex++;
+				if (!isset($path[$pathIndex])) { // Done.
+					break;
+				}
 			}
-			$id = $this->issetTagValue($this->parameters['required_tags'][$tagLevel], $tagValue);
-			if ($id === NULL) {
-				return NULL;
-			}
-			$valuesId[] = $id;
-			$tagLevel++;
+		}
+		$tagLevel++;
+
+		if (count($valuesId) != count($path)) { // Check for non existing path.
+			return NULL;
 		}
 
-		// The lowest level, no nested tags (fastest)
+		// RETURN: The lowest level, no nested tags (fastest)
 		if (!isset($this->parameters['required_tags'][$tagLevel])) {
-			$nestedTagValues = [];
+			$nestedTagValues['val'] = [];
 		}
-		// Top level - returning all values of root tag (fast)
-		elseif ($tagLevel == 0) {
-			$nestedTagValues = $this->getTagValues($this->parameters['required_tags'][0]);
-		}
-		// Return nested values containing some video (slow)
+		// RETURN: Return nested values containing some video (slow)
 		else {
 			$selection = $this->database->table(self::TABLE_VIDEO_TAG);
 			foreach ($valuesId as $id) {
 				$videosId = $selection->where('tag_id', $id)->fetchPairs(NULL, 'video_id'); // Get list of suitable videos
 				$selection = $this->database->table(self::TABLE_VIDEO_TAG)->where('video_id', $videosId); // Get rows of suitable videos
 			}
-			$nestedTagValues = $selection->select('tag.name AS name, tag.value AS value')
-				->where('name', $this->parameters['required_tags'][$tagLevel])
-				->fetchPairs(NULL, 'value')
-			;
+			while (empty($nestedTagValues['val']) && isset($this->parameters['required_tags'][$tagLevel])) { // While empty, try to go deeper.
+				$nestedTagValues['lvl'] = $this->parameters['required_tags'][$tagLevel];
+				$nestedTagValues['val'] = $this->database->table(self::TABLE_VIDEO_TAG)
+					->where('video_id', $videosId)
+					->select('tag.name AS name, tag.value AS value')
+					->where('name', $this->parameters['required_tags'][$tagLevel])
+					->fetchPairs(NULL, 'value')
+				;
+				$tagLevel++;
+			}
 		}
 
 		return $nestedTagValues;

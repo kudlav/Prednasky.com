@@ -33,11 +33,11 @@ class HomepagePresenter extends BasePresenter
 
 		$this->template->breadcrumb = $tags;
 
-		if (isset($this->parameters['required_tags'][count($tags)]) && !empty($tagValues)) { // Show title when not leaf tag or empty list
-			$this->template->listGroupTitle = $this->parameters['required_tags'][count($tags)];
+		if (!empty($tagValues['val'])) { // Show title when not empty list
+			$this->template->listGroupTitle = $tagValues['lvl'];
 		}
 		$this->template->listGroup = [];
-		foreach ($tagValues as $value) {
+		foreach ($tagValues['val'] as $value) {
 			$this->template->listGroup[$value] = $path.$value;
 		}
 
