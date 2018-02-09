@@ -31,15 +31,24 @@ class HomepagePresenter extends BasePresenter
 			$this->error();
 		}
 
-		$this->template->listGroupTitle = $this->parameters['required_tags'][count($tags)] ?? NULL; // If doesn't exist, set null.
+		$this->template->breadcrumb = $tags;
+
+		if (isset($this->parameters['required_tags'][count($tags)]) && !empty($tagValues)) { // Show title when not leaf tag or empty list
+			$this->template->listGroupTitle = $this->parameters['required_tags'][count($tags)];
+		}
 		$this->template->listGroup = [];
 		foreach ($tagValues as $value) {
 			$this->template->listGroup[$value] = $path.$value;
 		}
 
-		if (count($tags) > 0) {
+		// Root tag, no link to upper tag
+		if (!empty($tags)) {
+			$this->template->title = end($tags);
 			$this->template->listGroupBackText = $this->parameters['required_tags'][count($tags)-1];
 			$this->template->listGroupBackLink = implode('/', array_slice($tags, 0, -1));
+		}
+		else {
+			$this->template->title = 'New videos';
 		}
 	}
 

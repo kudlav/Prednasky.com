@@ -6,7 +6,7 @@
 # Language: 'cs_CZ'
 # File: 'config.neon'
 
-'branch' : 'Branch'
-'semester' : 'Semester'
-'course' : 'Course'
-'type' : 'Type'
+'branch' : 'branch'
+'semester' : 'semester'
+'course' : 'course'
+'type' : 'type'

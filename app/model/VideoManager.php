@@ -99,15 +99,15 @@ class VideoManager
 
 		// Get ID's of row in `tag` table.
 		foreach ($tags as $tagValue) {
-			if (isset($this->parameters['required_tags'][$tagLevel])) {
-
-				$id = $this->issetTagValue($this->parameters['required_tags'][$tagLevel], $tagValue);
-				if ($id === NULL) {
-					return NULL;
-				}
-				$valuesId[] = $id;
-				$tagLevel++;
+			if (!isset($this->parameters['required_tags'][$tagLevel])) {
+				return NULL;
 			}
+			$id = $this->issetTagValue($this->parameters['required_tags'][$tagLevel], $tagValue);
+			if ($id === NULL) {
+				return NULL;
+			}
+			$valuesId[] = $id;
+			$tagLevel++;
 		}
 
 		// The lowest level, no nested tags (fastest)

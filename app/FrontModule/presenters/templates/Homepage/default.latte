@@ -1,6 +1,11 @@
 {block content}
 
-    <div class="py-4 container">
+    <div class="container">
+    <div class="row px-3">
+      {foreach $breadcrumb as $level}
+      	 / {$level}
+      {/foreach}
+    </div>
     <div class="row">
       <div class="col-md-3">
         {ifset $listGroupTitle}<h2>{_'config.'.$listGroupTitle|capitalize}</h2>{/ifset}
@@ -12,12 +17,10 @@
         </ul>
       </div>
       <div class="col-md-9">
-        <h1 class="d-inline-block">{_'New videos'}:</h1>
+        <h1 class="d-inline-block">{_$title}:</h1>
         <input class="form-control d-inline mx-3 w-auto w-25" type="search" placeholder="Search">
         <button class="btn btn-primary" type="submit">{_'Search'}</button>
-        <a href="http://www.prednasky.com/mockup/video.html">
-          <img class="d-block img-fluid py-2" src="video-grid.PNG"> </a>
-        <div class="col-md-12 text-center">
+      	<p class="text-center py-3">{_'No videos yet'}...</p>
           <ul class="pagination text-center">
             <li class="page-item">
               <a class="page-link" href="#" aria-label="Previous"> <span aria-hidden="true">«</span> <span class="sr-only">Previous</span> </a>
@@ -38,7 +41,6 @@
               <a class="page-link" href="#" aria-label="Next"> <span aria-hidden="true">»</span> <span class="sr-only">Next</span> </a>
             </li>
           </ul>
-        </div>
       </div>
     </div>
   </div>
