@@ -31,7 +31,12 @@ class HomepagePresenter extends BasePresenter
 			$this->error();
 		}
 
-		$this->template->breadcrumb = $tags;
+		$link = '';
+		$this->template->breadcrumb = [];
+		foreach ($tags as $item) {
+			$link .= $item. '/';
+			$this->template->breadcrumb[$item] = $link;
+		}
 
 		if (!empty($tagValues['val'])) { // Show title when not empty list
 			$this->template->listGroupTitle = $tagValues['lvl'];

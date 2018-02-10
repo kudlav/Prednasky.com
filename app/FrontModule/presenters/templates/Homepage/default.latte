@@ -2,8 +2,8 @@
 
     <div class="container">
     <div class="row px-3">
-      {foreach $breadcrumb as $level}
-      	 / {$level}
+      {foreach $breadcrumb as $level => $link}
+      	/<a n:href="Homepage:default $link" class='px-1'>{$level}</a>
       {/foreach}
     </div>
     <div class="row">
