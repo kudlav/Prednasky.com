@@ -4,37 +4,6 @@
 #
 # Config: 'v1.0'
 
-php:
-	date.timezone: Europe/Prague
-
-
-application:
-	errorPresenter: Front:Error
-	mapping:
-		*: App\*Module\Presenters\*Presenter
-
-
-session:
-	expiration: 14 days
-
-
-services:
-	router: App\RouterFactory::createRouter
-
-	- App\Model\Parameters(@container::getParameters())
-	- App\Model\VideoManager(@container::getParameters())
-	- App\Model\TokenManager
-
-
-extensions:
-	mailing: Ublaboo\Mailing\DI\MailingExtension
-	translation: Kdyby\Translation\DI\TranslationExtension
-
-translation:
-	default: cs_CZ
-	fallback: [en_GB]
-
-
 parameters:
 
 	required_tags:
@@ -43,3 +12,29 @@ parameters:
 		- course
 		- type
 	available_tags:
+
+php:
+	date.timezone: Europe/Prague
+
+application:
+	errorPresenter: Front:Error
+	mapping:
+		*: App\*Module\Presenters\*Presenter
+
+session:
+	expiration: 14 days
+
+services:
+	router: App\RouterFactory::createRouter
+
+	- App\Model\Parameters(@container::getParameters())
+	- App\Model\VideoManager(@container::getParameters())
+	- App\Model\TokenManager
+
+extensions:
+	mailing: Ublaboo\Mailing\DI\MailingExtension
+	translation: Kdyby\Translation\DI\TranslationExtension
+
+translation:
+	default: cs_CZ
+	fallback: [en_GB]

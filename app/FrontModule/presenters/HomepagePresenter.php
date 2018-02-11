@@ -52,9 +52,6 @@ class HomepagePresenter extends BasePresenter
 			$this->template->listGroupBackText = $this->parameters['required_tags'][count($tags)-1];
 			$this->template->listGroupBackLink = implode('/', array_slice($tags, 0, -1));
 		}
-		else {
-			$this->template->title = 'New videos';
-		}
 	}
 
 	public function renderDownload($video_url)

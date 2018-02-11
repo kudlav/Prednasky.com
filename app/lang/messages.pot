@@ -2,7 +2,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2018-02-09T00:25:22+01:00\n"
+"POT-Creation-Date: 2018-02-11T16:41:55+01:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,151 +11,148 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: ./app/FrontModule/presenters/templates/@layout.latte:18
+#: app/FrontModule/presenters/templates/@layout.latte:18
+#: app/FrontModule/presenters/templates/@layout.latte:18
 msgid "en"
 msgstr ""
 
-#: ./app/FrontModule/presenters/templates/@layout.latte:18
-msgid "FIT_color_RGB_EN"
-msgstr ""
-
-#: ./app/FrontModule/presenters/templates/@layout.latte:19
+#: app/FrontModule/presenters/templates/@layout.latte:19
 msgid "Videoportal"
 msgstr ""
 
-#: ./app/FrontModule/presenters/templates/@layout.latte:25
+#: app/FrontModule/presenters/templates/@layout.latte:25
 msgid "User"
 msgstr ""
 
-#: ./app/FrontModule/presenters/templates/@layout.latte:25
+#: app/FrontModule/presenters/templates/@layout.latte:25
 msgid "Not logged"
 msgstr ""
 
-#: ./app/FrontModule/presenters/templates/@layout.latte:27
+#: app/FrontModule/presenters/templates/@layout.latte:27
 msgid "Logout"
 msgstr ""
 
-#: ./app/FrontModule/presenters/templates/@layout.latte:27
+#: app/FrontModule/presenters/templates/@layout.latte:27
 msgid "Sign in"
 msgstr ""
 
-#: ./app/FrontModule/presenters/templates/@layout.latte:31
+#: app/FrontModule/presenters/templates/@layout.latte:31
 msgid "Dashboard"
 msgstr ""
 
-#: ./app/FrontModule/presenters/templates/@layout.latte:33
+#: app/FrontModule/presenters/templates/@layout.latte:33
 msgid "Language"
 msgstr ""
 
-#: ./app/FrontModule/presenters/templates/@layout.latte:35
+#: app/FrontModule/presenters/templates/@layout.latte:35
 msgid "Czech"
 msgstr ""
 
-#: ./app/FrontModule/presenters/templates/@layout.latte:36
+#: app/FrontModule/presenters/templates/@layout.latte:36
 msgid "English"
 msgstr ""
 
-#: ./app/FrontModule/presenters/templates/@layout.latte:55
+#: app/FrontModule/presenters/templates/@layout.latte:55
 msgid " • Czech Republic"
 msgstr ""
 
-#: ./app/FrontModule/presenters/templates/@layout.latte:56
+#: app/FrontModule/presenters/templates/@layout.latte:56
 msgid "Faculty of Information Technology, BUT"
 msgstr ""
 
-#: ./app/FrontModule/presenters/templates/Error/403.latte:2
+#: app/FrontModule/presenters/templates/Error/403.latte:2
 msgid "Access Denied"
 msgstr ""
 
-#: ./app/FrontModule/presenters/templates/Error/403.latte:4
+#: app/FrontModule/presenters/templates/Error/403.latte:4
 msgid "You do not have permission to view this page. Please try contact the web site administrator if you believe you should be able to view this page."
 msgstr ""
 
-#: ./app/FrontModule/presenters/templates/Error/404.latte:2
-#: ./app/FrontModule/presenters/templates/Error/410.latte:2
+#: app/FrontModule/presenters/templates/Error/404.latte:2
+#: app/FrontModule/presenters/templates/Error/410.latte:2
 msgid "Page Not Found"
 msgstr ""
 
-#: ./app/FrontModule/presenters/templates/Error/404.latte:4
+#: app/FrontModule/presenters/templates/Error/404.latte:4
 msgid "The page you requested could not be found. It is possible that the address is incorrect, or that the page no longer exists."
 msgstr ""
 
-#: ./app/FrontModule/presenters/templates/Error/405.latte:2
+#: app/FrontModule/presenters/templates/Error/405.latte:2
 msgid "Method Not Allowed"
 msgstr ""
 
-#: ./app/FrontModule/presenters/templates/Error/405.latte:4
+#: app/FrontModule/presenters/templates/Error/405.latte:4
 msgid "The requested method is not allowed for the URL."
 msgstr ""
 
-#: ./app/FrontModule/presenters/templates/Error/410.latte:4
+#: app/FrontModule/presenters/templates/Error/410.latte:4
 msgid "The page you requested has been taken off the site. We apologize for the inconvenience."
 msgstr ""
 
-#: ./app/FrontModule/presenters/templates/Error/4xx.latte:2
+#: app/FrontModule/presenters/templates/Error/4xx.latte:2
 msgid "Oops..."
 msgstr ""
 
-#: ./app/FrontModule/presenters/templates/Error/4xx.latte:4
+#: app/FrontModule/presenters/templates/Error/4xx.latte:4
 msgid "Your browser sent a request that this server could not understand or process."
 msgstr ""
 
-#: ./app/FrontModule/presenters/templates/Homepage/default.latte:10
+#: app/FrontModule/presenters/templates/Homepage/default.latte:15
 msgid "Back to"
 msgstr ""
 
-#: ./app/FrontModule/presenters/templates/Homepage/default.latte:15
-msgid "New videos"
-msgstr ""
-
-#: ./app/FrontModule/presenters/templates/Homepage/default.latte:17
+#: app/FrontModule/presenters/templates/Homepage/default.latte:22
 msgid "Search"
 msgstr ""
 
-#: ./app/FrontModule/presenters/templates/Homepage/download.latte:3
+#: app/FrontModule/presenters/templates/Homepage/default.latte:23
+msgid "No videos yet"
+msgstr ""
+
+#: app/FrontModule/presenters/templates/Homepage/download.latte:3
 msgid "Educational videos"
 msgstr ""
 
-#: ./app/FrontModule/presenters/templates/Homepage/download.latte:5
+#: app/FrontModule/presenters/templates/Homepage/download.latte:5
 msgid "At this moment, you can see just a mockups."
 msgstr ""
 
-#: ./app/FrontModule/presenters/templates/Homepage/download.latte:9
+#: app/FrontModule/presenters/templates/Homepage/download.latte:9
 msgid "Name"
 msgstr ""
 
-#: ./app/FrontModule/presenters/templates/Homepage/download.latte:9
+#: app/FrontModule/presenters/templates/Homepage/download.latte:9
 msgid "Created"
 msgstr ""
 
-#: ./app/FrontModule/presenters/templates/Homepage/download.latte:9
+#: app/FrontModule/presenters/templates/Homepage/download.latte:9
 msgid "State"
 msgstr ""
 
-#: ./app/FrontModule/presenters/templates/Homepage/download.latte:9
+#: app/FrontModule/presenters/templates/Homepage/download.latte:9
 msgid "Published"
 msgstr ""
 
-#: ./app/FrontModule/presenters/templates/Homepage/download.latte:9
+#: app/FrontModule/presenters/templates/Homepage/download.latte:9
 msgid "Recorded"
 msgstr ""
 
-#: ./app/FrontModule/presenters/templates/Homepage/download.latte:9
+#: app/FrontModule/presenters/templates/Homepage/download.latte:9
 msgid "Duration"
 msgstr ""
 
-#: ./app/FrontModule/presenters/templates/Homepage/download.latte:9
+#: app/FrontModule/presenters/templates/Homepage/download.latte:9
 msgid "Abstract"
 msgstr ""
 
-#: ./app/FrontModule/presenters/templates/Homepage/download.latte:9
+#: app/FrontModule/presenters/templates/Homepage/download.latte:9
 msgid "Public link"
 msgstr ""
 
-#: ./app/FrontModule/presenters/templates/Homepage/download.latte:9
+#: app/FrontModule/presenters/templates/Homepage/download.latte:9
 msgid "Tokens"
 msgstr ""
 
-#: ./app/FrontModule/presenters/templates/Homepage/download.latte:28
+#: app/FrontModule/presenters/templates/Homepage/download.latte:28
 msgid "No videos yet."
 msgstr ""
