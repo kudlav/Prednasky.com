@@ -23,7 +23,7 @@
 		"dg/adminer-custom": "^1.8",
 		"ublaboo/mailing": "^1.1",
 		"kdyby/translation": "^2.5",
-		"voda/gettext-extractor": "^3.1"
+		"turboxx/gettext-extractor": "^3.1"
 	},
 	"require-dev": {
 		"nette/tester": "^2.0"
