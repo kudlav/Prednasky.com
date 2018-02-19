@@ -2,7 +2,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2018-02-11T16:41:55+01:00\n"
+"POT-Creation-Date: 2018-02-19T23:40:01+01:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -101,12 +101,24 @@ msgstr ""
 msgid "Back to"
 msgstr ""
 
+#: app/FrontModule/presenters/templates/Homepage/default.latte:20
+msgid "New videos"
+msgstr ""
+
 #: app/FrontModule/presenters/templates/Homepage/default.latte:22
 msgid "Search"
 msgstr ""
 
-#: app/FrontModule/presenters/templates/Homepage/default.latte:23
+#: app/FrontModule/presenters/templates/Homepage/default.latte:29
 msgid "No videos yet"
+msgstr ""
+
+#: app/FrontModule/presenters/templates/Homepage/default.latte:37
+msgid "Previous"
+msgstr ""
+
+#: app/FrontModule/presenters/templates/Homepage/default.latte:45
+msgid "Next"
 msgstr ""
 
 #: app/FrontModule/presenters/templates/Homepage/download.latte:3

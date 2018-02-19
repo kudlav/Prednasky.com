@@ -21,7 +21,7 @@
         <input class="form-control d-inline mx-3 w-auto w-25" type="search" placeholder="Search">
         <button class="btn btn-primary" type="submit">{_'Search'}</button>
         {* Begin Listing *}
-          {if !empty($videoList)}
+          {if count($videoList)>0}
             <ul>
               <li n:foreach="$videoList as $video">{$video->id}:{$video->name} ({$video->public_link}/video.mp4)</li>
             </ul>

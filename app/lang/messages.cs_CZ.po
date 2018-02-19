@@ -2,8 +2,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: prednasky.com\n"
-"POT-Creation-Date: 2018-02-09T00:25:22+01:00\n"
-"PO-Revision-Date: 2018-02-09 00:48+0100\n"
+"POT-Creation-Date: 2018-02-19T23:40:01+01:00\n"
+"PO-Revision-Date: 2018-02-19 23:42+0100\n"
 "Last-Translator: Vladan Kudlac <vladankudlac@gmail.com>\n"
 "Language-Team: Vladan Kudlac <vladankudlac@gmail.com>\n"
 "Language: cs_CZ\n"
@@ -17,10 +17,6 @@ msgstr ""
 #: app/FrontModule/presenters/templates/@layout.latte:18
 msgid "en"
 msgstr "cs"
-
-#: app/FrontModule/presenters/templates/@layout.latte:18
-msgid "FIT_color_RGB_EN"
-msgstr "FIT_color_RGB_CZ"
 
 #: app/FrontModule/presenters/templates/@layout.latte:19
 msgid "Videoportal"
@@ -116,17 +112,29 @@ msgid ""
 msgstr ""
 "Váš prohlížeč odeslal požadavek, který tento server nedokáže zpracovat."
 
-#: app/FrontModule/presenters/templates/Homepage/default.latte:10
+#: app/FrontModule/presenters/templates/Homepage/default.latte:15
 msgid "Back to"
 msgstr "Zpět na"
 
-#: app/FrontModule/presenters/templates/Homepage/default.latte:15
+#: app/FrontModule/presenters/templates/Homepage/default.latte:20
 msgid "New videos"
 msgstr "Nová videa"
 
-#: app/FrontModule/presenters/templates/Homepage/default.latte:17
+#: app/FrontModule/presenters/templates/Homepage/default.latte:22
 msgid "Search"
 msgstr "Hledat"
+
+#: app/FrontModule/presenters/templates/Homepage/default.latte:29
+msgid "No videos yet"
+msgstr "Zatím žádná videa"
+
+#: app/FrontModule/presenters/templates/Homepage/default.latte:37
+msgid "Previous"
+msgstr "Předchozí"
+
+#: app/FrontModule/presenters/templates/Homepage/default.latte:45
+msgid "Next"
+msgstr "Další"
 
 #: app/FrontModule/presenters/templates/Homepage/download.latte:3
 msgid "Educational videos"
@@ -175,6 +183,9 @@ msgstr "Tokeny"
 #: app/FrontModule/presenters/templates/Homepage/download.latte:28
 msgid "No videos yet."
 msgstr "Zatím žádná videa."
+
+#~ msgid "FIT_color_RGB_EN"
+#~ msgstr "FIT_color_RGB_CZ"
 
 #~ msgid "The page you requested could not be found."
 #~ msgstr "Požadovaná stránka nebyla nalezena."
