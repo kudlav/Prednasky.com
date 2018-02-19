@@ -102,7 +102,10 @@ class TokenManager
 	public function updateToken(Database\Table\ActiveRow $row, array $values)
 	{
 
-		$stateId = $this->database->table(self::TABLE_STATE)->where(self::STATE_NAME, $values['status'])->fetchField(self::STATE_ID);
+		$stateId = $this->database->table(self::TABLE_STATE)
+			->where(self::STATE_NAME, $values['status'])
+			->fetchField(self::STATE_ID)
+		;
 
 		if ($stateId === FALSE) {
 			\Tracy\Debugger::log("TokenManager: Tried to update token with unknown state '".$values['status']."'", \Tracy\ILogger::ERROR);

@@ -20,27 +20,34 @@
         <h1 class="d-inline-block">{block title}{if isset($title)}{_$title}{else}{_'New videos'}{/if}{/block}:</h1>
         <input class="form-control d-inline mx-3 w-auto w-25" type="search" placeholder="Search">
         <button class="btn btn-primary" type="submit">{_'Search'}</button>
-      	<p class="text-center py-3">{_'No videos yet'}...</p>
-          <ul class="pagination text-center">
-            <li class="page-item">
-              <a class="page-link" href="#" aria-label="Previous"> <span aria-hidden="true">«</span> <span class="sr-only">Previous</span> </a>
-            </li>
-            <li class="page-item">
-              <a class="page-link" href="#">1</a>
-            </li>
-            <li class="page-item">
-              <a class="page-link" href="#">2</a>
-            </li>
-            <li class="page-item">
-              <a class="page-link" href="#">3</a>
-            </li>
-            <li class="page-item">
-              <a class="page-link" href="#">4</a>
-            </li>
-            <li class="page-item">
-              <a class="page-link" href="#" aria-label="Next"> <span aria-hidden="true">»</span> <span class="sr-only">Next</span> </a>
-            </li>
-          </ul>
+        {* Begin Listing *}
+          {if !empty($videoList)}
+            <ul>
+              <li n:foreach="$videoList as $video">{$video->id}:{$video->name} ({$video->public_link}/video.mp4)</li>
+            </ul>
+          {else}
+            <p class="text-center py-3">{_'No videos yet'}...</p>
+          {/if}
+        {* End Listing *}
+        {* Begin Paginator *}
+        {if $lastPage>1}
+          <nav aria-label="Page navigation">
+            <ul class="pagination flex-wrap">
+              <li n:if="$page>1" class="page-item">
+                <a class="page-link" href="?page={$page-1}" aria-label="Previous"><span aria-hidden="true">&laquo;</span><span class="sr-only">{_'Previous'}</span></a>
+              </li>
+              {for $i = 1; $i <= $lastPage; $i++}
+                <li class="page-item {if $i==$page}active{/if}">
+                  <a class="page-link" href="?page={$i}">{$i}</a>
+                </li>
+              {/for}
+              <li n:if="$page<$lastPage" class="page-item">
+                <a class="page-link" href="?page={$page+1}" aria-label="Next"><span aria-hidden="true">&raquo;</span><span class="sr-only">{_'Next'}</span></a>
+              </li>
+            </ul>
+          </nav>
+        {/if}
+        {* End Paginator *}
       </div>
     </div>
   </div>

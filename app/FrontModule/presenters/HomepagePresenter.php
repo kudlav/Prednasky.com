@@ -21,16 +21,17 @@ class HomepagePresenter extends BasePresenter
 		$this->tokenManager = $tokenManager;
 	}
 
-	public function renderDefault($path)
+	public function renderDefault($path, int $page=1)
 	{
 		$tags = array_filter(explode('/', $path));
 		$path = $path ? $path.'/' : '';
 
 		$tagValues = $this->videoManager->getNestedTagValues($tags);
-		if ($tagValues === NULL) {
+		if ($tagValues === NULL) { // Tags were invalid
 			$this->error();
 		}
 
+		// Breadcrumb
 		$link = '';
 		$this->template->breadcrumb = [];
 		foreach ($tags as $item) {
@@ -38,20 +39,34 @@ class HomepagePresenter extends BasePresenter
 			$this->template->breadcrumb[$item] = $link;
 		}
 
+		// ListGroup
 		if (!empty($tagValues['val'])) { // Show title when not empty list
-			$this->template->listGroupTitle = $tagValues['lvl'];
+			$this->template->listGroupTitle = $this->parameters['required_tags'][$tagValues['lvl']];
 		}
 		$this->template->listGroup = [];
 		foreach ($tagValues['val'] as $value) {
 			$this->template->listGroup[$value] = $path.$value;
 		}
 
-		// Root tag, no link to upper tag
 		if (!empty($tags)) {
-			$this->template->title = end($tags);
+			// Root tag, no link to upper tag
 			$this->template->listGroupBackText = $this->parameters['required_tags'][count($tags)-1];
 			$this->template->listGroupBackLink = implode('/', array_slice($tags, 0, -1));
+
+			// List of videos
+			$this->template->title = end($tags);
+			$lastPage = 0;
+			$this->template->videoList = $this->videoManager->getVideosByTagLevel($tagValues['lvl'], $tagValues['vid'])
+				->page($page, 12, $lastPage);
 		}
+		else {
+			$lastPage = 1;
+			$this->template->videoList = $this->videoManager->getPublishedVideos(12, $this->user->loggedIn);
+		}
+
+		// Paginator
+		$this->template->page = $page;
+		$this->template->lastPage = $lastPage;
 	}
 
 	public function renderDownload($video_url)
