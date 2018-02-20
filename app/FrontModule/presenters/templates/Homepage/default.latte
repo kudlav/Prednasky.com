@@ -22,9 +22,12 @@
         <button class="btn btn-primary" type="submit">{_'Search'}</button>
         {* Begin Listing *}
           {if count($videoList)>0}
-            <ul>
-              <li n:foreach="$videoList as $video">{$video->id}:{$video->name} ({$video->public_link}/video.mp4)</li>
-            </ul>
+            <div class="row py-2">
+              <div class="col-6 col-sm-4 py-2" n:foreach="$videoList as $video">
+                <i class="d-block media-box fa fa-film text-muted w-100 text-center fa-4x py-5"></i>
+                {$video->id}:{$video->name} ({$video->public_link}/video.mp4) • 
+              </div>
+            </div>
           {else}
             <p class="text-center py-3">{_'No videos yet'}...</p>
           {/if}
