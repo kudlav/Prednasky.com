@@ -46,6 +46,7 @@ class Token
 		// Default values
 		$this->values = [
 			'callback_base_url' => 'http://www.prednasky.com',
+			'datadir_base_url' => 'http://prednasky.fit.vutbr.cz',
 			'sge_priority' => 0
 		];
 	}
