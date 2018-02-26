@@ -144,7 +144,7 @@ class Token
 
 		$token_path = $this->parameters['paths']['path_export'].$token_path;
 
-		if (!mkdir($token_path, 0373, TRUE)) {
+		if (!mkdir($token_path, 0770, TRUE)) {
 			return FALSE;
 		}
 
