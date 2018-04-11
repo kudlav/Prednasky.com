@@ -5,6 +5,7 @@ namespace App\FrontModule\Presenters;
 use Nette;
 use App\Utilities;
 use App\Model\TokenManager;
+use App\Model\VideoManager;
 use Nette\Http\Response;
 use Nette\Http\Request;
 use Tracy\Debugger;
@@ -17,13 +18,15 @@ class CallbackPresenter extends BasePresenter
 	/**
 	 * @var MailFactory $mailFactory
 	 * @var TokenManager $tokenManager
+	 * @var VideoManager $videoManager
 	 */
-	private $mailFactory, $tokenManager;
+	private $mailFactory, $tokenManager, $videoManager;
 
-	public function __construct(MailFactory $mailFactory, TokenManager $tokenManager)
+	public function __construct(MailFactory $mailFactory, TokenManager $tokenManager, VideoManager $videoManager)
 	{
 		$this->mailFactory = $mailFactory;
 		$this->tokenManager = $tokenManager;
+		$this->videoManager = $videoManager;
 	}
 
 	public function actionDefault()
@@ -49,14 +52,17 @@ class CallbackPresenter extends BasePresenter
 	public function processGet(Request $httpRequest)
 	{
 		$jobId = $httpRequest->getQuery('job_id') ?: '';
-		$status = $httpRequest->getQuery('status') ?: '';
-		$message = $httpRequest->getQuery('message') ?: '';
-		$process = $httpRequest->getQuery('process') ?: '';
-		$block = $httpRequest->getQuery('block') ?: '';
-		$hostIp = $httpRequest->getQuery('hostip') ?: '';
-		$hostName = $httpRequest->getQuery('hostname') ?: '';
-		$sgeJobId = intval($httpRequest->getQuery('sge_job_id'));
 		$sign = $httpRequest->getQuery('sign') ?: '';
+		$entity = [
+		    'datetime' =>  date('Y-m-d H:i:s'),
+		    'status' => $httpRequest->getQuery('status') ?: '',
+		    'message' => $httpRequest->getQuery('message') ?: '',
+		    'process' => $httpRequest->getQuery('process') ?: '',
+		    'block' => $httpRequest->getQuery('block') ?: '',
+		    'hostIp' => $httpRequest->getQuery('hostip') ?: '',
+		    'hostName' => $httpRequest->getQuery('hostname') ?: '',
+		    'sgeJobId' => intval($httpRequest->getQuery('sge_job_id'))
+		];
 
 		if ($this->parameters['sign_verification']) {
 			$query = $_SERVER['QUERY_STRING'];
@@ -70,28 +76,20 @@ class CallbackPresenter extends BasePresenter
 
 		$recording = $this->tokenManager->getTokenById($jobId);
 		if ($recording) {
-			$entity = [
-			    'datetime' =>  date('Y-m-d H:i:s'),
-			    'status' => $status,
-			    'message' => $message,
-			    'process' => $process,
-			    'block' => $block,
-			    'hostIp' => $hostIp,
-			    'hostName' => $hostName,
-			    'sgeJobId' => $sgeJobId
-			];
 
-			$diffArray = $this->tokenManager->updateToken($recording, $entity);
+			$diffArray = $this->tokenManager->updateToken($recording, $entity, $this->videoManager);
 
 			if (isset($diffArray['status'])) {
 				// invoke callback url
 				//Utilities::callUrl($recording->getCallbackUrl(TRUE));
 
-				if ($entity['status'] == TokenManager::STATE_DONE) {
+				if ($recording['status'] != $entity['status'] && $entity['status'] == TokenManager::STATE_DONE) {
 					$mailClass = 'App\Model\Mail\ProcessingDoneMail';
+					//send email to participants + notifications
 				}
 				elseif ($entity['status'] == TokenManager::STATE_ERROR) {
 					$mailClass = 'App\Model\Mail\ProcessingErrorMail';
+					//send email to participants and to: $this->parameters['admin_email']
 				}
 
 				if (isset($mailClass)) {

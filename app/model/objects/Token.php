@@ -72,6 +72,17 @@ class Token
 
 
 	/**
+	 * Gets the template.
+	 *
+	 * @return     string  Filename of template.
+	 */
+	public function getTemplate()
+	{
+		return $this->template;
+	}
+
+
+	/**
 	 * Add new values to the existing ones. If already exist, ovewrite it.
 	 *
 	 * @param      array  $newValues  The new values
@@ -120,7 +131,7 @@ class Token
 	/**
 	 * Move and fill template .ini file, submit prepared token.
 	 *
-	 * @return     integer  Return FALSE if failed or positive number on succeed (of written bytes).
+	 * @return integer Return FALSE if failed or positive number on succeed (of written bytes).
 	 */
 	public function submit()
 	{
@@ -145,6 +156,7 @@ class Token
 		$token_path = $this->parameters['paths']['path_export'].$token_path;
 
 		if (!mkdir($token_path, 0770, TRUE)) {
+			Debugger::log("Token.php: Unable to create dir '". $token_path ."'", \Tracy\ILogger::ERROR);
 			return FALSE;
 		}
 
@@ -160,7 +172,9 @@ class Token
 		while (TRUE) {
 			$this->values['job_id'] = $idWithoutHash.bin2hex(random_bytes(4));
 			try {
-				$this->tokenManager->newToken($this);
+				if ($this->tokenManager->newToken($this) === FALSE) {
+					return FALSE;
+				}
 				break;
 			} catch (Nette\Database\UniqueConstraintViolationException $e) {}
 		}
@@ -168,8 +182,8 @@ class Token
 
 		// Fill template with values, in case of failure, remove created directories.
 		if (!$this->fillTemplate($file, $token_path)) {
-			rmdir($token_path);
-			rmdir($this->parameters['paths']['path_export'].$this->values['public_datadir']);
+			rmdir($token_path); // Private datadir
+			rmdir($this->parameters['paths']['path_export'].$this->values['public_datadir']); // Public datadir
 			return FALSE;
 		}
 
@@ -181,9 +195,10 @@ class Token
 	/**
 	 * Fill template with values, save as new file to DATA-EXPORT
 	 *
-	 * @param      string  $file   Content of template file.
+	 * @param string $file Content of template file
+	 * @param string $token_path File-path of template
 	 *
-	 * @return     bool  TRUE if successful, otherwise FALSE
+	 * @return bool TRUE if successful, otherwise FALSE
 	 */
 	private function fillTemplate(string $file, string $token_path)
 	{
@@ -196,7 +211,6 @@ class Token
 		$notFilled = [];
 		$isFilled = preg_match_all('~\$PHP\["([a-z_]+)"\]~', $file, $notFilled);
 		if ($isFilled !== 0) {
-\Tracy\Debugger::barDump($notFilled[1], 'notFilled[1]');
 			foreach ($notFilled[1] as $value) {
 				Debugger::log("Token.php: Unable to fill template '".$this->template."', missing '".$value."'", 'token');
 			}

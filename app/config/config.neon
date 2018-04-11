@@ -5,7 +5,7 @@
 # Config: 'v1.0'
 
 parameters:
-
+	admin_email: 'xkudla15@vut.cz'
 	required_tags:
 		- branch
 		- semester

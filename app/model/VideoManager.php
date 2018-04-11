@@ -19,6 +19,7 @@ class VideoManager
 		VIDEO_PUBLISHED = 'published',
 		VIDEO_RECORD_BEGIN = 'record_begin',
 		VIDEO_RECORD_END = 'record_end',
+		VIDEO_DURATION = 'duration',
 		VIDEO_ABSTRACT = 'abstract',
 
 		// Tag table
@@ -218,6 +219,27 @@ class VideoManager
 		}
 
 		return $nestedTagValues;
+	}
+
+	/**
+	 * Set duration of video if not already set
+	 *
+	 * @param      integer  $id        ID of video
+	 * @param      integer  $duration  Duration of video in seconds
+	 *
+	 * @return     bool   Return true if duration was set. False when nothing was changed.
+	 */
+	public function setDuration(int $id, int $duration)
+	{
+		$result = $this->database->table(self::TABLE_VIDEO)->get($id);
+
+		if ($result->duration == NULL) {
+			$result->update([
+				self::VIDEO_DURATION => $duration
+			]);
+			return TRUE;
+		}
+		return FALSE;
 	}
 
 	/**
