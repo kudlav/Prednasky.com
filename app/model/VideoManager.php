@@ -93,50 +93,48 @@ class VideoManager
 	 * Get latest published videos.
 	 *
 	 * @param      integer  $limit     The limit of videos
-	 * @param      boolean  $loggedIn  Include videos available after logging in.
+	 * @param      bool     $loggedIn  Include videos available after logging in.
+	 * @param      bool     $all       Get all videos, otherwise return only public or accessible videos.
+	 * @param      integer  $level     The level in range of config directive array, null = not applied.
+	 * @param      array    $videosId  Videos identifier that will be check for nested tags.
 	 *
-	 * @return     Nette\Database\Table\Selection   Published videos.
+	 * @return     Nette\Database\Table\Selection   Published videos in specified tag level (if set).
 	 */
-	public function getPublishedVideos(int $limit=0, bool $loggedIn=FALSE)
+	public function getVideos(int $limit=0, bool $loggedIn=FALSE, bool $all=FALSE, int $level=null, array $videosId=[])
 	{
-		$state = ['done_public'];
-		if ($loggedIn) {
-			$state[] = 'done_logged_in';
+		$selection = $this->database->table(self::TABLE_VIDEO);
+
+		// List all or only published videos
+		if (!$all) {
+			$state = ['done_public'];
+			if ($loggedIn) {
+				$state[] = 'done_logged_in';
+			}
+			$stateIDs = $this->database->table(self::TABLE_VIDEO_STATE)
+				->where(self::STATE_NAME, $state)
+				->fetchPairs(NULL, self::STATE_ID)
+			;
+			$selection->where(self::VIDEO_STATE, $stateIDs);
 		}
-		$state = $this->database->table(self::TABLE_VIDEO_STATE)
-			->where(self::STATE_NAME, $state)
-			->fetchPairs(NULL, self::STATE_ID)
-		;
 
-		$selection = $this->database->table(self::TABLE_VIDEO)
-			->where(self::VIDEO_STATE, $state)
-			->order(self::VIDEO_PUBLISHED.' DESC')
-		;
+		// If level filtering is set
+		if ($level != null) {
+			for (; $level < count($this->parameters['required_tags']); $level++) { // If lower level, display all vidoeos
+				$id = $this->issetTagValue($this->parameters['required_tags'][$level], NULL);
+				$videosRow = $this->database->table(self::TABLE_VIDEO_TAG)->where('video_id', $videosId); // Get rows of suitable videos
+				$videosId = $videosRow->where('tag_id', $id)->fetchPairs(NULL, 'video_id'); // Get list of suitable videos
+			}
+			$selection->where(self::VIDEO_ID, $videosId);
+		}
 
+		$selection->order(self::VIDEO_PUBLISHED.' DESC');
+
+		// If $limit is set
 		if ($limit>0) {
 			return $selection->limit($limit);
 		}
+
 		return $selection;
-	}
-
-	/**
-	 * Return selection of videos which doesn't contain any nested tag.
-	 *
-	 * @param      integer  $level     The level in range of config directive array.
-	 * @param      array    $videosId  Videos identifier that will be check for nested tags.
-	 *
-	 * @return     <type>   The videos by tag level.
-	 */
-	public function getVideosByTagLevel(int $level, array $videosId=[])
-	{
-		$videos = $this->database->table(self::TABLE_VIDEO);
-
-		for ($level; $level<count($this->parameters['required_tags']); $level++) { // If lower level, display all vidoeos
-			$id = $this->issetTagValue($this->parameters['required_tags'][$level], NULL);
-			$selection = $this->database->table(self::TABLE_VIDEO_TAG)->where('video_id', $videosId); // Get rows of suitable videos
-			$videosId = $selection->where('tag_id', $id)->fetchPairs(NULL, 'video_id'); // Get list of suitable videos
-		}
-		return $videos->where(self::VIDEO_ID, $videosId);
 	}
 
 	/* TAGS */

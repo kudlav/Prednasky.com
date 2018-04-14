@@ -56,12 +56,12 @@ class HomepagePresenter extends BasePresenter
 			// List of videos
 			$this->template->title = end($tags);
 			$lastPage = 0;
-			$this->template->videoList = $this->videoManager->getVideosByTagLevel($tagValues['lvl'], $tagValues['vid'])
+			$this->template->videoList = $this->videoManager->getVideos(0, $this->user->loggedIn, FALSE, $tagValues['lvl'], $tagValues['vid'])
 				->page($page, 12, $lastPage);
 		}
 		else {
 			$lastPage = 1;
-			$this->template->videoList = $this->videoManager->getPublishedVideos(12, $this->user->loggedIn);
+			$this->template->videoList = $this->videoManager->getVideos(12, $this->user->loggedIn);
 		}
 
 		// Paginator
