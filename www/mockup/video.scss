@@ -94,3 +94,62 @@ body > * {
   }
 }
 
+// Own code starts HERE:
+
+.display-2 {
+  font-size: 2rem;
+}
+
+@include media-breakpoint-up(sm) {
+  .display-2 {
+    font-size: 2.5rem;
+  }
+}
+
+@include media-breakpoint-up(md) {
+  .display-2 {
+    font-size: 3.5rem;
+  }
+}
+
+@include media-breakpoint-up(lg) {
+  .display-2 {
+    font-size: 4.5rem;
+  }
+}
+
+@include media-breakpoint-up(xl) {
+  .display-2 {
+    font-size: 5.5rem;
+  }
+}
+
+html {
+	height: 100%
+}
+
+body {
+		position: relative;
+		min-height: 100%;
+}
+
+main {
+	padding-bottom: 100px;
+}
+
+footer {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	border-top: 1px solid #dfdfdf;
+}
+
+footer img {
+	width:40px;
+	height:40px;
+}
+
+.media-box{
+	background-color: #f2f2f2;
+}

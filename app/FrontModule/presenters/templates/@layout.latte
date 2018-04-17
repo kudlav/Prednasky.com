@@ -4,8 +4,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
-	<link rel="stylesheet" href="{$basePath}/css/bootstrap.css"> </head>
-	<link rel="stylesheet" href="{$basePath}/css/style.css"> </head>
+	<link rel="stylesheet" href="{$basePath}/css/bootstrap.css">
 	<link rel="shortcut icon" href="{$basePath}/img/fit_icon.png" />
 
 	<title>{ifset title}{include title|stripHtml} | {/ifset}Prednasky.com</title>
@@ -40,7 +39,7 @@
 		</div>
 	</nav>
 
-	<main class="container pt-4">
+	<main class="container pt-3">
 		<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{_$flash->message}</div>
 		{include content}
 	</main>
