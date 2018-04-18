@@ -2,6 +2,7 @@
 
 namespace App\FrontModule\Presenters;
 
+use App\Model\FileManager;
 use App\Model\Token;
 use App\Model\TokenManager;
 use App\Model\VideoManager;
@@ -12,13 +13,15 @@ class HomepagePresenter extends BasePresenter
 	/**
 	 * @var VideoManager $videoManager
 	 * @var TokenManager $tokenManager
+	 * @var FileManager $fileManager
 	 */
-	private $videoManager, $tokenManager;
+	private $videoManager, $tokenManager, $fileManager;
 
-	public function __construct(VideoManager $videoManager, TokenManager $tokenManager)
+	public function __construct(VideoManager $videoManager, TokenManager $tokenManager, FileManager $fileManager)
 	{
 		$this->videoManager = $videoManager;
 		$this->tokenManager = $tokenManager;
+		$this->fileManager = $fileManager;
 	}
 
 	public function renderDefault($path, int $page=1)
@@ -39,7 +42,7 @@ class HomepagePresenter extends BasePresenter
 			$this->template->breadcrumb[$item] = $link;
 		}
 
-		// ListGroup
+		// ListGroup (left menu)
 		if (!empty($tagValues['val'])) { // Show title when not empty list
 			$this->template->listGroupTitle = $this->parameters['required_tags'][$tagValues['lvl']];
 		}
@@ -67,6 +70,11 @@ class HomepagePresenter extends BasePresenter
 		// Paginator
 		$this->template->page = $page;
 		$this->template->lastPage = $lastPage;
+	}
+
+	protected function createComponentVideoCard()
+	{
+		return new VideoCard($this->fileManager, $this->parameters['paths']['data_export']);
 	}
 
 	public function renderDownload($video_url)

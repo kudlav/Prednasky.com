@@ -3,10 +3,11 @@
     <div class="container">
     <div class="row px-3">
       {foreach $breadcrumb as $level => $link}
-      	/<a n:href="Homepage:default $link" class='px-1'>{$level}</a>
+      	<a n:href="Homepage:default $link" class='px-1'>{$level}</a>
       {/foreach}
     </div>
     <div class="row">
+      {* Begin ListGroup *}
       <div class="col-md-3">
         {ifset $listGroupTitle}<h2>{_'config.'.$listGroupTitle|capitalize}</h2>{/ifset}
         <ul class="list-group">
@@ -16,6 +17,7 @@
           {/ifset}
         </ul>
       </div>
+      {* End ListGroup *}
       <div class="col-md-9">
         <h1 class="d-inline-block">{block title}{if isset($title)}{_$title}{else}{_'New videos'}{/if}{/block}:</h1>
         <input class="form-control d-inline mx-3 w-auto w-25" type="search" placeholder="Search">
@@ -23,10 +25,9 @@
         {* Begin Listing *}
           {if count($videoList)>0}
             <div class="row py-2">
-              <div class="col-6 col-sm-4 py-2" n:foreach="$videoList as $video">
-                <i class="d-block media-box fa fa-film text-muted w-100 text-center fa-4x py-5"></i>
-                {$video->id}: {$video->name} • {$video->record_begin|date:'%d.%m.%Y'}
-              </div>
+              {foreach $videoList as $video}
+                {control videoCard $video}
+              {/foreach}
             </div>
           {else}
             <p class="text-center py-3">{_'No videos yet'}...</p>

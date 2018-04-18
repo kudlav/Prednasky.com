@@ -1,0 +1,11 @@
+<a href="{plink Video:default $video->id}" class="col-6 col-sm-4 py-2 text-dark">
+  <div class="d-block position-relative text-center bg-black">
+    {if isset($thumbnail)}
+      <img style="max-height: 139px; max-width: 100%" src="{$thumbnail}">
+    {else}
+      <i class="d-block media-box fa fa-film text-muted w-100 text-center fa-4x py-5"></i>
+    {/if}
+    <div class="time-sticker position-absolute bg-dark px-1 font-weight-light">{gmdate("H:i:s",$video->duration)}</div>
+  </div>
+  {$video->name} {ifset $video->record_begin}• {$video->record_begin|date:'j.n.Y'}{/ifset}
+</a>
