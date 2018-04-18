@@ -96,34 +96,6 @@ body > * {
 
 // Own code starts HERE:
 
-.display-2 {
-  font-size: 2rem;
-}
-
-@include media-breakpoint-up(sm) {
-  .display-2 {
-    font-size: 2.5rem;
-  }
-}
-
-@include media-breakpoint-up(md) {
-  .display-2 {
-    font-size: 3.5rem;
-  }
-}
-
-@include media-breakpoint-up(lg) {
-  .display-2 {
-    font-size: 4.5rem;
-  }
-}
-
-@include media-breakpoint-up(xl) {
-  .display-2 {
-    font-size: 5.5rem;
-  }
-}
-
 html {
 	height: 100%
 }
@@ -133,9 +105,7 @@ body {
 		min-height: 100%;
 }
 
-main {
-	padding-bottom: 100px;
-}
+main { padding-bottom: 100px; }
 
 footer {
 	position: absolute;
@@ -150,6 +120,34 @@ footer img {
 	height:40px;
 }
 
-.media-box{
-	background-color: #f2f2f2;
+.display-2 { font-size: 2rem; }
+
+@include media-breakpoint-up(sm) {
+  .display-2 { font-size: 2.5rem; }
+}
+
+@include media-breakpoint-up(md) {
+  .display-2 { font-size: 3.5rem; }
+}
+
+@include media-breakpoint-up(lg) {
+  .display-2 { font-size: 4.5rem; }
+}
+
+@include media-breakpoint-up(xl) {
+  .display-2 { font-size: 5.5rem; }
+}
+
+.media-box{ background-color: #f2f2f2; }
+
+.time-sticker {
+    bottom: 3px;
+    right: 3px;
+    font-size: 80%;
+    opacity: 0.7;
+}
+
+.bg-black {
+    background-color: #000;
+    color: #FFF;
 }
