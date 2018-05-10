@@ -2,9 +2,11 @@
 # Language-Team: 'Vladan Kudlac <vladankudlac@gmail.com>'
 # Content-Type: 'text/plain; charset=UTF-8'
 #
-# Database: 'v1.0'
+# Database: 'v1.2'
 # Language: 'en_GB'
 # Table: 'role'
 
 'guarantor' : 'Guarantor'
 'lecturer' : 'Lecturer'
+'instructor' : 'Instructor'
+'guest' : 'Guest'

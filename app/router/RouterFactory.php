@@ -50,6 +50,8 @@ class RouterFactory
 			]
 		]);
 
+		$router[] = new Route('[<locale=cs cs|en>/]video/<id [0-9]+>', 'Front:Video:default');
+
 		$router[] = new Route('[<locale=cs cs|en>/]<presenter>/<action>[/<id>]',[
 			'module' => 'Front',
 			'presenter' => 'Homepage',

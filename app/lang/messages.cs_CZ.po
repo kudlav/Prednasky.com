@@ -2,8 +2,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: prednasky.com\n"
-"POT-Creation-Date: 2018-02-19T23:40:01+01:00\n"
-"PO-Revision-Date: 2018-02-19 23:42+0100\n"
+"POT-Creation-Date: 2018-05-10T10:13:30+02:00\n"
+"PO-Revision-Date: 2018-05-10 10:16+0200\n"
 "Last-Translator: Vladan Kudlac <vladankudlac@gmail.com>\n"
 "Language-Team: Vladan Kudlac <vladankudlac@gmail.com>\n"
 "Language: cs_CZ\n"
@@ -11,54 +11,54 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Poedit 2.0.6\n"
+"X-Generator: Poedit 2.0.7\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
-#: app/FrontModule/presenters/templates/@layout.latte:18
+#: app/FrontModule/presenters/templates/@layout.latte:17
 msgid "en"
 msgstr "cs"
 
-#: app/FrontModule/presenters/templates/@layout.latte:19
+#: app/FrontModule/presenters/templates/@layout.latte:18
 msgid "Videoportal"
 msgstr "Videoportál"
 
-#: app/FrontModule/presenters/templates/@layout.latte:25
+#: app/FrontModule/presenters/templates/@layout.latte:24
 msgid "User"
 msgstr "Uživatel"
 
-#: app/FrontModule/presenters/templates/@layout.latte:25
+#: app/FrontModule/presenters/templates/@layout.latte:24
 msgid "Not logged"
 msgstr "Nepřihlášen"
 
-#: app/FrontModule/presenters/templates/@layout.latte:27
+#: app/FrontModule/presenters/templates/@layout.latte:26
 msgid "Logout"
 msgstr "Odhlásit se"
 
-#: app/FrontModule/presenters/templates/@layout.latte:27
+#: app/FrontModule/presenters/templates/@layout.latte:26
 msgid "Sign in"
 msgstr "Přihlásit se"
 
-#: app/FrontModule/presenters/templates/@layout.latte:31
+#: app/FrontModule/presenters/templates/@layout.latte:30
 msgid "Dashboard"
 msgstr "Administrace"
 
-#: app/FrontModule/presenters/templates/@layout.latte:33
+#: app/FrontModule/presenters/templates/@layout.latte:32
 msgid "Language"
 msgstr "Jazyk"
 
-#: app/FrontModule/presenters/templates/@layout.latte:35
+#: app/FrontModule/presenters/templates/@layout.latte:34
 msgid "Czech"
 msgstr "Čeština"
 
-#: app/FrontModule/presenters/templates/@layout.latte:36
+#: app/FrontModule/presenters/templates/@layout.latte:35
 msgid "English"
 msgstr "English"
 
-#: app/FrontModule/presenters/templates/@layout.latte:55
+#: app/FrontModule/presenters/templates/@layout.latte:54
 msgid " • Czech Republic"
 msgstr ""
 
-#: app/FrontModule/presenters/templates/@layout.latte:56
+#: app/FrontModule/presenters/templates/@layout.latte:55
 msgid "Faculty of Information Technology, BUT"
 msgstr "Fakulta informačních technologií VUT v Brně"
 
@@ -112,27 +112,27 @@ msgid ""
 msgstr ""
 "Váš prohlížeč odeslal požadavek, který tento server nedokáže zpracovat."
 
-#: app/FrontModule/presenters/templates/Homepage/default.latte:15
+#: app/FrontModule/presenters/templates/Homepage/default.latte:16
 msgid "Back to"
 msgstr "Zpět na"
 
-#: app/FrontModule/presenters/templates/Homepage/default.latte:20
+#: app/FrontModule/presenters/templates/Homepage/default.latte:22
 msgid "New videos"
 msgstr "Nová videa"
 
-#: app/FrontModule/presenters/templates/Homepage/default.latte:22
+#: app/FrontModule/presenters/templates/Homepage/default.latte:24
 msgid "Search"
 msgstr "Hledat"
 
-#: app/FrontModule/presenters/templates/Homepage/default.latte:29
+#: app/FrontModule/presenters/templates/Homepage/default.latte:33
 msgid "No videos yet"
 msgstr "Zatím žádná videa"
 
-#: app/FrontModule/presenters/templates/Homepage/default.latte:37
+#: app/FrontModule/presenters/templates/Homepage/default.latte:41
 msgid "Previous"
 msgstr "Předchozí"
 
-#: app/FrontModule/presenters/templates/Homepage/default.latte:45
+#: app/FrontModule/presenters/templates/Homepage/default.latte:49
 msgid "Next"
 msgstr "Další"
 
@@ -157,14 +157,17 @@ msgid "State"
 msgstr "Stav"
 
 #: app/FrontModule/presenters/templates/Homepage/download.latte:9
+#: app/FrontModule/presenters/templates/Video/default.latte:24
 msgid "Published"
 msgstr "Zveřejněno"
 
 #: app/FrontModule/presenters/templates/Homepage/download.latte:9
+#: app/FrontModule/presenters/templates/Video/default.latte:26
 msgid "Recorded"
 msgstr "Pořízeno"
 
 #: app/FrontModule/presenters/templates/Homepage/download.latte:9
+#: app/FrontModule/presenters/templates/Video/default.latte:30
 msgid "Duration"
 msgstr "Délka"
 
@@ -183,6 +186,18 @@ msgstr "Tokeny"
 #: app/FrontModule/presenters/templates/Homepage/download.latte:28
 msgid "No videos yet."
 msgstr "Zatím žádná videa."
+
+#: app/FrontModule/presenters/templates/Video/default.latte:6
+msgid "Location"
+msgstr "Umístění"
+
+#: app/FrontModule/presenters/templates/Video/default.latte:19
+msgid "Your browser does not support the video tag."
+msgstr "Váš prohlížeč nepodporuje video tag."
+
+#: app/FrontModule/presenters/templates/Video/default.latte:49
+msgid "Files"
+msgstr "Soubory"
 
 #~ msgid "FIT_color_RGB_EN"
 #~ msgstr "FIT_color_RGB_CZ"

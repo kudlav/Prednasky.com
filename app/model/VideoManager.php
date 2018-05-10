@@ -3,6 +3,7 @@
 namespace App\Model;
 
 use Nette;
+use Tracy\Debugger;
 
 
 class VideoManager
@@ -30,14 +31,29 @@ class VideoManager
 
 		// Video_has_tag table
 		TABLE_VIDEO_TAG = 'video_has_tag',
+		VIDEO_TAG_VIDEO = 'video_id',
+		VIDEO_TAG_TAG = 'tag_id',
 
 		// Video_state table
 		TABLE_VIDEO_STATE = 'video_state',
 		STATE_ID = 'id',
-		STATE_NAME = 'name'
+		STATE_NAME = 'name',
+
+		// User_has_video table
+		TABLE_VIDEO_USER = 'user_has_video',
+		VIDEO_USER_VIDEO = 'video_id',
+		VIDEO_USER_ROLE = 'role_id',
+
+		// Video_relation table
+		TABLE_VIDEO_RELATION = 'video_relation',
+		VIDEO_RELATION_FROM = 'video_from',
+		VIDEO_RELATION_TYPE = 'relation_type_id'
 	;
 
-	/** @var Nette\Database\Context */
+	/**
+	 * @var array $parameters
+	 * @var Nette\Database\Context $database
+	 */
 	private $parameters, $database;
 
 	public function __construct($parameters, Nette\Database\Context $database)
@@ -45,7 +61,6 @@ class VideoManager
 		$this->parameters = $parameters;
 		$this->database = $database;
 	}
-
 
 	/**
 	 * Insert video into database
@@ -119,10 +134,10 @@ class VideoManager
 
 		// If level filtering is set
 		if ($level != null) {
-			for (; $level < count($this->parameters['required_tags']); $level++) { // If lower level, display all vidoeos
+			for (; $level < count($this->parameters['required_tags']); $level++) { // If lower level, display all videos
 				$id = $this->issetTagValue($this->parameters['required_tags'][$level], NULL);
-				$videosRow = $this->database->table(self::TABLE_VIDEO_TAG)->where('video_id', $videosId); // Get rows of suitable videos
-				$videosId = $videosRow->where('tag_id', $id)->fetchPairs(NULL, 'video_id'); // Get list of suitable videos
+				$videosRow = $this->database->table(self::TABLE_VIDEO_TAG)->where(self::VIDEO_TAG_VIDEO, $videosId); // Get rows of suitable videos
+				$videosId = $videosRow->where(self::VIDEO_TAG_VIDEO, $id)->fetchPairs(NULL, self::VIDEO_TAG_VIDEO); // Get list of suitable videos
 			}
 			$selection->where(self::VIDEO_ID, $videosId);
 		}
@@ -137,7 +152,42 @@ class VideoManager
 		return $selection;
 	}
 
+	/**
+	 * Get video row by ID.
+	 *
+	 * @param int $id ID of video.
+	 * @return false|Nette\Database\Table\ActiveRow
+	 */
+	public function getVideoById(int $id)
+	{
+		return $this->database->table(self::TABLE_VIDEO)->get($id);
+	}
+
 	/* TAGS */
+
+	/**
+	 * Get tag value of certain video.
+	 *
+	 * @param int $videoId ID of video.
+	 * @param string $tagLevel Name (level) of tag.
+	 * @return string|null Value of tag or null when the video has no tag at this level.
+	 */
+	public function getVideoTagValue(int $videoId, string $tagLevel)
+	{
+		$row = $this->database->table(self::TABLE_VIDEO_TAG)
+			->where(self::VIDEO_TAG_VIDEO, $videoId)
+			->select('tag.name AS name, tag.value AS value')
+			->where('name', $tagLevel)
+			->fetch()
+		;
+
+		if ($row) {
+			return $row->value;
+		}
+		else{
+			return null;
+		}
+	}
 
 	/**
 	 * Get all values of specified tag.
@@ -196,8 +246,8 @@ class VideoManager
 		// Return nested values containing some video (slow)
 		$selection = $this->database->table(self::TABLE_VIDEO_TAG);
 		foreach ($valuesId as $id) {
-			$videosId = $selection->where('tag_id', $id)->fetchPairs(NULL, 'video_id'); // Get list of suitable videos
-			$selection = $this->database->table(self::TABLE_VIDEO_TAG)->where('video_id', $videosId); // Get rows of suitable videos
+			$videosId = $selection->where(self::VIDEO_TAG_TAG, $id)->fetchPairs(NULL, self::VIDEO_TAG_VIDEO); // Get list of suitable videos
+			$selection = $this->database->table(self::TABLE_VIDEO_TAG)->where(self::VIDEO_TAG_VIDEO, $videosId); // Get rows of suitable videos
 		}
 		$nestedTagValues['vid'] = $videosId;
 		// The lowest level, no nested tags, false while condition
@@ -207,7 +257,7 @@ class VideoManager
 		while (empty($nestedTagValues['val']) && isset($this->parameters['required_tags'][$tagLevel])) {
 			$nestedTagValues['lvl'] = $tagLevel;
 			$values = $this->database->table(self::TABLE_VIDEO_TAG)
-				->where('video_id', $videosId)
+				->where(self::VIDEO_TAG_VIDEO, $videosId)
 				->select('tag.name AS name, tag.value AS value')
 				->where('name', $this->parameters['required_tags'][$tagLevel])
 				->fetchPairs(NULL, 'value')
@@ -261,4 +311,60 @@ class VideoManager
 		}
 		return NULL;
 	}
+
+
+	/**
+	 * Find out all people connected to the video.
+	 *
+	 * @param int $id ID of video.
+	 * @return array Rows of people divided into arrays by their role.
+	 */
+	public function getVideoPeople(int $id)
+	{
+		$people = [];
+
+		$selection = $this->database->table(self::TABLE_VIDEO_USER)
+			->where(self::VIDEO_USER_VIDEO, $id)
+			->order(self::VIDEO_USER_ROLE.' ASC')
+		;
+
+		$prevRole = -1;
+		while ($row = $selection->fetch()) {
+			if ($row->role_id != $prevRole) {
+				$people[$row->role_id] = [];
+				$prevRole = $row->role_id;
+			}
+			$people[$row->role_id][] = $row;
+		}
+
+		return $people;
+	}
+
+	/**
+	 * Find out all videos marked as related to this video
+	 *
+	 * @param int $id ID of video.
+	 * @return array Rows of video_relation table divided into arrays by relation type.
+	 */
+	public function getRelatedVideos(int $id)
+	{
+		$videos = [];
+
+		$selection = $this->database->table(self::TABLE_VIDEO_RELATION)
+			->where(self::VIDEO_RELATION_FROM, $id)
+			->order(self::VIDEO_RELATION_TYPE.' ASC')
+		;
+
+		$prevType = -1;
+		while ($row = $selection->fetch()) {
+			if ($row->relation_type_id != $prevType) {
+				$videos[$row->relation_type_id] = [];
+				$prevType = $row->relation_type_id;
+			}
+			$videos[$row->relation_type_id][] = $row;
+		}
+
+		return $videos;
+	}
+
 }
