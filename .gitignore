@@ -4,3 +4,5 @@ processing/*
 !.gitignore
 !.htaccess
 !web.config
+.idea/
+prednasky.com.iml
