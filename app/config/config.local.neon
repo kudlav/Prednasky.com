@@ -1,0 +1,23 @@
+#
+# WARNING: it is CRITICAL that this file & directory are NOT accessible directly via a web browser!
+# https://nette.org/security-warning
+#
+
+parameters:
+	sign_verification: yes
+	salt: 'asdf'
+
+	paths:
+		path_templates: ''
+		path_export: ''
+		path_wait: ''
+
+		path_data_export: ''
+		url_data_export: ''
+
+database:
+	dsn: 'mysql:host=localhost;dbname=database'
+	user: 'admin'
+	password: '1234'
+	options:
+		lazy: yes
