@@ -74,7 +74,7 @@ class HomepagePresenter extends BasePresenter
 
 	protected function createComponentVideoCard()
 	{
-		return new VideoCard($this->fileManager, $this->parameters['paths']['data_export']);
+		return new VideoCard($this->fileManager, $this->parameters['paths']['url_data_export']);
 	}
 
 	public function renderDownload($video_url)

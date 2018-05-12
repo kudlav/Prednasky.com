@@ -6,6 +6,7 @@ use Nette;
 use App\Utilities;
 use App\Model\TokenManager;
 use App\Model\VideoManager;
+use App\Model\FileManager;
 use Nette\Http\Response;
 use Nette\Http\Request;
 use Tracy\Debugger;
@@ -19,14 +20,16 @@ class CallbackPresenter extends BasePresenter
 	 * @var MailFactory $mailFactory
 	 * @var TokenManager $tokenManager
 	 * @var VideoManager $videoManager
+	 * @var FileManager $fileManager
 	 */
-	private $mailFactory, $tokenManager, $videoManager;
+	private $mailFactory, $tokenManager, $videoManager, $fileManager;
 
-	public function __construct(MailFactory $mailFactory, TokenManager $tokenManager, VideoManager $videoManager)
+	public function __construct(MailFactory $mailFactory, TokenManager $tokenManager, VideoManager $videoManager, FileManager $fileManager)
 	{
 		$this->mailFactory = $mailFactory;
 		$this->tokenManager = $tokenManager;
 		$this->videoManager = $videoManager;
+		$this->fileManager = $fileManager;
 	}
 
 	public function actionDefault()
@@ -76,6 +79,7 @@ class CallbackPresenter extends BasePresenter
 
 		$recording = $this->tokenManager->getTokenById($jobId);
 		if ($recording) {
+$this->fileManager->filesFromToken($recording);
 
 			$diffArray = $this->tokenManager->updateToken($recording, $entity, $this->videoManager);
 
@@ -84,6 +88,10 @@ class CallbackPresenter extends BasePresenter
 				//Utilities::callUrl($recording->getCallbackUrl(TRUE));
 
 				if ($recording['status'] != $entity['status'] && $entity['status'] == TokenManager::STATE_DONE) {
+
+					// Add new files
+					$this->fileManager->filesFromToken($recording);
+
 					$mailClass = 'App\Model\Mail\ProcessingDoneMail';
 					//send email to participants + notifications
 				}

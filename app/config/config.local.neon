@@ -15,6 +15,9 @@ parameters:
 		path_data_export: ''
 		url_data_export: ''
 
+		path_attachment: ''
+		url_attachment: ''
+
 database:
 	dsn: 'mysql:host=localhost;dbname=database'
 	user: 'admin'

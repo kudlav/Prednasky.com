@@ -4,6 +4,7 @@ namespace App\Model;
 
 use Nette;
 use Nette\Database\Context;
+use Nette\Database\Table\ActiveRow;
 
 
 class FileManager
@@ -15,11 +16,15 @@ class FileManager
 		TABLE_FILE = 'file',
 		FILE_TYPE = 'type',
 		FILE_PATH = 'path',
+		FILE_NAME = 'name',
+		FILE_DOWNLOADS = 'downloads',
+		FILE_UPLOADED = 'uploaded',
 
 		// Table video_has_file
 		TABLE_VIDEO_FILE = 'video_has_file',
 		VIDEO_FILE_VIDEO = 'video_id',
-		VIDEO_FILE_FILE = 'file_id'
+		VIDEO_FILE_FILE = 'file_id',
+		VIDEO_FILE_SHOW = 'show'
 	;
 
 
@@ -36,6 +41,56 @@ class FileManager
 	}
 
 	/**
+	 * Create new file in table `file`.
+	 *
+	 * @param string $type Type of file.
+	 * @param string $path Path of file after 'path_data_export' directive or 'path_attachment' for attachments.
+	 * @param string|null $name Optional name of file. Important for attachments.
+	 * @return int|null ID of new file or null
+	 */
+	public function newFile(string $type, string $path, string $name=null)
+	{
+		$row = $this->database->table(self::TABLE_FILE)->insert([
+			self::FILE_TYPE => $type,
+			self::FILE_PATH => $path,
+			self::FILE_NAME => $name,
+			self::FILE_DOWNLOADS => 0,
+			self::FILE_UPLOADED => date('Y-m-d H:i:s')
+		]);
+
+		if ($row) {
+			\Tracy\Debugger::log("FileManager: Created file 'id':'".$row->id."'", \Tracy\ILogger::INFO);
+			return $row->id;
+		}
+		\Tracy\Debugger::log("FileManager: Unable to create file '".$path."'", \Tracy\ILogger::ERROR);
+		return null;
+	}
+
+	/**
+	 * Link file and video by id. Create record in table `video_has_file`
+	 *
+	 * @param int $videoId ID of video.
+	 * @param int $fileId ID if file.
+	 * @param bool $show If attachment, show in file list under video.
+	 * @return boolean True on success, otherwise false.
+	 */
+	private function linkVideoFile(int $videoId, int $fileId, bool $show=false)
+	{
+		$row = $this->database->table(self::TABLE_VIDEO_FILE)->insert([
+			self::VIDEO_FILE_VIDEO => $videoId,
+			self::VIDEO_FILE_FILE => $fileId,
+			self::VIDEO_FILE_SHOW => $show,
+		]);
+
+		if ($row) {
+			\Tracy\Debugger::log("FileManager: File #". $fileId ." linked to video #". $videoId, \Tracy\ILogger::INFO);
+			return true;
+		}
+		\Tracy\Debugger::log("FileManager: Unable to link file #". $fileId ." to video #". $videoId, \Tracy\ILogger::ERROR);
+		return false;
+	}
+
+	/**
 	 * Get array of video files.
 	 *
 	 * @param int $videoId Video ID.
@@ -43,22 +98,23 @@ class FileManager
 	 */
 	public function getVideoFiles(int $videoId)
 	{
-		$type = ['video/mp4', 'video/webm', 'video/ogg'];
-		return $this->getVideoFile($videoId, $type)
+		$type = 'video/%'; // e.g. 'video/mp4', 'video/webm', 'video/ogg'
+		return $this->getVideoFileByType($videoId, $type)
 			->select('file.type AS type, file.path AS path')
-			->fetchPairs(self::FILE_TYPE, self::FILE_PATH);
+			->fetchPairs(self::FILE_TYPE, self::FILE_PATH)
+		;
 	}
 
 	/**
 	 * Get row of video thumbnail.
 	 *
 	 * @param int $videoId Video ID.
-	 * @return FALSE|Nette\Database\Table\ActiveRow ActiveRow if thumbnail exists, otherwise return FALSE.
+	 * @return FALSE|ActiveRow ActiveRow if thumbnail exists, otherwise return FALSE.
 	 */
 	public function getVideoThumbnail(int $videoId)
 	{
 		$type = 'thumbnail';
-		return $this->getVideoFile($videoId, $type)->fetch();
+		return $this->getVideoFileByType($videoId, $type)->fetch();
 	}
 
 	/**
@@ -69,8 +125,8 @@ class FileManager
 	 */
 	public function getVideoAttachments(int $videoId)
 	{
-		$type = 'attachment';
-		return $this->getVideoFile($videoId, $type);
+		$type = 'attachment/%';
+		return $this->getVideoFileByType($videoId, $type);
 	}
 
 	/**
@@ -80,12 +136,56 @@ class FileManager
 	 * @param string $type Type of file.
 	 * @return Nette\Database\Table\Selection Selection of certain type files connected to video.
 	 */
-	private function getVideoFile($videoId, $type)
+	private function getVideoFileByType($videoId, $type)
 	{
 		return $this->database->table(self::TABLE_VIDEO_FILE)
 			->where(self::VIDEO_FILE_VIDEO, $videoId)
-			->where(self::TABLE_FILE.'.'.self::FILE_TYPE, $type)
+			->where(self::TABLE_FILE.'.'.self::FILE_TYPE.' LIKE ?', $type)
 		;
+	}
+
+	/**
+	 * Assign files from WORKER/DATA-EXPORT files.list to video (`video_has_file` table).
+	 *
+	 * @param ActiveRow $token Row containing successfully finished token.
+	 * @return bool
+	 */
+	public function filesFromToken(ActiveRow $token)
+	{
+		$pathFilesList = $this->parameters['paths']['path_data_export']
+						.'/'. $token->created->format('Y/m/d')
+						.'/'. $token->public_hash
+						.'/'. $token->private_hash
+						.'/files.list'
+		;
+		$filesList = fopen($pathFilesList, 'r');
+
+		while (($line = fgets($filesList)) != null) {
+			$line = trim($line);
+			$expFilePath = explode('DATA-EXPORT', $line, 2);
+
+			if (count($expFilePath) != 2) {
+				\Tracy\Debugger::log("FileManager: Unexpected file path '".$line."'", \Tracy\ILogger::ERROR);
+				return false;
+			}
+
+			$expFileName = explode('/', $expFilePath[1]);
+			switch (end($expFileName)) {
+				case 'thumbnail.jpg':
+					$fileType = 'thumbnail';
+					break;
+				default:
+					$fileType = mime_content_type($line);
+			}
+
+			$fileId = $this->newFile($fileType, $expFilePath[1]);
+			if ($fileId == null) {
+				return false;
+			}
+			$this->linkVideoFile($token->video, $fileId);
+		}
+
+		return true;
 	}
 
 }

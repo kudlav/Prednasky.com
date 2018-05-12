@@ -44,7 +44,7 @@ class VideoPresenter extends BasePresenter
 		}
 
 		// Base path for files
-		$this->template->dataExport = $this->parameters['paths']['data_export'];
+		$this->template->dataExport = $this->parameters['paths']['url_data_export'];
 
 		// TODO Get/download attachments
 		$this->template->attachments = $this->fileManager->getVideoAttachments($id);
@@ -56,7 +56,7 @@ class VideoPresenter extends BasePresenter
 
 	protected function createComponentVideoCard()
 	{
-		return new VideoCard($this->fileManager, $this->parameters['paths']['data_export']);
+		return new VideoCard($this->fileManager, $this->parameters['paths']['url_data_export']);
 	}
 
 }
