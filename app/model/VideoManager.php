@@ -157,9 +157,26 @@ class VideoManager
 	 * @param int $id ID of video.
 	 * @return Nette\Database\Table\ActiveRow|bool ActiveRow or false if there is no such video.
 	 */
-	public function getVideoById(int $id)
+	public function getVideoById(int $id, bool $all=false, bool $loggedIn=false)
 	{
-		return $this->database->table(self::TABLE_VIDEO)->get($id);
+		$video = $this->database->table(self::TABLE_VIDEO)->get($id);
+
+		// Get any or only accessible video
+		if (!$all && $video !== false) {
+			$state = $video->ref(self::TABLE_VIDEO_STATE, self::VIDEO_STATE)->name;
+			if ($loggedIn) {
+				if ($state != 'done_public' && $state != 'done_logged_in') {
+					return false;
+				}
+			}
+			else {
+				if ($state != 'done_public') {
+					return false;
+				}
+			}
+		}
+
+		return $video;
 	}
 
 	/* TAGS */
