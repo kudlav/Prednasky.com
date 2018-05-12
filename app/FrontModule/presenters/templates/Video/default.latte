@@ -14,10 +14,17 @@
       <div class="col-md-9">
         <h1 class="d-inline-block">{block title}{$video->name}{/block}</h1>
         <div class="row">
-          <video autoplay controls class="mx-auto">
-            <source n:foreach="$videoFiles as $type => $file" src="{$dataExport}/{$file}" type="{$type}">
-            {_'Your browser does not support the video tag.'}
-          </video>
+          {if count($videoFiles) > 0}
+            <video autoplay controls class="mx-auto">
+              <source n:foreach="$videoFiles as $type => $file" src="{$dataExport}/{$file}" type="{$type}">
+              {_'Your browser does not support the video tag.'}
+            </video>
+          {else}
+            <div class="d-block text-muted media-box w-100 text-center py-5">
+              <i class=" fa fa-film fa-4x"></i>
+              <div class="lead">{_'Video is not available.'}</div>
+            </div>
+          {/if}
         </div>
         <div class="row">
           <div class="col-md-6">

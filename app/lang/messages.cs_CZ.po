@@ -2,8 +2,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: prednasky.com\n"
-"POT-Creation-Date: 2018-05-10T10:13:30+02:00\n"
-"PO-Revision-Date: 2018-05-10 10:16+0200\n"
+"POT-Creation-Date: 2018-05-12T20:44:13+02:00\n"
+"PO-Revision-Date: 2018-05-12 20:47+0200\n"
 "Last-Translator: Vladan Kudlac <vladankudlac@gmail.com>\n"
 "Language-Team: Vladan Kudlac <vladankudlac@gmail.com>\n"
 "Language: cs_CZ\n"
@@ -157,17 +157,17 @@ msgid "State"
 msgstr "Stav"
 
 #: app/FrontModule/presenters/templates/Homepage/download.latte:9
-#: app/FrontModule/presenters/templates/Video/default.latte:24
+#: app/FrontModule/presenters/templates/Video/default.latte:31
 msgid "Published"
 msgstr "Zveřejněno"
 
 #: app/FrontModule/presenters/templates/Homepage/download.latte:9
-#: app/FrontModule/presenters/templates/Video/default.latte:26
+#: app/FrontModule/presenters/templates/Video/default.latte:33
 msgid "Recorded"
 msgstr "Pořízeno"
 
 #: app/FrontModule/presenters/templates/Homepage/download.latte:9
-#: app/FrontModule/presenters/templates/Video/default.latte:30
+#: app/FrontModule/presenters/templates/Video/default.latte:37
 msgid "Duration"
 msgstr "Délka"
 
@@ -191,11 +191,15 @@ msgstr "Zatím žádná videa."
 msgid "Location"
 msgstr "Umístění"
 
-#: app/FrontModule/presenters/templates/Video/default.latte:19
+#: app/FrontModule/presenters/templates/Video/default.latte:20
 msgid "Your browser does not support the video tag."
 msgstr "Váš prohlížeč nepodporuje video tag."
 
-#: app/FrontModule/presenters/templates/Video/default.latte:49
+#: app/FrontModule/presenters/templates/Video/default.latte:25
+msgid "Video is not available."
+msgstr "Video není k dispozici."
+
+#: app/FrontModule/presenters/templates/Video/default.latte:56
 msgid "Files"
 msgstr "Soubory"
 
