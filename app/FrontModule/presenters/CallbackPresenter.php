@@ -79,13 +79,12 @@ class CallbackPresenter extends BasePresenter
 
 		$recording = $this->tokenManager->getTokenById($jobId);
 		if ($recording) {
-$this->fileManager->filesFromToken($recording);
 
 			$diffArray = $this->tokenManager->updateToken($recording, $entity, $this->videoManager);
 
 			if (isset($diffArray['status'])) {
 				// invoke callback url
-				//Utilities::callUrl($recording->getCallbackUrl(TRUE));
+				//Utilities::callUrl($recording->getCallbackUrl(true));
 
 				if ($recording['status'] != $entity['status'] && $entity['status'] == TokenManager::STATE_DONE) {
 
@@ -137,19 +136,18 @@ $this->fileManager->filesFromToken($recording);
 	}
 */
 	/**
-	 * Verify signature of request
+	 * Verify signature of request.
 	 *
-	 * @param      string  $strToSign  String thas is signed
-	 * @param      string  $signature  The signature
-	 *
-	 * @return     bool    TRUE if signature is OK, otherwise return FALSE.
+	 * @param string $strToSign String that is signed.
+	 * @param string $signature The signature.
+	 * @return bool True if signature is OK, otherwise return false.
 	 */
 	private function verifySignature($strToSign, $signature)
 	{
 		if ($signature !== sha1($strToSign . $this->parameters['salt'])) {
-			return FALSE;
+			return false;
 		}
-		return TRUE;
+		return true;
 	}
 
 }

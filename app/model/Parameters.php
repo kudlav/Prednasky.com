@@ -6,7 +6,7 @@ use Nette;
 
 
 /**
- * Provides access to parameters section of config.neon file
+ * Provide access to parameters section of config.neon file
  */
 class Parameters
 {
@@ -20,6 +20,11 @@ class Parameters
 		$this->parameters = $parameters;
 	}
 
+	/**
+	 * Get array of parameter from config files.
+	 *
+	 * @return array Parameters section from config.local.neon and config.neon.
+	 */
 	public function getParam()
 	{
 		return $this->parameters;

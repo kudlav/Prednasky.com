@@ -3,7 +3,8 @@
 namespace App\Model;
 
 use Nette;
-use Nette\Database;
+use Nette\Database\Table\ActiveRow;
+use Nette\Database\Context;
 use Tracy\Debugger;
 
 class TokenManager
@@ -19,7 +20,7 @@ class TokenManager
 		TOKEN_PUBLIC_HASH = 'public_hash',
 		TOKEN_PRIVATE_HASH = 'private_hash',
 		TOKEN_CREATED = 'created',
-		TOKEN_LAST_UDPATED = 'last_update',
+		TOKEN_LAST_UPDATED = 'last_update',
 		TOKEN_CURRENT_STATE = 'current_state',
 		TOKEN_VIDEO = 'video',
 		TOKEN_TEMPLATE = 'template',
@@ -44,22 +45,21 @@ class TokenManager
 		STATE_DONE = "done"
 	;
 
-	/** @var Nette\Database\Context */
+	/** @var Context */
 	private $database;
 
-	public function __construct(Database\Context $database)
+	public function __construct(Context $database)
 	{
 		$this->database = $database;
 	}
 
 	/**
-	 * Insert token into database
+	 * Insert token into database.
 	 *
-	 * @param      Token    $token  The token
-	 * @param      integer  $state  State of token according to `token_state` table
-	 * @param      integer  $type   Type of token according to `token_type` table
-	 *
-	 * @return     Database\IRow|false  Just insertet row
+	 * @param Token $token The token.
+	 * @param int $state State of token according to `token_state` table.
+	 * @param int $type Type of token according to `token_type` table.
+	 * @return Nette\Database\IRow|bool Just inserted row, false in case of failure.
 	 */
 	public function newToken(Token $token, int $state=1, int $type=1)
 	{
@@ -67,9 +67,9 @@ class TokenManager
 		$private_hash = explode('/', $token->getValues('private_datadir'));
 
 		$template = $this->getTemplateByName($token->getTemplate());
-		if ($template === FALSE) {
+		if ($template === false) {
 			Debugger::log("TokenManager.php: Template '".$token->getTemplate()."' not found in database.", \Tracy\ILogger::ERROR);
-			return FALSE;
+			return false;
 		}
 
 		$row = $this->database->table(self::TABLE_TOKEN)->insert([
@@ -88,11 +88,10 @@ class TokenManager
 	}
 
 	/**
-	 * Gets tokens by video id.
+	 * Get tokens by video id.
 	 *
-	 * @param      int  $video_id  The video identifier
-	 *
-	 * @return     Database\Table\Selection  The tokens by video.
+	 * @param int $video_id The video identifier.
+	 * @return Nette\Database\Table\Selection The tokens by video.
 	 */
 	public function getTokensByVideo(int $video_id)
 	{
@@ -100,11 +99,10 @@ class TokenManager
 	}
 
 	/**
-	 * Gets the token by identifier.
+	 * Get the token by identifier.
 	 *
-	 * @param      string  $job_id  The job_id
-	 *
-	 * @return     Database\Table\ActiveRow  The token with specified job_id.
+	 * @param string $job_id The job_id.
+	 * @return ActiveRow The token with specified job_id.
 	 */
 	public function getTokenById(string $job_id)
 	{
@@ -112,28 +110,27 @@ class TokenManager
 	}
 
 	/**
-	 * Update token values
+	 * Update token values.
 	 *
-	 * @param   Database\Table\ActiveRow  $row  Token database row
-	 * @param   array  $values  New values
-	 * @param   VideoManager  $videoManager
-	 *
-	 * @return  bool  Success or error.
+	 * @param ActiveRow $row Token database row.
+	 * @param array $values New values.
+	 * @param VideoManager $videoManager.
+	 * @return bool Success or error.
 	 */
-	public function updateToken(Database\Table\ActiveRow $row, array $values, VideoManager $videoManager)
+	public function updateToken(ActiveRow $row, array $values, VideoManager $videoManager)
 	{
 		$stateId = $this->database->table(self::TABLE_STATE)
 			->where(self::STATE_NAME, $values['status'])
 			->fetchField(self::STATE_ID)
 		;
 
-		if ($stateId === FALSE) {
+		if ($stateId === false) {
 			\Tracy\Debugger::log("TokenManager: Tried to update token with unknown state '".$values['status']."'", \Tracy\ILogger::ERROR);
 		}
 		else {
 			// Always update time of last update
 			$data = [
-				self::TOKEN_LAST_UDPATED => $values['datetime']
+				self::TOKEN_LAST_UPDATED => $values['datetime']
 			];
 
 			if ($row->state != $stateId) {
@@ -173,13 +170,11 @@ class TokenManager
 		return false;
 	}
 
-
 	/**
-	 * Gets the template by name.
+	 * Get the template by name.
 	 *
-	 * @param string $name Filename of template
-	 *
-	 * @return Nette\Database\Table\ActiveRow|false if there is no such template
+	 * @param string $name Filename of template.
+	 * @return ActiveRow|bool ActiveRow or false if there is no such template.
 	 */
 	public function getTemplateByName(string $name="")
 	{

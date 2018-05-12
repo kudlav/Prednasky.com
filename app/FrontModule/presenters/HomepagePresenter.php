@@ -7,9 +7,9 @@ use App\Model\Token;
 use App\Model\TokenManager;
 use App\Model\VideoManager;
 
+
 class HomepagePresenter extends BasePresenter
 {
-
 	/**
 	 * @var VideoManager $videoManager
 	 * @var TokenManager $tokenManager
@@ -30,7 +30,7 @@ class HomepagePresenter extends BasePresenter
 		$path = $path ? $path.'/' : '';
 
 		$tagValues = $this->videoManager->getNestedTagValues($tags);
-		if ($tagValues === NULL) { // Tags were invalid
+		if ($tagValues === null) { // Tags were invalid
 			$this->error();
 		}
 
@@ -59,7 +59,7 @@ class HomepagePresenter extends BasePresenter
 			// List of videos
 			$this->template->title = end($tags);
 			$lastPage = 0;
-			$this->template->videoList = $this->videoManager->getVideos(0, $this->user->loggedIn, FALSE, $tagValues['lvl'], $tagValues['vid'])
+			$this->template->videoList = $this->videoManager->getVideos(0, $this->user->loggedIn, false, $tagValues['lvl'], $tagValues['vid'])
 				->page($page, 12, $lastPage);
 		}
 		else {

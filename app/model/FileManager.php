@@ -109,7 +109,7 @@ class FileManager
 	 * Get row of video thumbnail.
 	 *
 	 * @param int $videoId Video ID.
-	 * @return FALSE|ActiveRow ActiveRow if thumbnail exists, otherwise return FALSE.
+	 * @return ActiveRow|bool ActiveRow if thumbnail exists, otherwise return false.
 	 */
 	public function getVideoThumbnail(int $videoId)
 	{
@@ -148,7 +148,7 @@ class FileManager
 	 * Assign files from WORKER/DATA-EXPORT files.list to video (`video_has_file` table).
 	 *
 	 * @param ActiveRow $token Row containing successfully finished token.
-	 * @return bool
+	 * @return bool True on success, otherwise false.
 	 */
 	public function filesFromToken(ActiveRow $token)
 	{

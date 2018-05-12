@@ -3,7 +3,6 @@
 namespace App\Model;
 
 use Nette;
-use \App\Model\TokenManager;
 use \Tracy\Debugger;
 
 
@@ -29,10 +28,10 @@ class Token
 	/**
 	 * Token constructor.
 	 *
-	 * @param  int  $videoId  The video identifier
-	 * @param  TokenManager  $tokenManager  The token manager
-	 * @param  aray  $parameters  Configuration of Nette framework
-	 * @param  int  $priority  Priority of token, this is not SGE priority. Legacy, leave blank.
+	 * @param int $videoId The video identifier
+	 * @param TokenManager $tokenManager The token manager
+	 * @param array $parameters Configuration of Nette framework
+	 * @param int $priority Priority of token, this is not SGE priority. Legacy, leave blank.
 	 */
 	public function __construct(int $videoId, TokenManager $tokenManager, array $parameters, int $priority=1)
 	{
@@ -55,26 +54,25 @@ class Token
 	/**
 	 * Sets the template.
 	 *
-	 * @param      string  $template  Filename of template.
-	 *
-	 * @return     bool  Return TRUE when file exists and is readable, otherwise FALSE.
+	 * @param string $template Filename of template.
+	 * @return bool Return true when file exists and is readable, otherwise false.
 	 */
 	public function setTemplate(string $template)
 	{
 		$this->template = $template.'.ini';
 
 		if (is_readable($this->parameters['paths']['path_templates'].'/'.$this->template)) {
-			return TRUE;
+			return true;
 		}
 		Debugger::log("Token.php: Unable to set template '".$this->parameters['paths']['path_templates'].'/'.$this->template."'", \Tracy\ILogger::ERROR);
-		return FALSE;
+		return false;
 	}
 
 
 	/**
 	 * Gets the template.
 	 *
-	 * @return     string  Filename of template.
+	 * @return string Filename of template.
 	 */
 	public function getTemplate()
 	{
@@ -83,9 +81,9 @@ class Token
 
 
 	/**
-	 * Add new values to the existing ones. If already exist, ovewrite it.
+	 * Add new values to the existing ones. If already exist, overwrite it.
 	 *
-	 * @param      array  $newValues  The new values
+	 * @param array $newValues The new values
 	 */
 	public function setValues(array $newValues)
 	{
@@ -96,9 +94,8 @@ class Token
 	/**
 	 * Get value of specific key.
 	 *
-	 * @param      string  $key    The key of value
-	 *
-	 * @return     mixed  The values.
+	 * @param string $key The key of value
+	 * @return mixed The values.
 	 */
 	public function getValues(string $key)
 	{
@@ -109,7 +106,7 @@ class Token
 	/**
 	 * Getter of the $videoIf.
 	 *
-	 * @return     integer  Value of $videoId
+	 * @return int Value of $videoId
 	 */
 	public function getVideoId()
 	{
@@ -120,7 +117,7 @@ class Token
 	/**
 	 * Getter of the $created.
 	 *
-	 * @return     \DateTime  Value of  $created
+	 * @return \DateTime Value of $created
 	 */
 	public function getCreated()
 	{
@@ -131,15 +128,16 @@ class Token
 	/**
 	 * Move and fill template .ini file, submit prepared token.
 	 *
-	 * @return integer Return FALSE if failed or positive number on succeed (of written bytes).
+	 * @return bool|int Return false if failed or positive number on succeed (of written bytes).
+	 * @throws \Exception If random_bytes was not possible to gather sufficient entropy.
 	 */
 	public function submit()
 	{
 		// Load template
 		$file = file_get_contents($this->parameters['paths']['path_templates'].'/'.$this->template);
-		if ($file === FALSE) {
+		if ($file === false) {
 			Debugger::log("Token.php: Template '".$this->parameters['paths']['path_templates'].'/'.$this->template."' became unreadable.", \Tracy\ILogger::ERROR);
-			return FALSE;
+			return false;
 		}
 
 		// Generate unique folder inside DATA-EXPORT
@@ -155,9 +153,9 @@ class Token
 
 		$token_path = $this->parameters['paths']['path_export'].$token_path;
 
-		if (!mkdir($token_path, 0770, TRUE)) {
+		if (!mkdir($token_path, 0770, true)) {
 			Debugger::log("Token.php: Unable to create dir '". $token_path ."'", \Tracy\ILogger::ERROR);
-			return FALSE;
+			return false;
 		}
 
 		// Set job_id (prioriry-date-time-subsec-01-userid-hash)
@@ -169,22 +167,21 @@ class Token
 			.sprintf('%06d', getmyuid()). '-'
 		;
 		// Insert token into database, if successful, token is unique, if not, generate different hash
-		while (TRUE) {
+		while (true) {
 			$this->values['job_id'] = $idWithoutHash.bin2hex(random_bytes(4));
 			try {
-				if ($this->tokenManager->newToken($this) === FALSE) {
-					return FALSE;
+				if ($this->tokenManager->newToken($this) === false) {
+					return false;
 				}
 				break;
 			} catch (Nette\Database\UniqueConstraintViolationException $e) {}
 		}
-\Tracy\Debugger::barDump($this->values['job_id'], 'job_id');
 
 		// Fill template with values, in case of failure, remove created directories.
 		if (!$this->fillTemplate($file, $token_path)) {
 			rmdir($token_path); // Private datadir
 			rmdir($this->parameters['paths']['path_export'].$this->values['public_datadir']); // Public datadir
-			return FALSE;
+			return false;
 		}
 
 		// Submit prepared token. Create token containg path to .ini file.
@@ -197,8 +194,7 @@ class Token
 	 *
 	 * @param string $file Content of template file
 	 * @param string $token_path File-path of template
-	 *
-	 * @return bool TRUE if successful, otherwise FALSE
+	 * @return bool true if successful, otherwise false
 	 */
 	private function fillTemplate(string $file, string $token_path)
 	{
@@ -214,15 +210,15 @@ class Token
 			foreach ($notFilled[1] as $value) {
 				Debugger::log("Token.php: Unable to fill template '".$this->template."', missing '".$value."'", 'token');
 			}
-			return FALSE;
+			return false;
 		}
 
 		// Save config.ini to DATA-EXPORT
-		if (file_put_contents($token_path.'/config.ini', $file, LOCK_EX) === FALSE) {
+		if (file_put_contents($token_path.'/config.ini', $file, LOCK_EX) === false) {
 			Debugger::log("Token.php: Unable to fill template, unable to write into: '".$token_path."/config.ini'");
-			return FASLE;
+			return false;
 		}
-		return TRUE;
+		return true;
 	}
 
 }
