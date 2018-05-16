@@ -80,14 +80,11 @@ class CallbackPresenter extends BasePresenter
 		$recording = $this->tokenManager->getTokenById($jobId);
 		if ($recording) {
 
-			$diffArray = $this->tokenManager->updateToken($recording, $entity, $this->videoManager);
+			$prevState = $recording->state;
+			$updateOk = $this->tokenManager->updateToken($recording, $entity, $this->videoManager);
 
-			if (isset($diffArray['status'])) {
-				// invoke callback url
-				//Utilities::callUrl($recording->getCallbackUrl(true));
-
-				if ($recording['status'] != $entity['status'] && $entity['status'] == TokenManager::STATE_DONE) {
-
+			if ($updateOk) {
+				if ($prevState != $entity['status'] && $entity['status'] == TokenManager::STATE_DONE) {
 					// Add new files
 					$this->fileManager->filesFromToken($recording);
 
