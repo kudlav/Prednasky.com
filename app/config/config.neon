@@ -25,7 +25,7 @@ session:
 	expiration: 14 days
 
 services:
-	router: App\RouterFactory::createRouter
+	router: App\Router\RouterFactory::createRouter
 
 	- App\Model\Parameters(@container::getParameters())
 	- App\Model\VideoManager(@container::getParameters())

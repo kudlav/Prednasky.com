@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\FrontModule\Presenters;
 
@@ -21,13 +22,13 @@ class VideoCard extends Control
 		$this->filepath = $filepath;
 	}
 
-	public function render(ActiveRow $video)
+	public function render(ActiveRow $video): void
 	{
 		$this->template->setFile(__DIR__.'/videoCard.latte');
 
 		$this->template->video = $video;
 
-		$thumbnail = $this->fileManager->getVideoThumbnail($video->id);
+		$thumbnail = $this->fileManager->getVideoThumbnail((int) $video->id);
 		if($thumbnail) {
 			$this->template->thumbnail = $this->filepath . '/' . $thumbnail->ref(FileManager::TABLE_FILE)->path;
 		}

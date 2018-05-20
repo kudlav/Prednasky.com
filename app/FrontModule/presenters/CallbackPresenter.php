@@ -1,13 +1,12 @@
 <?php
+declare(strict_types=1);
 
 namespace App\FrontModule\Presenters;
 
 use Nette;
-use App\Utilities;
 use App\Model\TokenManager;
 use App\Model\VideoManager;
 use App\Model\FileManager;
-use Nette\Http\Response;
 use Nette\Http\Request;
 use Tracy\Debugger;
 use Tracy\ILogger;
@@ -32,7 +31,7 @@ class CallbackPresenter extends BasePresenter
 		$this->fileManager = $fileManager;
 	}
 
-	public function actionDefault()
+	public function actionDefault(): void
 	{
 		$httpResponse = $this->getHttpResponse();
 		$httpResponse->setContentType('text/plain', 'UTF-8');
@@ -49,10 +48,9 @@ class CallbackPresenter extends BasePresenter
 				$this->processGet($httpRequest);
 				break;
 		}
-
 	}
 
-	public function processGet(Request $httpRequest)
+	public function processGet(Request $httpRequest): void
 	{
 		$jobId = $httpRequest->getQuery('job_id') ?: '';
 		$sign = $httpRequest->getQuery('sign') ?: '';
@@ -113,28 +111,8 @@ class CallbackPresenter extends BasePresenter
 			$this->setView('error');
 		}
 	}
-/*
-	public function processPost(Request $httpRequest)
-	{
-		$sign = $httpRequest->getQuery('sign') ?: '';
 
-		// potreba upravit
-		if ($this->parameters['sign_verification']) {
-			$strToSign = $httpRequest->getRawBody();
-			if (!$this->verifySignature($strToSign, $sign)) {
-				$this->setView('error-signature');
-				return;
-			}
-		}
 
-		if (strlen($sign) > 0) {
-			$this->sgeInfo->write($httpRequest->getRawBody());
-			$this->setView('success');
-		} else {
-			$this->setView('error');
-		}
-	}
-*/
 	/**
 	 * Verify signature of request.
 	 *
@@ -142,7 +120,7 @@ class CallbackPresenter extends BasePresenter
 	 * @param string $signature The signature.
 	 * @return bool True if signature is OK, otherwise return false.
 	 */
-	private function verifySignature($strToSign, $signature)
+	private function verifySignature(string $strToSign, string $signature): bool
 	{
 		if ($signature !== sha1($strToSign . $this->parameters['salt'])) {
 			return false;

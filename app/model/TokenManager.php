@@ -1,9 +1,12 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Model;
 
 use Nette;
 use Nette\Database\Table\ActiveRow;
+use Nette\Database\Table\IRow;
+use Nette\Database\Table\Selection;
 use Nette\Database\Context;
 use Tracy\Debugger;
 
@@ -59,17 +62,17 @@ class TokenManager
 	 * @param Token $token The token.
 	 * @param int $state State of token according to `token_state` table.
 	 * @param int $type Type of token according to `token_type` table.
-	 * @return Nette\Database\IRow|bool Just inserted row, false in case of failure.
+	 * @return IRow|null Just inserted row, null in case of failure.
 	 */
-	public function newToken(Token $token, int $state=1, int $type=1)
+	public function newToken(Token $token, int $state=1, int $type=1): ?IRow
 	{
 		$public_hash = explode('/', $token->getValues('public_datadir'));
 		$private_hash = explode('/', $token->getValues('private_datadir'));
 
 		$template = $this->getTemplateByName($token->getTemplate());
-		if ($template === false) {
+		if ($template === null) {
 			Debugger::log("TokenManager.php: Template '".$token->getTemplate()."' not found in database.", \Tracy\ILogger::ERROR);
-			return false;
+			return null;
 		}
 
 		$row = $this->database->table(self::TABLE_TOKEN)->insert([
@@ -84,16 +87,16 @@ class TokenManager
 			self::TOKEN_VIDEO => $token->getVideoId(),
 		]);
 
-		return $row;
+		return $row!==false ? $row : null;
 	}
 
 	/**
 	 * Get tokens by video id.
 	 *
 	 * @param int $video_id The video identifier.
-	 * @return Nette\Database\Table\Selection The tokens by video.
+	 * @return Selection The tokens by video.
 	 */
-	public function getTokensByVideo(int $video_id)
+	public function getTokensByVideo(int $video_id): Selection
 	{
 		return $this->database->table(self::TABLE_TOKEN)->where(self::TOKEN_VIDEO, $video_id);
 	}
@@ -102,11 +105,12 @@ class TokenManager
 	 * Get the token by identifier.
 	 *
 	 * @param string $job_id The job_id.
-	 * @return ActiveRow The token with specified job_id.
+	 * @return ActiveRow The token with specified job_id or null when there is no such token.
 	 */
-	public function getTokenById(string $job_id)
+	public function getTokenById(string $job_id): ?ActiveRow
 	{
-		return $this->database->table(self::TABLE_TOKEN)->get($job_id);
+		$result = $this->database->table(self::TABLE_TOKEN)->get($job_id);
+		return $result!==false ? $result : null;
 	}
 
 	/**
@@ -117,7 +121,7 @@ class TokenManager
 	 * @param VideoManager $videoManager.
 	 * @return bool Success or error.
 	 */
-	public function updateToken(ActiveRow $row, array $values, VideoManager $videoManager)
+	public function updateToken(ActiveRow $row, array $values, VideoManager $videoManager): bool
 	{
 		$stateId = $this->database->table(self::TABLE_STATE)
 			->where(self::STATE_NAME, $values['status'])
@@ -125,7 +129,7 @@ class TokenManager
 		;
 
 		if ($stateId === false) {
-			\Tracy\Debugger::log("TokenManager: Tried to update token with unknown state '".$values['status']."'", \Tracy\ILogger::ERROR);
+			Debugger::log("TokenManager: Tried to update token with unknown state '".$values['status']."'", \Tracy\ILogger::ERROR);
 		}
 		else {
 			// Always update time of last update
@@ -158,7 +162,7 @@ class TokenManager
 				$value = [];
 				if (preg_match('~output_videolength=([\d\.]+)~', $values['message'], $value)) {
 					var_dump(intval(round(floatval($value[1]))));
-					$videoManager->setDuration($row->video, $value[1]);
+					$videoManager->setDuration((int) $row->video, $value[1]);
 				}
 			}
 
@@ -174,12 +178,13 @@ class TokenManager
 	 * Get the template by name.
 	 *
 	 * @param string $name Filename of template.
-	 * @return ActiveRow|bool ActiveRow or false if there is no such template.
+	 * @return ActiveRow ActiveRow or null if there is no such template.
 	 */
-	public function getTemplateByName(string $name="")
+	public function getTemplateByName(string $name=""): ?ActiveRow
 	{
-		return $this->database->table(self::TABLE_TEMPLATE)
+		$result = $this->database->table(self::TABLE_TEMPLATE)
 			->where(self::TEMPLATE_NAME, $name)
 			->fetch();
+		return $result!==false ? $result : null;
 	}
 }
