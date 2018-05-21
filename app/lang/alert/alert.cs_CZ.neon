@@ -1,0 +1,11 @@
+# Project: 'prednasky.com'
+# Language-Team: 'Vladan Kudlac <vladankudlac@gmail.com>'
+# Content-Type: 'text/plain; charset=UTF-8'
+#
+# Config: 'v1.0'
+# Language: 'cs_CZ'
+
+'logout_cas_timeout' : 'Došlo k odhlášení z CAS FIT VUT.'
+'login_cas_ok' : 'Přihlášení pomocí CAS FIT VUT proběhlo úspěšně.'
+'login_cas_err' : 'Přihlášení pomocí CAS FIT VUT se nezdařilo, zkuste to znovu.'
+'logout_ok' : 'Odhlášení úspěšné.'

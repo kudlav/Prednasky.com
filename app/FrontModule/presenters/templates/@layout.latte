@@ -21,13 +21,13 @@
 
 	<nav class="navbar navbar-expand-md bg-primary navbar-dark p-1">
 		<div class="container">
-			<div class="navbar-brand"><i class="fa fa-lg fa-user"></i><b> {_'User'}: </b>{_'Not logged'}</div>
-			<a class="btn btn-secondary" href="#">
-				{if $user->loggedIn}{_'Logout'} <i class="fa fa-lg fa-sign-out"></i>{else}<i class="fa fa-lg fa-sign-in"></i> {_'Sign in'}{/if}
+			<div class="navbar-brand"><i class="fa fa-lg fa-user"></i><b> {_'User'}: </b>{if $user->loggedIn}{$user->identity->fullname}{else}{_'Not logged'}{/if}</div>
+			<a class="btn btn-secondary" href="
+				{if $user->loggedIn}{plink "Sign:out"}">{_'Logout'} <i class="fa fa-lg fa-sign-out"></i>{else}{plink "Sign:in"}"><i class="fa fa-lg fa-sign-in"></i> {_'Sign in'}{/if}
 			</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar2SupportedContent" aria-controls="navbar2SupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
 			<div class="collapse navbar-collapse text-center justify-content-end" id="navbar2SupportedContent">
-			  <a class="btn btn-primary mx-2" href=""><i class="fa fa-tachometer fa-lg"></i> {_'Dashboard'}</a>
+			  <a n:if="$user->isInRole('teacher')" class="btn btn-primary mx-2" n:href=":Admin:Homepage:default"><i class="fa fa-tachometer fa-lg"></i> {_'Dashboard'}</a>
 			  <div class="btn-group">
 				<button class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><i class="fa fa-lg fa-flag"></i> {_'Language'}</button>
 				<div class="dropdown-menu">
@@ -40,7 +40,11 @@
 	</nav>
 
 	<main class="container pt-3">
-		<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{_$flash->message}</div>
+		<div n:foreach="$flashes as $flash" n:class="alert, 'alert-'.$flash->type, 'alert-dismissible fade show'">{_$flash->message}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
 		{include content}
 	</main>
 
