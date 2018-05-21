@@ -12,6 +12,15 @@ parameters:
 		- course
 		- type
 	available_tags:
+	user_role:
+		- guest
+		- student
+		- teacher
+		- admin
+	cas:
+		url: https://cas.fit.vutbr.cz
+		reauth_timeout: 60
+		cookie: cosign-FIT-Prednasky
 
 php:
 	date.timezone: Europe/Prague
@@ -31,6 +40,15 @@ services:
 	- App\Model\VideoManager(@container::getParameters())
 	- App\Model\FileManager(@container::getParameters())
 	- App\Model\TokenManager
+	- App\Model\UserManager(@container::getParameters())
+
+	acl:
+		factory: Nette\Security\Permission
+		setup:
+			- addRole(guest)
+			- addRole(student, guest)
+			- addRole(teacher, student)
+			- addRole(admin, teacher)
 
 extensions:
 	mailing: Ublaboo\Mailing\DI\MailingExtension
