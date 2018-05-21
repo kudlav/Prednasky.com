@@ -1,0 +1,11 @@
+# Project: 'prednasky.com'
+# Language-Team: 'Vladan Kudlac <vladankudlac@gmail.com>'
+# Content-Type: 'text/plain; charset=UTF-8'
+#
+# Config: 'v1.0'
+# Language: 'en_GB'
+
+'logout_cas_timeout' : 'You have been logged out of CAS FIT BUT.'
+'login_cas_ok' : 'You have been logged in via CAS FIT BUT.'
+'login_cas_err' : 'CAS FIT BUT authentication failed, try it again.'
+'logout_ok' : 'You have been logged out.'

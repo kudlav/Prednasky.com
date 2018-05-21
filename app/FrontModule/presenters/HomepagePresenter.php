@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\FrontModule\Presenters;
 
@@ -24,7 +25,7 @@ class HomepagePresenter extends BasePresenter
 		$this->fileManager = $fileManager;
 	}
 
-	public function renderDefault($path, int $page=1)
+	public function renderDefault(string $path="", int $page=1): void
 	{
 		$tags = array_filter(explode('/', $path));
 		$path = $path ? $path.'/' : '';
@@ -72,14 +73,14 @@ class HomepagePresenter extends BasePresenter
 		$this->template->lastPage = $lastPage;
 	}
 
-	protected function createComponentVideoCard()
+	protected function createComponentVideoCard(): VideoCard
 	{
 		return new VideoCard($this->fileManager, $this->parameters['paths']['url_data_export']);
 	}
 
-	public function renderDownload($video_url)
+	public function renderDownload(string $video_url=""): void
 	{
-		if (isset($video_url)) {
+		if ($video_url != "") {
 			$videoId = $this->videoManager->newVideo();
 
 			$token = new Token($videoId, $this->tokenManager, $this->parameters);

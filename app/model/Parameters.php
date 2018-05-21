@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Model;
 
@@ -25,7 +26,7 @@ class Parameters
 	 *
 	 * @return array Parameters section from config.local.neon and config.neon.
 	 */
-	public function getParam()
+	public function getParam(): array
 	{
 		return $this->parameters;
 	}

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\FrontModule\Presenters;
 
@@ -7,7 +8,6 @@ use App\Model\VideoManager;
 
 class VideoPresenter extends BasePresenter
 {
-
 	/**
 	 * @var VideoManager $videoManager
 	 * @var FileManager $fileManager
@@ -20,7 +20,7 @@ class VideoPresenter extends BasePresenter
 		$this->fileManager = $fileManager;
 	}
 
-	public function renderDefault($id, $passphrase)
+	public function renderDefault(int $id, string $passphrase=""): void
 	{
 		// Get file ActiveRow
 		if ($id == null) {
@@ -54,7 +54,7 @@ class VideoPresenter extends BasePresenter
 		$this->template->relatedVideos = $this->videoManager->getRelatedVideos($id);;
 	}
 
-	protected function createComponentVideoCard()
+	protected function createComponentVideoCard(): VideoCard
 	{
 		return new VideoCard($this->fileManager, $this->parameters['paths']['url_data_export']);
 	}

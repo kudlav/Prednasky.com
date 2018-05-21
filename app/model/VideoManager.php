@@ -56,7 +56,7 @@ class VideoManager
 	 */
 	private $parameters, $database;
 
-	public function __construct($parameters, Context $database)
+	public function __construct(array $parameters, Context $database)
 	{
 		$this->parameters = $parameters;
 		$this->database = $database;
