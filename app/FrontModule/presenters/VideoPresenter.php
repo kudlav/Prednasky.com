@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\FrontModule\Presenters;
 
+use Nette;
 use App\Model\FileManager;
 use App\Model\VideoManager;
 
@@ -24,11 +25,11 @@ class VideoPresenter extends BasePresenter
 	{
 		// Get file ActiveRow
 		if ($id == null) {
-			$this->error('Požadované video neexistuje', 404);
+			$this->error('Požadované video neexistuje', Nette\Http\IResponse::S404_NOT_FOUND);
 		}
 		$this->template->video = $this->videoManager->getVideoById($id);
 		if ($this->template->video === false) {
-			$this->error('Požadované video neexistuje', 404);
+			$this->error('Požadované video neexistuje', Nette\Http\IResponse::S404_NOT_FOUND);
 		}
 		$this->template->videoFiles = $this->fileManager->getVideoFiles($id);
 
