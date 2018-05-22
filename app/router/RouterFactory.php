@@ -19,7 +19,7 @@ class RouterFactory
 
 		// Admin module
 
-		$router[] = new Route('[<locale=cs cs|en>/]/admin/<presenter>/<action>[/<id>]',[
+		$router[] = new Route('admin/[<locale=cs cs|en>/]<presenter>/<action>[/<id>]',[
 			'module' => 'Admin',
 			'presenter' => 'Homepage',
 			'action' => 'default',

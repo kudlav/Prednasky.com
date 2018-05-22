@@ -1,5 +1,3 @@
-
-
 // Semantic color scheme
 $theme-colors: (
   primary: #007bff,
@@ -150,4 +148,8 @@ footer img {
 .bg-black {
     background-color: #000;
     color: #FFF;
+}
+
+.list-group-item.active > a {
+    color: #FFF!important;
 }

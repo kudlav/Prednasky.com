@@ -1,0 +1,26 @@
+<h2>{_'Menu'}</h2>
+<ul class="list-group">
+
+  <li class="list-group-item {ifset $videos}active{/ifset}">
+    <a href="{plink ''}" class="text-dark d-block">{_'Educational videos'}</a>
+  </li>
+
+  <li class="list-group-item {ifset $lectures}active{/ifset}">
+    <a href="{plink ''}" class="text-dark d-block">{_'Lectures records'}</a>
+  </li>
+
+  <li class="list-group-item {ifset $files}active{/ifset}">
+    <a href="{plink ''}" class="text-dark d-block">{_'Files'}</a>
+  </li>
+
+  <li class="list-group-item {ifset $processes}active{/ifset}">
+    <a href="{plink ''}" class="text-dark d-block">{_'Processes and templates'}</a>
+  </li>
+
+  <li class="list-group-item">
+    <a href="{plink ':Front:Homepage:default'}" class="text-dark d-block">
+      <i class="fa fa-share"></i> {_'back to videoportal'}
+    </a>
+  </li>
+
+</ul>
