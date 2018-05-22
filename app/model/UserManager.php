@@ -7,6 +7,9 @@ use Nette;
 use Nette\Database\Context;
 use Nette\Database\Table\ActiveRow;
 use Nette\Security;
+use Nette\Security\Identity;
+use Nette\Security\IIdentity;
+
 
 class UserManager implements Security\IAuthenticator
 {
@@ -41,10 +44,10 @@ class UserManager implements Security\IAuthenticator
 	 * and returns IIdentity on success or throws AuthenticationException
 	 *
 	 * @param array $credentials Array with token on 0 index.
-	 * @return Security\IIdentity
+	 * @return IIdentity
 	 * @throws Security\AuthenticationException
 	 */
-	public function authenticate(array $credentials): Security\IIdentity
+	public function authenticate(array $credentials): IIdentity
 	{
 		if (!isset($credentials[0])) {
 			throw new Security\AuthenticationException('An error occurred during authentication.', self::FAILURE);
@@ -68,7 +71,7 @@ class UserManager implements Security\IAuthenticator
 		$data = $user->toArray();
 		$data['cas_check'] = new \DateTime();
 
-		return new Security\Identity($someIdFromCas, $roles, $data); // whatever does it return instead of two null
+		return new Identity($someIdFromCas, $roles, $data); // whatever does it return instead of two null
 	}
 
 	/**
@@ -107,5 +110,17 @@ class UserManager implements Security\IAuthenticator
 			self::USER_ACTIVE => $active
 		]);
 		return $result!==false ? $result : null;
+	}
+
+	public function casExpireCheck(?IIdentity $identity): bool
+	{
+		if ($identity !== null) {
+			$now = new \DateTime();
+			$timeDiff = $now->getTimestamp() - $identity->cas_check->getTimestamp();
+			if ($timeDiff > $this->parameters['cas']['reauth_timeout']) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
