@@ -10,12 +10,12 @@
       {* Begin ListGroup *}
       <div class="col-md-3">
         {ifset $listGroupTitle}<h2>{_'config.'.$listGroupTitle|capitalize}</h2>{/ifset}
-        <ul class="list-group">
-          <li n:foreach="$listGroup as $item => $path" class="list-group-item"><a n:href="Homepage:default $path" class="text-dark d-block">{$item|noescape}</a></li>
+        <div class="list-group">
+          <a n:foreach="$listGroup as $item => $path" n:href="Homepage:default $path" class="list-group-item list-group-item-action">{$item|noescape}</a>
           {ifset $listGroupBackText}
-          	<li class="list-group-item"><a n:href="Homepage:default $listGroupBackLink" class="text-dark d-block"><i class="fa fa-share fa-lg">&nbsp;</i>{_'Back to'} {_'config.'.$listGroupBackText}</a></li>
+          	<a n:href="Homepage:default $listGroupBackLink" class="list-group-item list-group-item-action"><i class="fa fa-share fa-lg">&nbsp;</i>{_'Back to'} {_'config.'.$listGroupBackText}</a>
           {/ifset}
-        </ul>
+        </div>
       </div>
       {* End ListGroup *}
       <div class="col-md-9">
