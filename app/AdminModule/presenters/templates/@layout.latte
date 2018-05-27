@@ -40,7 +40,7 @@
 	</nav>
 
 	<main class="container pt-3">
-		<div n:foreach="$flashes as $flash" n:class="alert, 'alert-'.$flash->type, 'alert-dismissible fade show'">{_$flash->message}
+		<div n:foreach="$flashes as $flash" n:class="alert, 'alert-'.$flash->type, 'alert-dismissible fade show'">{$flash->message|translate}
       <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>

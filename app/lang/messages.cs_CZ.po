@@ -1,9 +1,8 @@
-# Gettext keys exported by GettextExtractor
 msgid ""
 msgstr ""
 "Project-Id-Version: prednasky.com\n"
-"POT-Creation-Date: 2018-05-12T20:44:13+02:00\n"
-"PO-Revision-Date: 2018-05-12 20:47+0200\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2018-05-27 22:57+0200\n"
 "Last-Translator: Vladan Kudlac <vladankudlac@gmail.com>\n"
 "Language-Team: Vladan Kudlac <vladankudlac@gmail.com>\n"
 "Language: cs_CZ\n"
@@ -14,59 +13,96 @@ msgstr ""
 "X-Generator: Poedit 2.0.7\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
-#: app/FrontModule/presenters/templates/@layout.latte:17
 msgid "en"
 msgstr "cs"
 
-#: app/FrontModule/presenters/templates/@layout.latte:18
-msgid "Videoportal"
-msgstr "Videoportál"
+msgid "Administration"
+msgstr "Administrace"
 
-#: app/FrontModule/presenters/templates/@layout.latte:24
 msgid "User"
 msgstr "Uživatel"
 
-#: app/FrontModule/presenters/templates/@layout.latte:24
 msgid "Not logged"
 msgstr "Nepřihlášen"
 
-#: app/FrontModule/presenters/templates/@layout.latte:26
 msgid "Logout"
 msgstr "Odhlásit se"
 
-#: app/FrontModule/presenters/templates/@layout.latte:26
 msgid "Sign in"
 msgstr "Přihlásit se"
 
-#: app/FrontModule/presenters/templates/@layout.latte:30
-msgid "Dashboard"
-msgstr "Administrace"
+msgid "Website"
+msgstr "Webové stránky"
 
-#: app/FrontModule/presenters/templates/@layout.latte:32
 msgid "Language"
 msgstr "Jazyk"
 
-#: app/FrontModule/presenters/templates/@layout.latte:34
 msgid "Czech"
 msgstr "Čeština"
 
-#: app/FrontModule/presenters/templates/@layout.latte:35
 msgid "English"
 msgstr "English"
 
-#: app/FrontModule/presenters/templates/@layout.latte:54
 msgid " • Czech Republic"
 msgstr ""
 
-#: app/FrontModule/presenters/templates/@layout.latte:55
 msgid "Faculty of Information Technology, BUT"
 msgstr "Fakulta informačních technologií VUT v Brně"
 
-#: app/FrontModule/presenters/templates/Error/403.latte:2
+msgid "Menu"
+msgstr "Menu"
+
+msgid "Educational videos"
+msgstr "Výuková videa"
+
+msgid "Lectures records"
+msgstr "Záznamy přednášek"
+
+msgid "Files"
+msgstr "Soubory"
+
+msgid "Processes and templates"
+msgstr "Procesy a šablony"
+
+msgid "back to videoportal"
+msgstr "zpět na videoportál"
+
+msgid "All"
+msgstr "Všechny"
+
+msgid "Attachments"
+msgstr "Přílohy"
+
+msgid "Unused"
+msgstr "Nepoužité"
+
+msgid "Processing"
+msgstr "Zpracovávané"
+
+msgid "Processes"
+msgstr "Procesy"
+
+msgid "Tokens"
+msgstr "Tokeny"
+
+msgid "Templates"
+msgstr "Šablony"
+
+msgid "Published"
+msgstr "Zveřejněno"
+
+msgid "Drafts"
+msgstr "Koncepty"
+
+msgid "Videoportal"
+msgstr "Videoportál"
+
+msgid "Dashboard"
+msgstr "Administrace"
+
 msgid "Access Denied"
 msgstr "Přístup odmítnut"
 
-#: app/FrontModule/presenters/templates/Error/403.latte:4
 msgid ""
 "You do not have permission to view this page. Please try contact the web "
 "site administrator if you believe you should be able to view this page."
@@ -74,12 +110,9 @@ msgstr ""
 "Nemáte oprávnění k zobrazení této stránky. Pokud se domníváte, že byste měli "
 "tuto stránku zobrazit, zkuste se obrátit na správce webu."
 
-#: app/FrontModule/presenters/templates/Error/404.latte:2
-#: app/FrontModule/presenters/templates/Error/410.latte:2
 msgid "Page Not Found"
 msgstr "Stránka nenalezena"
 
-#: app/FrontModule/presenters/templates/Error/404.latte:4
 msgid ""
 "The page you requested could not be found. It is possible that the address "
 "is incorrect, or that the page no longer exists."
@@ -87,133 +120,94 @@ msgstr ""
 "Požadovaná stránka nebyla nalezena. Je možné, že je adresa nesprávná, nebo "
 "že stránka již neexistuje."
 
-#: app/FrontModule/presenters/templates/Error/405.latte:2
 msgid "Method Not Allowed"
 msgstr "Nepovolená metoda"
 
-#: app/FrontModule/presenters/templates/Error/405.latte:4
 msgid "The requested method is not allowed for the URL."
 msgstr "Požadovaná metoda není pro danou URL povolena."
 
-#: app/FrontModule/presenters/templates/Error/410.latte:4
 msgid ""
 "The page you requested has been taken off the site. We apologize for the "
 "inconvenience."
 msgstr ""
 "Požadovaná stránka byla ze stránek odebrána. Omlouváme se za nepříjemnosti."
 
-#: app/FrontModule/presenters/templates/Error/4xx.latte:2
 msgid "Oops..."
 msgstr "Oops..."
 
-#: app/FrontModule/presenters/templates/Error/4xx.latte:4
 msgid ""
 "Your browser sent a request that this server could not understand or process."
 msgstr ""
 "Váš prohlížeč odeslal požadavek, který tento server nedokáže zpracovat."
 
-#: app/FrontModule/presenters/templates/Homepage/default.latte:16
+msgid "config.'.$listGroupTitl"
+msgstr ""
+
 msgid "Back to"
 msgstr "Zpět na"
 
-#: app/FrontModule/presenters/templates/Homepage/default.latte:22
+msgid "config.'.$listGroupBackTex"
+msgstr ""
+
 msgid "New videos"
 msgstr "Nová videa"
 
-#: app/FrontModule/presenters/templates/Homepage/default.latte:24
 msgid "Search"
 msgstr "Hledat"
 
-#: app/FrontModule/presenters/templates/Homepage/default.latte:33
 msgid "No videos yet"
 msgstr "Zatím žádná videa"
 
-#: app/FrontModule/presenters/templates/Homepage/default.latte:41
 msgid "Previous"
 msgstr "Předchozí"
 
-#: app/FrontModule/presenters/templates/Homepage/default.latte:49
 msgid "Next"
 msgstr "Další"
 
-#: app/FrontModule/presenters/templates/Homepage/download.latte:3
-msgid "Educational videos"
-msgstr "Výuková videa"
-
-#: app/FrontModule/presenters/templates/Homepage/download.latte:5
 msgid "At this moment, you can see just a mockups."
 msgstr "Prozatím se můžete podívat na mockupy."
 
-#: app/FrontModule/presenters/templates/Homepage/download.latte:9
 msgid "Name"
 msgstr "Název"
 
-#: app/FrontModule/presenters/templates/Homepage/download.latte:9
 msgid "Created"
 msgstr "Vytvořeno"
 
-#: app/FrontModule/presenters/templates/Homepage/download.latte:9
 msgid "State"
 msgstr "Stav"
 
-#: app/FrontModule/presenters/templates/Homepage/download.latte:9
-#: app/FrontModule/presenters/templates/Video/default.latte:31
-msgid "Published"
-msgstr "Zveřejněno"
-
-#: app/FrontModule/presenters/templates/Homepage/download.latte:9
-#: app/FrontModule/presenters/templates/Video/default.latte:33
 msgid "Recorded"
 msgstr "Pořízeno"
 
-#: app/FrontModule/presenters/templates/Homepage/download.latte:9
-#: app/FrontModule/presenters/templates/Video/default.latte:37
 msgid "Duration"
 msgstr "Délka"
 
-#: app/FrontModule/presenters/templates/Homepage/download.latte:9
 msgid "Abstract"
 msgstr "Abstrakt"
 
-#: app/FrontModule/presenters/templates/Homepage/download.latte:9
 msgid "Public link"
 msgstr "Veřejný odkaz"
 
-#: app/FrontModule/presenters/templates/Homepage/download.latte:9
-msgid "Tokens"
-msgstr "Tokeny"
+msgid "video_state.'.$video->ref('state')->nam"
+msgstr ""
 
-#: app/FrontModule/presenters/templates/Homepage/download.latte:28
+msgid "token_state.'.$token->ref('state')->nam"
+msgstr ""
+
 msgid "No videos yet."
 msgstr "Zatím žádná videa."
 
-#: app/FrontModule/presenters/templates/Video/default.latte:6
 msgid "Location"
 msgstr "Umístění"
 
-#: app/FrontModule/presenters/templates/Video/default.latte:20
 msgid "Your browser does not support the video tag."
 msgstr "Váš prohlížeč nepodporuje video tag."
 
-#: app/FrontModule/presenters/templates/Video/default.latte:25
 msgid "Video is not available."
 msgstr "Video není k dispozici."
 
-#: app/FrontModule/presenters/templates/Video/default.latte:56
-msgid "Files"
-msgstr "Soubory"
+msgid "role.'.$rows[0]->ref('role')->nam"
+msgstr ""
 
-#~ msgid "FIT_color_RGB_EN"
-#~ msgstr "FIT_color_RGB_CZ"
-
-#~ msgid "The page you requested could not be found."
-#~ msgstr "Požadovaná stránka nebyla nalezena."
-
-#~ msgid "Nette Web"
-#~ msgstr "Nette Web"
-
-#~ msgid "(no title)"
-#~ msgstr "(bez titulky)"
-
-#~ msgid "Nam"
-#~ msgstr "Název"
+msgid "relation_type.'.$rows[0]->ref('relation_type')->nam"
+msgstr ""

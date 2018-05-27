@@ -19,7 +19,7 @@
       </div>
       {* End ListGroup *}
       <div class="col-md-9">
-        <h1 class="d-inline-block">{block title}{if isset($title)}{_$title}{else}{_'New videos'}{/if}{/block}:</h1>
+        <h1 class="d-inline-block">{block title}{if isset($title)}{$title}{else}{_'New videos'}{/if}{/block}:</h1>
         <input class="form-control d-inline mx-3 w-auto w-25" type="search" placeholder="{_'Search'}">
         <button class="btn btn-primary" type="submit">{_'Search'}</button>
         {* Begin Listing *}

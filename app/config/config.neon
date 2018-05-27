@@ -52,6 +52,7 @@ services:
 
 extensions:
 	mailing: Ublaboo\Mailing\DI\MailingExtension
+	console: Kdyby\Console\DI\ConsoleExtension
 	translation: Kdyby\Translation\DI\TranslationExtension
 
 translation:

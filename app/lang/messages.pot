@@ -1,189 +1,130 @@
-# Gettext keys exported by GettextExtractor
-#, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2018-05-12T20:44:13+02:00\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Language: en_GB\n"
 
-#: ./app/FrontModule/presenters/templates/@layout.latte:17
-#: ./app/FrontModule/presenters/templates/@layout.latte:17
 msgid "en"
-msgstr ""
-
-#: ./app/FrontModule/presenters/templates/@layout.latte:18
-msgid "Videoportal"
-msgstr ""
-
-#: ./app/FrontModule/presenters/templates/@layout.latte:24
+msgstr "en"
+msgid "Administration"
+msgstr "Administration"
 msgid "User"
-msgstr ""
-
-#: ./app/FrontModule/presenters/templates/@layout.latte:24
+msgstr "User"
 msgid "Not logged"
-msgstr ""
-
-#: ./app/FrontModule/presenters/templates/@layout.latte:26
+msgstr "Not logged"
 msgid "Logout"
-msgstr ""
-
-#: ./app/FrontModule/presenters/templates/@layout.latte:26
+msgstr "Logout"
 msgid "Sign in"
-msgstr ""
-
-#: ./app/FrontModule/presenters/templates/@layout.latte:30
-msgid "Dashboard"
-msgstr ""
-
-#: ./app/FrontModule/presenters/templates/@layout.latte:32
+msgstr "Sign in"
+msgid "Website"
+msgstr "Website"
 msgid "Language"
-msgstr ""
-
-#: ./app/FrontModule/presenters/templates/@layout.latte:34
+msgstr "Language"
 msgid "Czech"
-msgstr ""
-
-#: ./app/FrontModule/presenters/templates/@layout.latte:35
+msgstr "Czech"
 msgid "English"
-msgstr ""
-
-#: ./app/FrontModule/presenters/templates/@layout.latte:54
+msgstr "English"
 msgid " • Czech Republic"
-msgstr ""
-
-#: ./app/FrontModule/presenters/templates/@layout.latte:55
+msgstr " • Czech Republic"
 msgid "Faculty of Information Technology, BUT"
-msgstr ""
-
-#: ./app/FrontModule/presenters/templates/Error/403.latte:2
-msgid "Access Denied"
-msgstr ""
-
-#: ./app/FrontModule/presenters/templates/Error/403.latte:4
-msgid "You do not have permission to view this page. Please try contact the web site administrator if you believe you should be able to view this page."
-msgstr ""
-
-#: ./app/FrontModule/presenters/templates/Error/404.latte:2
-#: ./app/FrontModule/presenters/templates/Error/410.latte:2
-msgid "Page Not Found"
-msgstr ""
-
-#: ./app/FrontModule/presenters/templates/Error/404.latte:4
-msgid "The page you requested could not be found. It is possible that the address is incorrect, or that the page no longer exists."
-msgstr ""
-
-#: ./app/FrontModule/presenters/templates/Error/405.latte:2
-msgid "Method Not Allowed"
-msgstr ""
-
-#: ./app/FrontModule/presenters/templates/Error/405.latte:4
-msgid "The requested method is not allowed for the URL."
-msgstr ""
-
-#: ./app/FrontModule/presenters/templates/Error/410.latte:4
-msgid "The page you requested has been taken off the site. We apologize for the inconvenience."
-msgstr ""
-
-#: ./app/FrontModule/presenters/templates/Error/4xx.latte:2
-msgid "Oops..."
-msgstr ""
-
-#: ./app/FrontModule/presenters/templates/Error/4xx.latte:4
-msgid "Your browser sent a request that this server could not understand or process."
-msgstr ""
-
-#: ./app/FrontModule/presenters/templates/Homepage/default.latte:16
-msgid "Back to"
-msgstr ""
-
-#: ./app/FrontModule/presenters/templates/Homepage/default.latte:22
-msgid "New videos"
-msgstr ""
-
-#: ./app/FrontModule/presenters/templates/Homepage/default.latte:24
-msgid "Search"
-msgstr ""
-
-#: ./app/FrontModule/presenters/templates/Homepage/default.latte:33
-msgid "No videos yet"
-msgstr ""
-
-#: ./app/FrontModule/presenters/templates/Homepage/default.latte:41
-msgid "Previous"
-msgstr ""
-
-#: ./app/FrontModule/presenters/templates/Homepage/default.latte:49
-msgid "Next"
-msgstr ""
-
-#: ./app/FrontModule/presenters/templates/Homepage/download.latte:3
+msgstr "Faculty of Information Technology, BUT"
+msgid "Menu"
+msgstr "Menu"
 msgid "Educational videos"
-msgstr ""
-
-#: ./app/FrontModule/presenters/templates/Homepage/download.latte:5
-msgid "At this moment, you can see just a mockups."
-msgstr ""
-
-#: ./app/FrontModule/presenters/templates/Homepage/download.latte:9
-msgid "Name"
-msgstr ""
-
-#: ./app/FrontModule/presenters/templates/Homepage/download.latte:9
-msgid "Created"
-msgstr ""
-
-#: ./app/FrontModule/presenters/templates/Homepage/download.latte:9
-msgid "State"
-msgstr ""
-
-#: ./app/FrontModule/presenters/templates/Homepage/download.latte:9
-#: ./app/FrontModule/presenters/templates/Video/default.latte:31
-msgid "Published"
-msgstr ""
-
-#: ./app/FrontModule/presenters/templates/Homepage/download.latte:9
-#: ./app/FrontModule/presenters/templates/Video/default.latte:33
-msgid "Recorded"
-msgstr ""
-
-#: ./app/FrontModule/presenters/templates/Homepage/download.latte:9
-#: ./app/FrontModule/presenters/templates/Video/default.latte:37
-msgid "Duration"
-msgstr ""
-
-#: ./app/FrontModule/presenters/templates/Homepage/download.latte:9
-msgid "Abstract"
-msgstr ""
-
-#: ./app/FrontModule/presenters/templates/Homepage/download.latte:9
-msgid "Public link"
-msgstr ""
-
-#: ./app/FrontModule/presenters/templates/Homepage/download.latte:9
-msgid "Tokens"
-msgstr ""
-
-#: ./app/FrontModule/presenters/templates/Homepage/download.latte:28
-msgid "No videos yet."
-msgstr ""
-
-#: ./app/FrontModule/presenters/templates/Video/default.latte:6
-msgid "Location"
-msgstr ""
-
-#: ./app/FrontModule/presenters/templates/Video/default.latte:20
-msgid "Your browser does not support the video tag."
-msgstr ""
-
-#: ./app/FrontModule/presenters/templates/Video/default.latte:25
-msgid "Video is not available."
-msgstr ""
-
-#: ./app/FrontModule/presenters/templates/Video/default.latte:56
+msgstr "Educational videos"
+msgid "Lectures records"
+msgstr "Lectures records"
 msgid "Files"
-msgstr ""
+msgstr "Files"
+msgid "Processes and templates"
+msgstr "Processes and templates"
+msgid "back to videoportal"
+msgstr "back to videoportal"
+msgid "All"
+msgstr "All"
+msgid "Attachments"
+msgstr "Attachments"
+msgid "Unused"
+msgstr "Unused"
+msgid "Processing"
+msgstr "Processing"
+msgid "Processes"
+msgstr "Processes"
+msgid "Tokens"
+msgstr "Tokens"
+msgid "Templates"
+msgstr "Templates"
+msgid "Published"
+msgstr "Published"
+msgid "Drafts"
+msgstr "Drafts"
+msgid "Videoportal"
+msgstr "Videoportal"
+msgid "Dashboard"
+msgstr "Dashboard"
+msgid "Access Denied"
+msgstr "Access Denied"
+msgid "You do not have permission to view this page. Please try contact the web site administrator if you believe you should be able to view this page."
+msgstr "You do not have permission to view this page. Please try contact the web site administrator if you believe you should be able to view this page."
+msgid "Page Not Found"
+msgstr "Page Not Found"
+msgid "The page you requested could not be found. It is possible that the address is incorrect, or that the page no longer exists."
+msgstr "The page you requested could not be found. It is possible that the address is incorrect, or that the page no longer exists."
+msgid "Method Not Allowed"
+msgstr "Method Not Allowed"
+msgid "The requested method is not allowed for the URL."
+msgstr "The requested method is not allowed for the URL."
+msgid "The page you requested has been taken off the site. We apologize for the inconvenience."
+msgstr "The page you requested has been taken off the site. We apologize for the inconvenience."
+msgid "Oops..."
+msgstr "Oops..."
+msgid "Your browser sent a request that this server could not understand or process."
+msgstr "Your browser sent a request that this server could not understand or process."
+msgid "config.'.$listGroupTitl"
+msgstr "config.'.$listGroupTitl"
+msgid "Back to"
+msgstr "Back to"
+msgid "config.'.$listGroupBackTex"
+msgstr "config.'.$listGroupBackTex"
+msgid "New videos"
+msgstr "New videos"
+msgid "Search"
+msgstr "Search"
+msgid "No videos yet"
+msgstr "No videos yet"
+msgid "Previous"
+msgstr "Previous"
+msgid "Next"
+msgstr "Next"
+msgid "At this moment, you can see just a mockups."
+msgstr "At this moment, you can see just a mockups."
+msgid "Name"
+msgstr "Name"
+msgid "Created"
+msgstr "Created"
+msgid "State"
+msgstr "State"
+msgid "Recorded"
+msgstr "Recorded"
+msgid "Duration"
+msgstr "Duration"
+msgid "Abstract"
+msgstr "Abstract"
+msgid "Public link"
+msgstr "Public link"
+msgid "video_state.'.$video->ref('state')->nam"
+msgstr "video_state.'.$video->ref('state')->nam"
+msgid "token_state.'.$token->ref('state')->nam"
+msgstr "token_state.'.$token->ref('state')->nam"
+msgid "No videos yet."
+msgstr "No videos yet."
+msgid "Location"
+msgstr "Location"
+msgid "Your browser does not support the video tag."
+msgstr "Your browser does not support the video tag."
+msgid "Video is not available."
+msgstr "Video is not available."
+msgid "role.'.$rows[0]->ref('role')->nam"
+msgstr "role.'.$rows[0]->ref('role')->nam"
+msgid "relation_type.'.$rows[0]->ref('relation_type')->nam"
+msgstr "relation_type.'.$rows[0]->ref('relation_type')->nam"
