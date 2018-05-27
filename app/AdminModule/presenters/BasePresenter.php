@@ -22,16 +22,17 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
     /** @var UserManager */
 	private $userManager;
 
-	public function injectParameters(Parameters $parameters) {
+	public function injectParameters(Parameters $parameters): void
+	{
 		$this->parameters = $parameters->getParam();
 	}
 
-	public function injectUserManager(UserManager $userManager)
+	public function injectUserManager(UserManager $userManager): void
 	{
 		$this->userManager = $userManager;
 	}
 
-	protected function startup()
+	protected function startup(): void
 	{
 		parent::startup();
 

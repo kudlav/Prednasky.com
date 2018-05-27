@@ -1,0 +1,19 @@
+{layout '../@layout.latte'}
+
+{block content}
+
+<h1>{_'Processes and templates'}:</h1>
+
+<ul class="nav nav-tabs float-none">
+	<li class="nav-item">
+		<a n:href="Processes:processes" class="nav-link {if $tab===1}active{/if}"><i class="fa fa-cogs"></i>&nbsp;{_'Processes'}</a>
+	</li>
+	<li class="nav-item mx-2">
+		<a n:href="Processes:tokens" class="nav-link {if $tab===2}active{/if}"><i class="fa fa-files-o"></i>&nbsp;{_'Tokens'}</a>
+	</li>
+	<li class="nav-item">
+		<a n:href="Processes:templates" class="nav-link {if $tab===3}active{/if}"><i class="fa fa-book"></i>&nbsp;{_'Templates'}</a>
+	</li>
+</ul>
+
+{include data}

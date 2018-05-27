@@ -14,11 +14,20 @@ class DashboardMenu extends Control
 		$this->template->setFile(__DIR__.'/dashboardMenu.latte');
 
 		switch ($presenter->name) {
-			case 'Admin:Homepage':
+			case 'Admin:Videos':
 				$this->template->videos = true;
-				//$this->template->lectures = true;
-				//$this->template->files = true;
-				//$this->template->processes = true;
+			break;
+
+			case 'Admin:Processes':
+				$this->template->processes = true;
+				break;
+
+			case 'Admin:Lectures':
+				$this->template->lectures = true;
+				break;
+
+			case 'Admin:Files':
+				$this->template->files = true;
 				break;
 		}
 

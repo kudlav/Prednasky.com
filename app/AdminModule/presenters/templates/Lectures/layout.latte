@@ -1,0 +1,19 @@
+{layout '../@layout.latte'}
+
+{block content}
+
+<h1>{_'Lectures records'}:</h1>
+
+<ul class="nav nav-tabs float-none">
+	<li class="nav-item">
+		<a n:href="Lectures:all" class="nav-link {if $tab===1}active{/if}"><i class="fa fa-video-camera"></i>&nbsp;{_'All'}</a>
+	</li>
+	<li class="nav-item mx-2">
+		<a n:href="Lectures:unused" class="nav-link {if $tab===2}active{/if}"><i class="fa fa-scissors"></i>&nbsp;{_'Unused'}</a>
+	</li>
+	<li class="nav-item">
+		<a n:href="Lectures:processing" class="nav-link {if $tab===3}active{/if}"><i class="fa fa-spinner"></i>&nbsp;{_'Processing'} <span class="badge badge-light">{$processingCnt}</span></a>
+	</li>
+</ul>
+
+{include data}

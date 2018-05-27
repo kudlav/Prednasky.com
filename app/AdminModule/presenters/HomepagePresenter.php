@@ -10,5 +10,6 @@ class HomepagePresenter extends BasePresenter
 {
 	public function renderDefault(): void
 	{
+		$this->redirect('Videos:published');
 	}
 }

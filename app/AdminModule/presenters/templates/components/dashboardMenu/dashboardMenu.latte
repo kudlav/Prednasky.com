@@ -1,26 +1,24 @@
 <h2>{_'Menu'}</h2>
-<ul class="list-group">
+<div class="list-group">
 
-  <li class="list-group-item {ifset $videos}active{/ifset}">
-    <a href="{plink ''}" class="text-dark d-block">{_'Educational videos'}</a>
-  </li>
+  <a href="{plink 'Videos:published'}" class="list-group-item list-group-item-action{ifset $videos} active{/ifset}">
+    {_'Educational videos'}
+  </a>
 
-  <li class="list-group-item {ifset $lectures}active{/ifset}">
-    <a href="{plink ''}" class="text-dark d-block">{_'Lectures records'}</a>
-  </li>
+  <a href="{plink 'Lectures:all'}" class="list-group-item list-group-item-action{ifset $lectures} active{/ifset}">
+    {_'Lectures records'}
+  </a>
 
-  <li class="list-group-item {ifset $files}active{/ifset}">
-    <a href="{plink ''}" class="text-dark d-block">{_'Files'}</a>
-  </li>
+  <a href="{plink 'Files:all'}" class="list-group-item list-group-item-action{ifset $files} active{/ifset}">
+    {_'Files'}
+  </a>
 
-  <li class="list-group-item {ifset $processes}active{/ifset}">
-    <a href="{plink ''}" class="text-dark d-block">{_'Processes and templates'}</a>
-  </li>
+  <a href="{plink 'Processes:processes'}" class="list-group-item list-group-item-action{ifset $processes} active{/ifset}">
+    {_'Processes and templates'}
+  </a>
 
-  <li class="list-group-item">
-    <a href="{plink ':Front:Homepage:default'}" class="text-dark d-block">
-      <i class="fa fa-share"></i> {_'back to videoportal'}
-    </a>
-  </li>
+  <a href="{plink ':Front:Homepage:default'}" class="list-group-item list-group-item-action">
+    <i class="fa fa-share"></i> {_'back to videoportal'}
+  </a>
 
-</ul>
+</div>
