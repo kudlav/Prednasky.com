@@ -1,0 +1,14 @@
+{
+  "name": "kudlac/prednasky",
+  "description": "Prednasky.com - video learning portal",
+  "keywords": ["nette"],
+  "authors": ["kudlav <vladankudlac@gmail.com>"],
+  "main": "",
+  "license": "",
+  "homepage": "",
+
+  "dependencies": {
+    "bootstrap-select": "^1.13.1",
+    "ublaboo-datagrid": "^5.6.0"
+  }
+}

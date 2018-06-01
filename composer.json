@@ -3,7 +3,7 @@
 	"description": "Prednasky.com - video learning portal",
 	"keywords": ["nette"],
 	"type": "project",
-	"license": ["MIT", "BSD-3-Clause", "GPL-2.0", "GPL-3.0"],
+	"license": [],
 	"require": {
 		"php": ">= 7.1",
 		"nette/application": "^2.4",
