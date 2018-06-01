@@ -7,16 +7,14 @@
 	<link rel="stylesheet" href="{$basePath}/css/bootstrap.css">
 	<link rel="shortcut icon" href="{$basePath}/img/fit_icon.png" />
 
-	<!-- Use this css for that pretty checkboxes (https://github.com/paveljanda/happy) -->
-	<link rel="stylesheet" type="text/css" href="{$basePath}/bower_components/happy/dist/happy.min.css">
-	<link rel="stylesheet" type="text/css" href="{$basePath}/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css">
-	<link rel="stylesheet" type="text/css" href="{$basePath}/bower_components/ublaboo-datagrid/assets/dist/datagrid.min.css">
+	<link rel="stylesheet" type="text/css" href="{$basePath}/node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css">
+	<link rel="stylesheet" type="text/css" href="{$basePath}/node_modules/ublaboo-datagrid/assets/dist/datagrid.min.css">
 
 	<!-- Use this css for ajax spinners -->
-	<link rel="stylesheet" type="text/css" href="{$basePath}/bower_components/ublaboo-datagrid/assets/dist/datagrid-spinners.min.css">
+	<link rel="stylesheet" type="text/css" href="{$basePath}/node_modules/ublaboo-datagrid/assets/dist/datagrid-spinners.min.css">
 
 	<!-- Include this css when using FilterMultiSelect (silviomoreto.github.io/bootstrap-select) -->
-	<link rel="stylesheet" type="text/css" href="{$basePath}/bower_components/bootstrap-select/dist/css/bootstrap-select.min.css">
+	<link rel="stylesheet" type="text/css" href="{$basePath}/node_modules/bootstrap-select/dist/css/bootstrap-select.min.css">
 
 	<title>{ifset title}{include title|stripHtml} | {/ifset}Prednasky.com</title>
 </head>
@@ -86,35 +84,32 @@
 	</footer>
 
 	{block scripts}
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+		<script src="{$basePath}/node_modules/popper.js/dist/popper.min.js"></script>
 
-		<script src="{$basePath}/bower_components/jquery/dist/jquery.min.js"></script>
-		<script src="{$basePath}/bower_components/nette-forms/src/assets/netteForms.min.js"></script>
-		<script src="{$basePath}/bower_components/nette.ajax.js/nette.ajax.js"></script>
+		<script src="{$basePath}/node_modules/jquery/dist/jquery.min.js"></script>
+		<script src="{$basePath}/node_modules/nette-forms/src/assets/netteForms.min.js"></script>
+		<script src="{$basePath}/node_modules/nette.ajax.js/nette.ajax.js"></script>
 
-		<!-- Use this tiny js for that pretty checkboxes (https://github.com/paveljanda/happy) -->
-		<script src="{$basePath}/bower_components/happy/dist/happy.min.js"></script>
-		<script src="{$basePath}/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
-		<script src="{$basePath}/bower_components/jquery-ui-sortable/jquery-ui-sortable.min.js"></script>
-		<script src="{$basePath}/bower_components/ublaboo-datagrid/assets/dist/datagrid.min.js"></script>
+		<script src="{$basePath}/node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+		<script src="{$basePath}/node_modules/jquery-ui-sortable/jquery-ui.min.js"></script>
+		<script src="{$basePath}/node_modules/ublaboo-datagrid/assets/dist/datagrid.min.js"></script>
 
 		<!-- It is recommended to include this JS file with just a few bits. It refreshes URL on non ajax request -->
-		<script src="{$basePath}/bower_components/ublaboo-datagrid/assets/dist/datagrid-instant-url-refresh.min.js"></script>
+		<script src="{$basePath}/node_modules/ublaboo-datagrid/assets/dist/datagrid-instant-url-refresh.min.js"></script>
 
 		<!-- Use this little extension for ajax spinners -->
-		<script src="{$basePath}/bower_components/ublaboo-datagrid/assets/dist/datagrid-spinners.min.js"></script>
+		<script src="{$basePath}/node_modules/ublaboo-datagrid/assets/dist/datagrid-spinners.min.js"></script>
 
 		<!-- Include bootstrap.js for proper behaviour of ColumnStatus -->
-		<script src="{$basePath}/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+		<script src="{$basePath}/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 
 		<!-- Include bootstrap-select.js when using FilterMultiSelect (silviomoreto.github.io/bootstrap-select) -->
-		<script src="{$basePath}/bower_components/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+		<script src="{$basePath}/node_modules/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
 
 		<!-- Initialize nette.ajax.js after loading the DOM. -->
 		<script>
 			$.nette.init();
 		</script>
-
 	{/block}
 
 </body>

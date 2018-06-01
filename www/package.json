@@ -1,0 +1,26 @@
+{
+  "name": "kudlac-prednasky",
+  "version": "1.0.0",
+  "description": "Prednasky.com - video learning portal",
+  "main": "index.js",
+  "repository": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "nette"
+  ],
+  "author": "kudlav <vladankudlac@gmail.com>",
+  "license": "",
+  "dependencies": {
+    "bootstrap": "^4.1.1",
+    "bootstrap-datepicker": "^1.8.0",
+    "bootstrap-select": "^1.13.1",
+    "jquery": "^3.3.1",
+    "jquery-ui-sortable": "^1.0.0",
+    "nette-forms": "^2.4.2",
+    "nette.ajax.js": "^2.3.0",
+    "popper.js": "^1.0.1",
+    "ublaboo-datagrid": "^5.5.4"
+  }
+}
