@@ -58,3 +58,7 @@ extensions:
 translation:
 	default: cs_CZ
 	fallback: [en_GB]
+
+tracy:
+	email: 'xkudla15@vut.cz'
+	fromEmail: 'log-mailer@prednasky.fit.vutbr.cz'
