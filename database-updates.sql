@@ -68,6 +68,51 @@ CREATE FUNCTION `database_version` () RETURNS varchar(5) CHARACTER SET 'utf8'
 RETURN "1.4";$$
 DELIMITER ;
 
+-- 1.4 => 1.5 --
+CREATE TABLE IF NOT EXISTS `prednasky`.`right` (
+  `user_id` INT(10) UNSIGNED NOT NULL,
+  `tag_id` INT(10) UNSIGNED NOT NULL,
+  PRIMARY KEY (`user_id`, `tag_id`),
+  INDEX `fk_user_has_tag_tag1_idx` (`tag_id` ASC),
+  INDEX `fk_user_has_tag_user1_idx` (`user_id` ASC),
+  CONSTRAINT `fk_user_has_tag_user1`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `prednasky`.`user` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_user_has_tag_tag1`
+    FOREIGN KEY (`tag_id`)
+    REFERENCES `prednasky`.`tag` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_czech_ci;
+CREATE TABLE IF NOT EXISTS `prednasky`.`right_has_tag` (
+  `right_id` INT(10) UNSIGNED NOT NULL,
+  `tag_id` INT(10) UNSIGNED NOT NULL,
+  PRIMARY KEY (`right_id`, `tag_id`),
+  INDEX `fk_right_has_tag_tag1_idx` (`tag_id` ASC),
+  INDEX `fk_right_has_tag_right1_idx` (`right_id` ASC),
+  CONSTRAINT `fk_right_has_tag_right1`
+    FOREIGN KEY (`right_id`)
+    REFERENCES `prednasky`.`right` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_right_has_tag_tag1`
+    FOREIGN KEY (`tag_id`)
+    REFERENCES `prednasky`.`tag` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+DROP function IF EXISTS `prednasky`.`database_version`;
+DELIMITER $$
+USE `prednasky`$$
+CREATE FUNCTION `database_version` () RETURNS varchar(5) CHARACTER SET 'utf8'
+RETURN "1.5";$$
+DELIMITER ;
+
 -- END HERE --
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
