@@ -173,10 +173,12 @@ class VideoManager
 		}
 
 		// Get any or only accessible video
-		if (!$all && $video !== false) {
+		if (!$all) {
 			$state = $video->ref(self::TABLE_VIDEO_STATE, self::VIDEO_STATE)->name;
 
 			switch ($state) {
+				case 'done_public':
+					return $video;
 
 				case 'done_logged_in':
 					if ($loggedIn) {
