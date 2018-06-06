@@ -16,6 +16,9 @@
 	<!-- Include this css when using FilterMultiSelect (silviomoreto.github.io/bootstrap-select) -->
 	<link rel="stylesheet" type="text/css" href="{$basePath}/node_modules/bootstrap-select/dist/css/bootstrap-select.min.css">
 
+	<!-- ClockPicker Stylesheet -->
+	<link rel="stylesheet" type="text/css" href="{$basePath}/node_modules/clockpicker/dist/bootstrap4-clockpicker.min.css">
+
 	<title>{ifset title}{include title|stripHtml} | {/ifset}Prednasky.com</title>
 </head>
 
@@ -110,9 +113,16 @@
 		<!-- Include bootstrap-select.js when using FilterMultiSelect (silviomoreto.github.io/bootstrap-select) -->
 		<script src="{$basePath}/node_modules/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
 
+		<!-- ClockPicker script -->
+		<script type="text/javascript" src="{$basePath}/node_modules/clockpicker/dist/bootstrap4-clockpicker.min.js"></script>
+
 		<!-- Initialize nette.ajax.js after loading the DOM. -->
 		<script>
 			$.nette.init();
+		</script>
+
+		<script type="text/javascript">
+        $('.clockpicker').clockpicker();
 		</script>
 	{/block}
 

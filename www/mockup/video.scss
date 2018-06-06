@@ -7,6 +7,7 @@ $theme-colors: (
   warning: #ffc107,
   danger: #dc3545,
   light: #f8f9fa,
+	primary-light: #64b5f6
   dark: #343a40
 );
 
@@ -31,7 +32,6 @@ $body-color: #292b2c;
 $body-color-inverse: invert($body-color) !default;
 $link-color: #007bff;
 
-
 $font-family-base: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 $headings-font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !default;
 
@@ -52,7 +52,6 @@ $border-radius: .25rem;
 
 
 @import 'bootstrap-4.0.0';
-
 
 body > * {
   background-size: cover;
