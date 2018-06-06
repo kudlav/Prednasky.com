@@ -1,34 +1,6 @@
 {block content}
 
-<script>
-
-  function addShareLinkDone(data, bttn) {
-      $(bttn).addClass('d-none');
-      $( '#dShareLink' ).removeClass( "d-none" );
-
-      let shareLinkEntry = $( '#shareLinkEntry' );
-      shareLinkEntry.attr("value", data.message);
-      shareLinkEntry.select();
-  }
-
-  function delShareLink(bttn) {
-      let jqXHR = $.ajax({plink Video:link $video->id, act => del});
-      jqXHR.done(function(data) {
-          if (data.status === "ok") {
-              delShareLinkDone(data, bttn)
-          }
-      });
-  }
-
-  function delShareLinkDone(data, bttn) {
-      $(bttn).addClass('d-none');
-      $( '#aShareLink' ).removeClass( "d-none" );
-
-      let shareLinkEntry = $( '#shareLinkEntry' );
-      shareLinkEntry.attr("value", {_"No secret link"});
-  }
-
-</script>
+{include edit-js.latte}
 
 <h1 class="">Edit video:</h1>
 <ul class="nav nav-tabs" role="tablist">
