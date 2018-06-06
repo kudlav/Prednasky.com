@@ -1,9 +1,12 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Model;
 
 use Nette;
 use Nette\Database\Context;
+use Nette\Database\Table\ActiveRow;
+use Nette\Database\Table\Selection;
 
 
 class VideoManager
@@ -22,6 +25,7 @@ class VideoManager
 		VIDEO_RECORD_END = 'record_end',
 		VIDEO_DURATION = 'duration',
 		VIDEO_ABSTRACT = 'abstract',
+		VIDEO_LINK = 'public_link',
 
 		// Tag table
 		TABLE_TAG = 'tag',
@@ -73,7 +77,7 @@ class VideoManager
 	 *
 	 * @return int|null ID of new video or null
 	 */
-	public function newVideo(string $name="Unnamed", int $state=1, int $record_begin=null, int $record_end=null, string $abstract=null)
+	public function newVideo(string $name="Unnamed", int $state=1, int $record_begin=null, int $record_end=null, string $abstract=null): ?int
 	{
 		$row = $this->database->table(self::TABLE_VIDEO)->insert([
 			self::VIDEO_NAME => $name,
@@ -86,7 +90,7 @@ class VideoManager
 
 		if ($row) {
 			\Tracy\Debugger::log("VideoManager: Created video 'id':'".$row->id."'", \Tracy\ILogger::INFO);
-			return $row->id;
+			return (int) $row->id;
 		}
 		\Tracy\Debugger::log("VideoManager: Unable to create video '".$name."'", \Tracy\ILogger::ERROR);
 		return null;
@@ -96,9 +100,9 @@ class VideoManager
 	 * Get all videos.
 	 *
 	 * @param string $orderBy The order of videos
-	 * @return Nette\Database\Table\Selection All videos.
+	 * @return Selection All videos.
 	 */
-	public function getAllVideos(string $orderBy='id DESC')
+	public function getAllVideos(string $orderBy='id DESC'): Selection
 	{
 		return $this->database->table(self::TABLE_VIDEO)->order($orderBy);
 	}
@@ -112,9 +116,9 @@ class VideoManager
 	 * @param int $level The level in range of config directive array, null = not applied.
 	 * @param array $videosId Videos identifier that will be check for nested tags.
 	 *
-	 * @return Nette\Database\Table\Selection Published videos in specified tag level (if set).
+	 * @return Selection Published videos in specified tag level (if set).
 	 */
-	public function getVideos(int $limit=0, bool $loggedIn=false, bool $all=false, int $level=null, array $videosId=[])
+	public function getVideos(int $limit=0, bool $loggedIn=false, bool $all=false, int $level=null, array $videosId=[]): Selection
 	{
 		$selection = $this->database->table(self::TABLE_VIDEO);
 
@@ -155,24 +159,38 @@ class VideoManager
 	 * Get video row by ID.
 	 *
 	 * @param int $id ID of video.
-	 * @return Nette\Database\Table\ActiveRow|bool ActiveRow or false if there is no such video.
+	 * @param bool $all Get private video as well.
+	 * @param bool $loggedIn Is the user logged in?
+	 * @param string $passphrase Secret token for accessing video.
+	 * @return null|ActiveRow ActiveRow or null if there is no such video.
 	 */
-	public function getVideoById(int $id, bool $all=false, bool $loggedIn=false)
+	public function getVideoById(int $id, bool $all=false, bool $loggedIn=false, string $passphrase=null): ?ActiveRow
 	{
 		$video = $this->database->table(self::TABLE_VIDEO)->get($id);
+
+		if ($video === false) {
+			return null;
+		}
 
 		// Get any or only accessible video
 		if (!$all && $video !== false) {
 			$state = $video->ref(self::TABLE_VIDEO_STATE, self::VIDEO_STATE)->name;
-			if ($loggedIn) {
-				if ($state != 'done_public' && $state != 'done_logged_in') {
-					return false;
-				}
-			}
-			else {
-				if ($state != 'done_public') {
-					return false;
-				}
+
+			switch ($state) {
+
+				case 'done_logged_in':
+					if ($loggedIn) {
+						return $video;
+					}
+
+				case 'done_private':
+					if ($passphrase === null || $passphrase != $video->public_link) {
+						return null;
+					}
+					break;
+
+				default:
+					return null;
 			}
 		}
 
@@ -188,7 +206,7 @@ class VideoManager
 	 * @param string $tagLevel Name (level) of tag.
 	 * @return string|null Value of tag or null when the video has no tag at this level.
 	 */
-	public function getVideoTagValue(int $videoId, string $tagLevel)
+	public function getVideoTagValue(int $videoId, string $tagLevel): ?string
 	{
 		$row = $this->database->table(self::TABLE_VIDEO_TAG)
 			->where(self::VIDEO_TAG_VIDEO, $videoId)
@@ -198,7 +216,7 @@ class VideoManager
 		;
 
 		if ($row) {
-			return $row->value;
+			return (string) $row->value;
 		}
 		else{
 			return null;
@@ -211,7 +229,7 @@ class VideoManager
 	 * @param string $tag The tag
 	 * @return array Associative array: 'tag_id'=>'tag_value'.
 	 */
-	private function getTagValues(string $tag)
+	private function getTagValues(string $tag): array
 	{
 		 $values = $this->database->table(self::TABLE_TAG)
 			->where(self::TAG_NAME, $tag)
@@ -224,9 +242,9 @@ class VideoManager
 	 * Get subtags (nested tags) of current path.
 	 *
 	 * @param array $path The current path (array of tagvalues).
-	 * @return array Array containing 'lvl', 'val'
+	 * @return null|array Array containing 'lvl', 'val'
 	 */
-	public function getNestedTagValues(array $path)
+	public function getNestedTagValues(array $path): ?array
 	{
 		// RETURN: Top level - returning all values of root tag (fast)
 		if (empty($path)) {
@@ -290,7 +308,7 @@ class VideoManager
 	 * @param int $duration Duration of video in seconds
 	 * @return bool Return true if duration was set. False when nothing was changed.
 	 */
-	public function setDuration(int $id, int $duration)
+	public function setDuration(int $id, int $duration): bool
 	{
 		$result = $this->database->table(self::TABLE_VIDEO)->get($id);
 
@@ -310,7 +328,7 @@ class VideoManager
 	 * @param string|null $value The value
 	 * @return int|null ID of row, or null when combination of name and value does't exit.
 	 */
-	private function issetTagValue(string $tag, $value)
+	private function issetTagValue(string $tag, $value): ?int
 	{
 		$row = $this->database->table(self::TABLE_TAG)
 			->where(self::TAG_NAME, $tag)
@@ -319,7 +337,7 @@ class VideoManager
 		;
 
 		if ($row !== false) {
-			return $row->id;
+			return (int) $row->id;
 		}
 		return null;
 	}
@@ -330,7 +348,7 @@ class VideoManager
 	 * @param int $id ID of video.
 	 * @return array Rows of people divided into arrays by their role.
 	 */
-	public function getVideoPeople(int $id)
+	public function getVideoPeople(int $id): array
 	{
 		$people = [];
 
@@ -357,7 +375,7 @@ class VideoManager
 	 * @param int $id ID of video.
 	 * @return array Rows of video_relation table divided into arrays by relation type.
 	 */
-	public function getRelatedVideos(int $id)
+	public function getRelatedVideos(int $id): array
 	{
 		$videos = [];
 
@@ -376,6 +394,62 @@ class VideoManager
 		}
 
 		return $videos;
+	}
+
+
+	/**
+	 * Get available states for finished videos.
+	 *
+	 * @return array Array containing id => name;
+	 */
+	public function getDoneStates(): array
+	{
+		return $this->database->table(self::TABLE_VIDEO_STATE)
+			->where(self::STATE_NAME .' LIKE "done_%"')
+			->fetchPairs(self::STATE_ID, self::STATE_NAME)
+		;
+	}
+
+	/**
+	 * Get unique token for accessing video.
+	 *
+	 * @param int $id Video ID.
+	 * @return null|string Token containing 32 chars, or null when no link is created.
+	 */
+	public function getShareLink(int $id): ?string
+	{
+		$link = $this->database->table(self::TABLE_VIDEO)
+			->get($id)
+			->public_link
+		;
+
+		return $link!==null ? (string) $link : null;
+	}
+
+	/**
+	 * Create or clear unique token for accessing video.
+	 *
+	 * @param int $id Video ID.
+	 * @param bool $clear Set true to remove unique token.
+	 * @return null|string Token containing 32 chars.
+	 */
+	public function setShareLink(int $id, bool $clear=false): ?string
+	{
+		if ($clear) {
+			$token = null;
+		}
+		else {
+			$token = bin2hex(random_bytes(16));
+		}
+
+		$this->database->table(self::TABLE_VIDEO)
+			->where(self::VIDEO_ID, $id)
+			->update([
+				self::VIDEO_LINK => $token
+			])
+		;
+
+		return $token;
 	}
 
 }

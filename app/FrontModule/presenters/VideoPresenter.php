@@ -21,14 +21,14 @@ class VideoPresenter extends BasePresenter
 		$this->fileManager = $fileManager;
 	}
 
-	public function renderDefault(int $id, string $passphrase=""): void
+	public function renderDefault(int $id, string $p=null): void
 	{
 		// Get file ActiveRow
 		if ($id == null) {
 			$this->error('Požadované video neexistuje', Nette\Http\IResponse::S404_NOT_FOUND);
 		}
-		$this->template->video = $this->videoManager->getVideoById($id);
-		if ($this->template->video === false) {
+		$this->template->video = $this->videoManager->getVideoById($id, false, $this->user->loggedIn, $p);
+		if ($this->template->video === null) {
 			$this->error('Požadované video neexistuje', Nette\Http\IResponse::S404_NOT_FOUND);
 		}
 		$this->template->videoFiles = $this->fileManager->getVideoFiles($id);
