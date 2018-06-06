@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="{_'en'}">
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
 	<link rel="stylesheet" href="{$basePath}/css/bootstrap.css">
-	<link rel="shortcut icon" href="{$basePath}/img/fit_icon.png" />
+	<link rel="shortcut icon" href="{$basePath}/img/fit_icon.png">
 
 	<title>{ifset title}{include title|stripHtml} | {/ifset}Prednasky.com</title>
 </head>
@@ -14,7 +14,11 @@
 
 	<header class="py-3 container">
 		<div class="row">
-			<div class="col-5"><a href="{plink Homepage:default}{_'en'}"><img class="img-fluid d-block" src="{$basePath}/img/fit_color_rgb_{_'en'}.png"></a></div>
+			<div class="col-5">
+				<a href="{plink Homepage:default}{_'en'}">
+					<img class="img-fluid d-block" src="{$basePath}/img/fit_color_rgb_{_'en'}.png" alt="{_'Faculty of Information Technology, BUT'}">
+				</a>
+			</div>
 			<div class="col-7"><h1 class="display-2 text-secondary p-0 m-0">{_'Videoportal'}</h1></div>
 		</div>
 	</header>
