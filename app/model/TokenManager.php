@@ -162,7 +162,7 @@ class TokenManager
 				$value = [];
 				if (preg_match('~output_videolength=([\d\.]+)~', $values['message'], $value)) {
 					var_dump(intval(round(floatval($value[1]))));
-					$videoManager->setDuration((int) $row->video, $value[1]);
+					$videoManager->setDuration((int) $row->video, (int) $value[1]);
 				}
 			}
 

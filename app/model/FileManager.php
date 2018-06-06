@@ -163,6 +163,11 @@ class FileManager
 		;
 		$filesList = fopen($pathFilesList, 'r');
 
+		if ($filesList === false) {
+			\Tracy\Debugger::log("FileManager: import files from token # '".$token->id.", no file 'files.list'.", \Tracy\ILogger::INFO);
+			return false;
+		}
+
 		while (($line = fgets($filesList)) != null) {
 			$line = trim($line);
 			$expFilePath = explode('DATA-EXPORT', $line, 2);
