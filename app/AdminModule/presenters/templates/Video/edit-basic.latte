@@ -1,0 +1,159 @@
+<div class="row" >
+  <div class="col-md-6">
+    <div class="form-group my-2">
+      {label title}
+      {input title}
+    </div>
+    <div class="form-group my-2">
+      {label record_date_start}
+      <div class="input-group">
+        {input record_date_start}
+        {input record_time_start}
+      </div>
+    </div>
+
+    <div class="form-group my-2">
+      {label record_date_end}
+      <div class="input-group">
+        {input record_date_end}
+        {input record_time_end}
+      </div>
+    </div>
+    <div class="form-group my-2">
+      {label visibility}
+      {input visibility}
+    </div>
+    <div class="form-group my-2">
+      <label>{_'Share link'}:</label>
+      <div class="row">
+        <div class="col-md-9">
+          <input id="shareLinkEntry" readonly type="text" class="form-control" placeholder="{_'No secret link'}" value="{$shareLink}">
+        </div>
+        <div class="col-md-3 p-0">
+          <button type='button' id="aShareLink" class="btn btn-outline-primary {if isset($shareLink)}d-none{/if}" onclick="addShareLink(this)">Create link</button>
+          <button type='button' id="dShareLink" class="btn btn-outline-danger {if !isset($shareLink)}d-none{/if}" onclick="delShareLink(this)">Remove link</button>
+        </div>
+      </div>
+    </div>
+    <div class="form-group my-2">
+      {label abstract}
+      {input abstract}
+    </div>
+    <div class="form-group my-2">
+      <label>
+        <b>Tags:</b>
+      </label>
+      <div class="row my-1">
+        <div class="col-md-3 align-self-center" style="transition: all 0.25s;">
+          <p class="m-0 px-2">Semester:</p>
+        </div>
+        <div class="col-md-8" style="transition: all 0.25s;">
+          <input type="search" name="semester" class="form-control" placeholder="Start typing...">
+        </div>
+      </div>
+      <div class="row my-1">
+        <div class="col-md-3 align-self-center" style="transition: all 0.25s;">
+          <p class="m-0 px-2">Course:</p>
+        </div>
+        <div class="col-md-8" style="transition: all 0.25s;">
+          <input type="search" name="course" class="form-control" placeholder="Start typing...">
+        </div>
+      </div>
+      <div class="row my-1">
+        <div class="col-md-3 align-self-center" style="transition: all 0.25s;">
+          <p class="m-0 px-2">Type:</p>
+        </div>
+        <div class="col-md-8" style="transition: all 0.25s;">
+          <input type="search" name="type" class="form-control" placeholder="Start typing...">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <br>
+    <label>
+      <b class="">Edit video: &nbsp;&nbsp;</b>
+    </label>
+    <a href="#" class="btn btn-outline-primary">Video editor</a>
+    <div class="form-group my-2">
+      <label>
+        <b>Thumbnail:</b>
+      </label>
+      <img class="d-block img-fluid w-75" src="https://pingendo.com/assets/photos/wireframe/photo-1.jpg"> </div>
+    <a href="#" class="btn btn-outline-primary">Upload thumbnail</a>
+  </div>
+</div>
+<div class="row">
+  <div class="col-12">
+    <div class="form-group my-2">
+      <label>
+        <b>People:</b>
+      </label>
+      <div class="row my-1">
+        <div class="align-self-center col-md-2">
+          <p class="m-0 px-2">Guarantor:</p>
+        </div>
+        <div class="col-md-4">
+          <input type="search" name="guarantor" class="form-control" placeholder="Start typing..."> </div>
+        <div class="col-md-4">
+          <input type="text" name="email" class="form-control" placeholder="Email"> </div>
+        <div class="align-self-center col-md-2">
+          <div class="form-check m-0">
+            <label class="form-check-label">
+              <input type="checkbox" class="form-check-input" value="on" checked=""> Show email </label>
+          </div>
+        </div>
+      </div>
+      <div class="row my-1">
+        <div class="align-self-center col-md-2">
+          <p class="m-0 px-2">Lecturer:</p>
+        </div>
+        <div class="col-md-4">
+          <input type="search" name="guarantor" class="form-control" placeholder="Start typing..."> </div>
+        <div class="col-md-4">
+          <input type="text" name="email" class="form-control" placeholder="Email"> </div>
+        <div class="align-self-center col-md-2">
+          <div class="form-check m-0">
+            <label class="form-check-label">
+              <input type="checkbox" class="form-check-input" value="on" checked=""> Show email </label>
+          </div>
+        </div>
+      </div>
+      <div class="row my-1">
+        <div class="align-self-center col-md-2">
+          <p class="m-0 px-2">Lecturer:</p>
+        </div>
+        <div class="col-md-4">
+          <input type="search" name="guarantor" class="form-control" placeholder="Start typing..."> </div>
+        <div class="align-self-center col-md-2">
+          <div class="form-check m-0">
+            <label class="form-check-label">
+              <input type="checkbox" class="form-check-input" value="on"> Show email </label>
+          </div>
+        </div>
+      </div>
+      <div class="row my-1">
+        <div class="align-self-center col-md-2"></div>
+        <div class="col-md-4">
+          <div class="btn-group">
+            <button class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown">Add people</button>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="">Guarantor</a>
+              <a class="dropdown-item" href="">Lecturer</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row my-4">
+        <div class="col-md-2">
+          <a href="#">
+            <button class="btn btn-primary" type="button">Save</button>
+          </a>
+        </div>
+        <div class="col-md-8">
+          <a href="#" class="btn btn-outline-danger">Delete video</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

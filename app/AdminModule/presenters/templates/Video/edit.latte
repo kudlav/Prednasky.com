@@ -1,0 +1,54 @@
+{block content}
+
+<script>
+
+  function addShareLinkDone(data, bttn) {
+      $(bttn).addClass('d-none');
+      $( '#dShareLink' ).removeClass( "d-none" );
+
+      let shareLinkEntry = $( '#shareLinkEntry' );
+      shareLinkEntry.attr("value", data.message);
+      shareLinkEntry.select();
+  }
+
+  function delShareLink(bttn) {
+      let jqXHR = $.ajax({plink Video:link $video->id, act => del});
+      jqXHR.done(function(data) {
+          if (data.status === "ok") {
+              delShareLinkDone(data, bttn)
+          }
+      });
+  }
+
+  function delShareLinkDone(data, bttn) {
+      $(bttn).addClass('d-none');
+      $( '#aShareLink' ).removeClass( "d-none" );
+
+      let shareLinkEntry = $( '#shareLinkEntry' );
+      shareLinkEntry.attr("value", {_"No secret link"});
+  }
+
+</script>
+
+<h1 class="">Edit video:</h1>
+<ul class="nav nav-tabs" role="tablist">
+  <li class="nav-item"><a class="nav-link active" data-toggle="tab" role="tab" href="#basic"><i class="fa fa-info"></i>&nbsp;Basic information</a></li>
+  <li class="nav-item"><a class="nav-link" data-toggle="tab" role="tab" href="#attachments"><i class="fa fa-file-o"></i>&nbsp;Attachments</a></li>
+  <li class="nav-item"><a class="nav-link" data-toggle="tab" role="tab" href="#links"><i class="fa fa-video-camera"></i>&nbsp;Related videos</a></li>
+</ul>
+
+{form editVideoForm}
+<div class="tab-content">
+  <div id="basic" class="tab-pane fade show active">
+    {include 'edit-basic.latte'}
+  </div>
+
+  <div id="attachments" class="tab-pane fade">
+    {include 'edit-attachments.latte'}
+  </div>
+
+  <div id="links" class="tab-pane fade">
+    {include 'edit-links.latte'}
+  </div>
+</div>
+{/form}
