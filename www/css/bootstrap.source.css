@@ -6149,3 +6149,6 @@ footer img {
 
 .list-group-item.active > a {
   color: #FFF !important; }
+
+.form-group > label {
+  font-weight: bolder; }
