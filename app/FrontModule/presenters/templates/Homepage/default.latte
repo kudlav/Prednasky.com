@@ -1,10 +1,12 @@
 {block content}
 
     <div class="container">
-    <div class="row px-3">
-      {foreach $breadcrumb as $level => $link}
-      	<a n:href="Homepage:default $link" class='px-1'>{$level}</a>
-      {/foreach}
+    <div n:if="!empty($breadcrumb)" class="row px-3">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-light">
+          <li n:foreach="$breadcrumb as $level => $link" class="breadcrumb-item active"><a n:href="Homepage:default $link">{$level}</a></li>
+        </ol>
+      </nav>
     </div>
     <div class="row">
       {* Begin ListGroup *}

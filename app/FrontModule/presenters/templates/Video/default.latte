@@ -4,11 +4,10 @@
     <div class="row">
       <div class="col-md-3">
         <h2>{_'Location'}</h2>
-        <ul class="list-group">
-          <li n:foreach="$listGroup as $item => $path" class="list-group-item">
-              <a n:href="Homepage:default $path" class="text-dark d-block">{$item|noescape}</a>
-          </li>
-        </ul>
+        <div class="list-group">
+          <a n:href="Homepage:default" class="list-group-item list-group-item-action"><i class="fa fa-home" aria-hidden="true"></i> {_'Main page'}</a>
+          <a n:foreach="$listGroup as $item => $path" n:href="Homepage:default $path" class="list-group-item list-group-item-action">{$item|noescape}</a>
+        </div>
       </div>
 
       <div class="col-md-9">
