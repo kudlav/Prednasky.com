@@ -26,6 +26,7 @@ class VideoManager
 		VIDEO_DURATION = 'duration',
 		VIDEO_ABSTRACT = 'abstract',
 		VIDEO_LINK = 'public_link',
+		VIDEO_COMPLETE = 'complete',
 
 		// Tag table
 		TABLE_TAG = 'tag',
@@ -124,15 +125,16 @@ class VideoManager
 
 		// List all or only published videos
 		if (!$all) {
-			$state = ['done_public'];
+			$state = ['public'];
 			if ($loggedIn) {
-				$state[] = 'done_logged_in';
+				$state[] = 'logged_in';
 			}
 			$stateIDs = $this->database->table(self::TABLE_VIDEO_STATE)
 				->where(self::STATE_NAME, $state)
 				->fetchPairs(null, self::STATE_ID)
 			;
 			$selection->where(self::VIDEO_STATE, $stateIDs);
+			$selection->where(self::VIDEO_COMPLETE, 1);
 		}
 
 		// If level filtering is set
@@ -174,18 +176,24 @@ class VideoManager
 
 		// Get any or only accessible video
 		if (!$all) {
+
+			// Check if video is complete
+			if (!$video->complete) {
+				return null;
+			}
+
 			$state = $video->ref(self::TABLE_VIDEO_STATE, self::VIDEO_STATE)->name;
 
 			switch ($state) {
-				case 'done_public':
+				case 'public':
 					return $video;
 
-				case 'done_logged_in':
+				case 'logged_in':
 					if ($loggedIn) {
 						return $video;
 					}
 
-				case 'done_private':
+				case 'private':
 					if ($passphrase === null || $passphrase != $video->public_link) {
 						return null;
 					}
@@ -400,14 +408,13 @@ class VideoManager
 
 
 	/**
-	 * Get available states for finished videos.
+	 * Get available states.
 	 *
 	 * @return array Array containing id => name;
 	 */
-	public function getDoneStates(): array
+	public function getStates(): array
 	{
 		return $this->database->table(self::TABLE_VIDEO_STATE)
-			->where(self::STATE_NAME .' LIKE "done_%"')
 			->fetchPairs(self::STATE_ID, self::STATE_NAME)
 		;
 	}

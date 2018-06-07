@@ -113,6 +113,27 @@ CREATE FUNCTION `database_version` () RETURNS varchar(5) CHARACTER SET 'utf8'
 RETURN "1.5";$$
 DELIMITER ;
 
+-- 1.5 => 1.6 --
+ALTER TABLE `prednasky`.`video`
+ADD COLUMN `complete` TINYINT(1) NOT NULL AFTER `state`;
+UPDATE `prednasky`.`video_state` SET `name`='private' WHERE  `id`=1;
+UPDATE `prednasky`.`video_state` SET `name`='logged_in' WHERE  `id`=2;
+UPDATE `prednasky`.`video` SET `state`=1 WHERE `state`=2;
+UPDATE `prednasky`.`video` SET `state`=1 WHERE `state`=3;
+DELETE FROM `prednasky`.`video_state` WHERE  `id`=3;
+UPDATE `prednasky`.`video` SET `state`=2 WHERE `state`=4;
+DELETE FROM `prednasky`.`video_state` WHERE  `id`=4;
+START TRANSACTION;
+INSERT INTO `prednasky`.`video_state` (`id`, `name`) VALUES ('3', 'public');
+UPDATE `prednasky`.`video` SET `state`='3' WHERE  `state`=5;
+DELETE FROM `prednasky`.`video_state` WHERE  `id`=5;
+COMMIT;
+DROP function IF EXISTS `prednasky`.`database_version`;
+DELIMITER $$
+USE `prednasky`$$
+CREATE FUNCTION `database_version` () RETURNS varchar(5) CHARACTER SET 'utf8'
+RETURN "1.6";$$
+
 -- END HERE --
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

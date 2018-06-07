@@ -7,6 +7,7 @@ use Nette;
 use Nette\Database\Context;
 use Nette\Database\Table\ActiveRow;
 use Nette\Database\Table\Selection;
+use \Tracy\Debugger;
 
 
 class FileManager
@@ -164,16 +165,18 @@ class FileManager
 		$filesList = fopen($pathFilesList, 'r');
 
 		if ($filesList === false) {
-			\Tracy\Debugger::log("FileManager: import files from token # '".$token->id.", no file 'files.list'.", \Tracy\ILogger::INFO);
+			Debugger::log("FileManager: import files from token # '".$token->id.", no file 'files.list'.", \Tracy\ILogger::INFO);
 			return false;
 		}
+
+		$newVideoFile = false;
 
 		while (($line = fgets($filesList)) != null) {
 			$line = trim($line);
 			$expFilePath = explode('DATA-EXPORT', $line, 2);
 
 			if (count($expFilePath) != 2) {
-				\Tracy\Debugger::log("FileManager: Unexpected file path '".$line."'", \Tracy\ILogger::ERROR);
+				Debugger::log("FileManager: Unexpected file path '".$line."'", \Tracy\ILogger::ERROR);
 				return false;
 			}
 
@@ -184,6 +187,9 @@ class FileManager
 					break;
 				default:
 					$fileType = mime_content_type($line);
+					if (strpos($fileType, 'video/') !== false) {
+						$newVideoFile = true;
+					}
 			}
 
 			$fileId = $this->newFile($fileType, $expFilePath[1]);
@@ -191,6 +197,16 @@ class FileManager
 				return false;
 			}
 			$this->linkVideoFile((int) $token->video, $fileId);
+		}
+
+		// Video has now at least one video file, mark as completed
+		if ($newVideoFile) {
+			$this->database->table(VideoManager::TABLE_VIDEO)
+				->get($token->video)
+				->update([
+					VideoManager::VIDEO_COMPLETE => 1
+				])
+			;
 		}
 
 		return true;

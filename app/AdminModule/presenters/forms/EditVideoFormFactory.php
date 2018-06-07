@@ -87,7 +87,7 @@ class EditVideoFormFactory
 			->setAttribute('class', 'form-control clockpicker')
 		;
 
-		$visibilityValues = $this->videoManager->getDoneStates();
+		$visibilityValues = $this->videoManager->getStates();
 		foreach ($visibilityValues as $id => $value) {
 			$visibilityValues[$id] = 'video_state.' . $value;
 		}
