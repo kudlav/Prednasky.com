@@ -36,6 +36,13 @@ class VideoPresenter extends BasePresenter
 		if ($this->template->shareLink !== null) {
 			$this->template->shareLink = $this->template->baseUrl . $this->link(':Front:Video:default', [$id, 'p' => $this->template->shareLink]);
 		}
+
+		$this->template->thumbnail = $this->fileManager->getVideoThumbnail($id);
+		if ($this->template->thumbnail !== null) {
+			$this->template->thumbnail = $this->parameters['paths']['url_data_export'] .'/'. $this->template->thumbnail->path;
+		}
+
+		$this->template->prevPage = $this->getHttpRequest()->getReferer() ?? $this->link('Videos:published');
 	}
 
 	/**

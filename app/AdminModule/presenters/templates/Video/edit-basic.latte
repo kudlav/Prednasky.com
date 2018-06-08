@@ -76,11 +76,16 @@
     </label>
     <a href="#" class="btn btn-outline-primary">Video editor</a>
     <div class="form-group my-2">
-      <label>
-        <b>Thumbnail:</b>
-      </label>
-      <img class="d-block img-fluid w-75" src="https://pingendo.com/assets/photos/wireframe/photo-1.jpg"> </div>
-    <a href="#" class="btn btn-outline-primary">Upload thumbnail</a>
+      <label>Thumbnail:</label>
+      <div class="d-block position-relative">
+        {ifset $thumbnail}
+          <img style="max-height: 160px; max-width: 100%" src="{$thumbnail}">
+        {else}
+          <i class="d-block media-box fa fa-film text-muted w-100 text-center fa-4x py-5"></i>
+        {/ifset}
+      </div>
+      <a href="#" class="btn btn-outline-primary my-2">Upload thumbnail</a>
+    </div>
   </div>
 </div>
 <div class="row">
