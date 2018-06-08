@@ -116,6 +116,8 @@
 		<!-- ClockPicker script -->
 		<script type="text/javascript" src="{$basePath}/node_modules/clockpicker/dist/bootstrap4-clockpicker.min.js"></script>
 
+		<script src="{$basePath}/tinymce/tinymce.min.js"></script>
+
 		<!-- Initialize nette.ajax.js after loading the DOM. -->
 		<script>
 			$.nette.init();
@@ -124,6 +126,26 @@
 		<script type="text/javascript">
         $('.clockpicker').clockpicker();
 		</script>
+
+		<script>
+        tinymce.init({
+            selector: "textarea",
+            plugins: [
+                "advlist autolink link image lists charmap hr anchor",
+                "code fullscreen media nonbreaking",
+                "table textpattern"
+            ],
+            mobile: {
+                theme: 'mobile'
+            },
+
+            toolbar1: "bold italic underline strikethrough subscript superscript | alignleft aligncenter alignright alignjustify | formatselect fontsizeselect table",
+            toolbar2: "undo redo | bullist numlist | outdent indent blockquote | link unlink image media | nonbreaking | hr removeformat | charmap | fullscreen code",
+            menubar: false,
+            toolbar_items_size: 'small'{_tinymce.language|noescape}
+        });
+		</script>
+
 	{/block}
 
 </body>
