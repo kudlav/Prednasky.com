@@ -30,7 +30,7 @@ class VideoCard extends Control
 
 		$thumbnail = $this->fileManager->getVideoThumbnail((int) $video->id);
 		if($thumbnail) {
-			$this->template->thumbnail = $this->filepath . '/' . $thumbnail->ref(FileManager::TABLE_FILE)->path;
+			$this->template->thumbnail = $this->filepath . '/' . $thumbnail->path;
 		}
 		else {
 			$this->template->thumbnail = null;

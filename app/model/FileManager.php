@@ -118,7 +118,7 @@ class FileManager
 	{
 		$type = 'thumbnail';
 		$result = $this->getVideoFileByType($videoId, $type)->fetch();
-		return $result!==false ? $result : null;
+		return $result!==false ? $result->ref(FileManager::TABLE_FILE) : null;
 	}
 
 	/**

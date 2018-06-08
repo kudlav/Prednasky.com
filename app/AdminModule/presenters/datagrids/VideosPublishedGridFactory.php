@@ -44,8 +44,8 @@ class VideosPublishedGridFactory
 			->setAlign('center')
 			->setRenderer(function ($item) {
 				$thumbnail = $this->fileManager->getVideoThumbnail($item->id);
-				if ($thumbnail != null) {
-					return '<img style="height:2rem" src="'. $this->urlDataExport .'/'. $thumbnail->ref(FileManager::TABLE_FILE)->path .'"></div>';
+				if ($thumbnail !== null) {
+					return '<img style="height:2rem" src="'. $this->urlDataExport .'/'. $thumbnail->path .'"></div>';
 				}
 				return '<i class="fa fa-film text-muted fa-lg d-block py-1"></i>';
 			});
