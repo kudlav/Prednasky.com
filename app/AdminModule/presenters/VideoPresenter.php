@@ -41,32 +41,28 @@ class VideoPresenter extends BasePresenter
 	/**
 	 * @secured
 	 */
-	public function actionLink(int $id)
+	public function handleAddLink(int $id)
 	{
-		$action = $this->getParameter('act');
-
-		if ($this->isAjax()) {
-			switch ($action) {
-
-				case 'add':
-					try {
-						$token = $this->videoManager->setShareLink($id);
-						$this->payload->message = $this->template->baseUrl . $this->link(':Front:Video:default', [$id, 'p' => $token]);
-						$this->payload->status = 'ok';
-					}
-					catch (\Exception $e) {
-						$this->payload->status = 'err';
-					}
-					break;
-
-				case 'del':
-					$this->payload->message = $this->videoManager->setShareLink($id, true);
-					$this->payload->status = 'ok';
-					break;
-
-			}
-			$this->sendPayload();
+		try {
+			$token = $this->videoManager->setShareLink($id);
+			$this->payload->message = $this->template->baseUrl . $this->link(':Front:Video:default', [$id, 'p' => $token]);
+			$this->payload->status = 'ok';
 		}
+		catch (\Exception $e) {
+			$this->payload->status = 'err';
+		}
+		$this->sendPayload();
+	}
+
+	/**
+	 * @secured
+	 */
+	public function handleDelLink(int $id)
+	{
+		$this->payload->message = $this->videoManager->setShareLink($id, true);
+		$this->payload->status = 'ok';
+
+		$this->sendPayload();
 	}
 
 	protected function createComponentEditVideoForm()

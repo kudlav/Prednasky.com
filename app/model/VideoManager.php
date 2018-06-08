@@ -441,6 +441,7 @@ class VideoManager
 	 * @param int $id Video ID.
 	 * @param bool $clear Set true to remove unique token.
 	 * @return null|string Token containing 32 chars.
+	 * @throws \Exception If random_bytes is unable to create secure token.
 	 */
 	public function setShareLink(int $id, bool $clear=false): ?string
 	{
