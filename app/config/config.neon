@@ -6,12 +6,11 @@
 
 parameters:
 	admin_email: 'xkudla15@vut.cz'
-	required_tags:
+	structure_tag:
 		- branch
 		- semester
 		- course
 		- type
-	available_tags:
 	user_role:
 		- guest
 		- student

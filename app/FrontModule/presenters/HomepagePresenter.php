@@ -46,7 +46,7 @@ class HomepagePresenter extends BasePresenter
 
 		// ListGroup (left menu)
 		if (!empty($tagValues['val'])) { // Show title when not empty list
-			$this->template->listGroupTitle = $this->parameters['required_tags'][$tagValues['lvl']];
+			$this->template->listGroupTitle = $this->parameters['structure_tag'][$tagValues['lvl']];
 		}
 		$this->template->listGroup = [];
 		foreach ($tagValues['val'] as $value) {
@@ -55,7 +55,7 @@ class HomepagePresenter extends BasePresenter
 
 		if (!empty($tags)) {
 			// Root tag, no link to upper tag
-			$this->template->listGroupBackText = $this->parameters['required_tags'][count($tags)-1];
+			$this->template->listGroupBackText = $this->parameters['structure_tag'][count($tags)-1];
 			$this->template->listGroupBackLink = implode('/', array_slice($tags, 0, -1));
 
 			// List of videos

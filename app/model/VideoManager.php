@@ -139,8 +139,8 @@ class VideoManager
 
 		// If level filtering is set
 		if ($level != null) {
-			for (; $level < count($this->parameters['required_tags']); $level++) { // If lower level, display all videos
-				$id = $this->issetTagValue($this->parameters['required_tags'][$level], null);
+			for (; $level < count($this->parameters['structure_tag']); $level++) { // If lower level, display all videos
+				$id = $this->issetTagValue($this->parameters['structure_tag'][$level], null);
 				$videosRow = $this->database->table(self::TABLE_VIDEO_TAG)->where(self::VIDEO_TAG_VIDEO, $videosId); // Get rows of suitable videos
 				$videosId = $videosRow->where(self::VIDEO_TAG_VIDEO, $id)->fetchPairs(null, self::VIDEO_TAG_VIDEO); // Get list of suitable videos
 			}
@@ -260,7 +260,7 @@ class VideoManager
 		if (empty($path)) {
 			return [
 				'lvl' => 0,
-				'val' => $this->getTagValues($this->parameters['required_tags'][0]),
+				'val' => $this->getTagValues($this->parameters['structure_tag'][0]),
 			];
 		}
 
@@ -269,8 +269,8 @@ class VideoManager
 		$pathIndex = 0;
 
 		// Get get list of required tags. Videos have to contain all of them.
-		for ($tagLevel; $tagLevel<count($this->parameters['required_tags']); $tagLevel++) {
-			$id = $this->issetTagValue($this->parameters['required_tags'][$tagLevel], $path[$pathIndex]);
+		for ($tagLevel; $tagLevel<count($this->parameters['structure_tag']); $tagLevel++) {
+			$id = $this->issetTagValue($this->parameters['structure_tag'][$tagLevel], $path[$pathIndex]);
 			if ($id !== null) {
 				$valuesId[] = $id;
 				$pathIndex++;
@@ -293,15 +293,15 @@ class VideoManager
 		}
 		$nestedTagValues['vid'] = $videosId;
 		// The lowest level, no nested tags, false while condition
-		$nestedTagValues['lvl'] = count($this->parameters['required_tags']);
+		$nestedTagValues['lvl'] = count($this->parameters['structure_tag']);
 		$nestedTagValues['val'] = [];
 		// While empty, try to go deeper
-		while (empty($nestedTagValues['val']) && isset($this->parameters['required_tags'][$tagLevel])) {
+		while (empty($nestedTagValues['val']) && isset($this->parameters['structure_tag'][$tagLevel])) {
 			$nestedTagValues['lvl'] = $tagLevel;
 			$values = $this->database->table(self::TABLE_VIDEO_TAG)
 				->where(self::VIDEO_TAG_VIDEO, $videosId)
 				->select('tag.name AS name, tag.value AS value')
-				->where('name', $this->parameters['required_tags'][$tagLevel])
+				->where('name', $this->parameters['structure_tag'][$tagLevel])
 				->fetchPairs(null, 'value')
 			;
 			$nestedTagValues['val'] = array_filter($values);
