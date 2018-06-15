@@ -13,6 +13,8 @@ use App\Model\Parameters;
  */
 abstract class BasePresenter extends Nette\Application\UI\Presenter
 {
+	use \Nextras\Application\UI\SecuredLinksPresenterTrait;
+
 	/** @persistent */
 	public $locale;
 
