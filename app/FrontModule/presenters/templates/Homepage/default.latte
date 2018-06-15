@@ -2,7 +2,7 @@
 
     <div class="container">
     <div n:if="!empty($breadcrumb)" class="row px-3">
-      <nav aria-label="breadcrumb">
+      <nav aria-label="breadcrumb" class="w-100">
         <ol class="breadcrumb bg-light">
           <li n:foreach="$breadcrumb as $level => $link" class="breadcrumb-item active"><a n:href="Homepage:default $link">{$level}</a></li>
         </ol>
