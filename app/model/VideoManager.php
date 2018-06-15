@@ -139,12 +139,23 @@ class VideoManager
 
 		// If level filtering is set
 		if ($level != null) {
-			for (; $level < count($this->parameters['structure_tag']); $level++) { // If lower level, display all videos
-				$id = $this->issetTagValue($this->parameters['structure_tag'][$level], null);
-				$videosRow = $this->database->table(self::TABLE_VIDEO_TAG)->where(self::VIDEO_TAG_VIDEO, $videosId); // Get rows of suitable videos
-				$videosId = $videosRow->where(self::VIDEO_TAG_VIDEO, $id)->fetchPairs(null, self::VIDEO_TAG_VIDEO); // Get list of suitable videos
-			}
 			$selection->where(self::VIDEO_ID, $videosId);
+
+			$tagCount = 0;
+			$tagIDs = [];
+			$thisLevelVideos = $this->database->table(self::TABLE_VIDEO_TAG);
+
+			for (; $level < count($this->parameters['structure_tag']); $level++) { // If lower level, display all videos
+				$tag = $this->getTag($this->parameters['structure_tag'][$level], null)->id;
+				$tagIDs[] = $tag;
+				$tagCount++;
+			}
+
+			$thisLevelVideos->where(self::VIDEO_TAG_TAG, $tagIDs);
+			$thisLevelVideos->group(self::VIDEO_TAG_VIDEO);
+			$thisLevelVideos->having('COUNT(*) = ?', $tagCount);
+
+			$selection->where(self::VIDEO_ID, $thisLevelVideos->fetchPairs(null, self::VIDEO_TAG_VIDEO));
 		}
 
 		$selection->order(self::VIDEO_PUBLISHED.' DESC');
@@ -312,9 +323,9 @@ class VideoManager
 
 		// Get get list of required tags. Videos have to contain all of them.
 		for ($tagLevel; $tagLevel<count($this->parameters['structure_tag']); $tagLevel++) {
-			$id = $this->issetTagValue($this->parameters['structure_tag'][$tagLevel], $path[$pathIndex]);
-			if ($id !== null) {
-				$valuesId[] = $id;
+			$tag = $this->getTag($this->parameters['structure_tag'][$tagLevel], $path[$pathIndex]);
+			if ($tag !== null) {
+				$valuesId[] = $tag->id;
 				$pathIndex++;
 				if (!isset($path[$pathIndex])) { // Done
 					break;
@@ -374,24 +385,20 @@ class VideoManager
 	}
 
 	/**
-	 * Return id of row from `video_has_tag` table.
+	 * Get row from TAG table using tag name and value.
 	 *
-	 * @param string $tag The tag name
-	 * @param string|null $value The value
-	 * @return int|null ID of row, or null when combination of name and value does't exit.
+	 * @param string $tagName
+	 * @param string|null $tagValue
+	 * @return ActiveRow|null
 	 */
-	private function issetTagValue(string $tag, $value): ?int
+	public function getTag(string $tagName, ?string $tagValue): ?ActiveRow
 	{
-		$row = $this->database->table(self::TABLE_TAG)
-			->where(self::TAG_NAME, $tag)
-			->where(self::TAG_VALUE, $value)
-			->fetch()
-		;
+		$result = $this->database->table(self::TABLE_TAG)
+			->where(self::TAG_NAME, $tagName)
+			->where(self::TAG_VALUE, $tagValue)
+			->fetch();
 
-		if ($row !== false) {
-			return (int) $row->id;
-		}
-		return null;
+		return $result!==false ? $result : null;
 	}
 
 	/**
@@ -516,23 +523,6 @@ class VideoManager
 			->get($id)
 			->update($values)
 		;
-	}
-
-	/**
-	 * Get row from TAG table using tag name and value.
-	 *
-	 * @param string $tagName
-	 * @param string|null $tagValue
-	 * @return ActiveRow|null
-	 */
-	public function getTag(string $tagName, ?string $tagValue): ?ActiveRow
-	{
-		$result = $this->database->table(self::TABLE_TAG)
-			->where(self::TAG_NAME, $tagName)
-			->where(self::TAG_VALUE, $tagValue)
-			->fetch();
-
-		return $result!==false ? $result : null;
 	}
 
 }
