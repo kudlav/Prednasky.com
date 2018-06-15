@@ -35,45 +35,10 @@
         </div>
       </div>
     </div>
-    <div class="form-group my-2">
-      {label abstract}
-      {input abstract}
-    </div>
-    <div class="form-group my-2">
-      <label>
-        <b>Tags:</b>
-      </label>
-      <div class="row my-1">
-        <div class="col-md-3 align-self-center" style="transition: all 0.25s;">
-          <p class="m-0 px-2">Semester:</p>
-        </div>
-        <div class="col-md-8" style="transition: all 0.25s;">
-          <input type="search" name="semester" class="form-control" placeholder="Start typing...">
-        </div>
-      </div>
-      <div class="row my-1">
-        <div class="col-md-3 align-self-center" style="transition: all 0.25s;">
-          <p class="m-0 px-2">Course:</p>
-        </div>
-        <div class="col-md-8" style="transition: all 0.25s;">
-          <input type="search" name="course" class="form-control" placeholder="Start typing...">
-        </div>
-      </div>
-      <div class="row my-1">
-        <div class="col-md-3 align-self-center" style="transition: all 0.25s;">
-          <p class="m-0 px-2">Type:</p>
-        </div>
-        <div class="col-md-8" style="transition: all 0.25s;">
-          <input type="search" name="type" class="form-control" placeholder="Start typing...">
-        </div>
-      </div>
-    </div>
   </div>
   <div class="col-md-6">
     <br>
-    <label>
-      <b class="">Edit video: &nbsp;&nbsp;</b>
-    </label>
+    <label><b class="">Edit video:</b></label>
     <a href="#" class="btn btn-outline-primary">Video editor</a>
     <div class="form-group my-2">
       <label>Thumbnail:</label>
@@ -90,6 +55,17 @@
 </div>
 <div class="row">
   <div class="col-12">
+    <div class="form-group my-2">
+      {label abstract}
+      {input abstract}
+    </div>
+    <div class="form-group my-2">
+      <label>Tags:</label>
+      <div n:foreach="$structureTags as $tag" class="form-group row my-1">
+        <div class="col-md-3 align-self-center"><p class="m-0 px-2">{_'config.'. $tag|capitalize}:</p></div>
+        <div class="col-md-8">{input $tag}</div>
+      </div>
+    </div>
     <div class="form-group my-2">
       <label>
         <b>People:</b>
@@ -150,14 +126,8 @@
         </div>
       </div>
       <div class="row my-4">
-        <div class="col-md-2">
-          <a href="#">
-            <button class="btn btn-primary" type="button">Save</button>
-          </a>
-        </div>
-        <div class="col-md-8">
-          <a href="#" class="btn btn-outline-danger">Delete video</a>
-        </div>
+        <div class="col-md-2">{input save}</div>
+        <div class="col-md-8"><a href="#" class="btn btn-outline-danger">Delete video</a></div>
       </div>
     </div>
   </div>

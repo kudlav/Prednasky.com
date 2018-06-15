@@ -9,3 +9,7 @@
 'login_cas_ok' : 'Přihlášení pomocí CAS FIT VUT proběhlo úspěšně.'
 'login_cas_err' : 'Přihlášení pomocí CAS FIT VUT se nezdařilo, zkuste to znovu.'
 'logout_ok' : 'Odhlášení úspěšné.'
+'save_ok' : 'Změny byly úspěšně uloženy.'
+'save_no_change' : 'Uloženo beze změny.'
+'save_failed' : 'Provedené změny nebylo možné uložit!'
+'video_tag_failed' : 'Videu nebylo možné nastavit tag "%name%" s hodnotou "%value%"!'

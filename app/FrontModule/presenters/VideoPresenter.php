@@ -38,9 +38,9 @@ class VideoPresenter extends BasePresenter
 		$path = '';
 		foreach ($this->parameters['structure_tag'] as $level) {
 			$item = $this->videoManager->getVideoTagValue($id, $level);
-			if ($item != null) {
-				$path .= $item . '/';
-				$this->template->listGroup[$item] = $path;
+			if ($item !== null && $item->value !== null) {
+				$path .= $item->value .'/';
+				$this->template->listGroup[$item->value] = $path;
 			}
 		}
 

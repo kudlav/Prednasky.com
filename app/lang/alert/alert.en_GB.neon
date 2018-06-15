@@ -9,3 +9,7 @@
 'login_cas_ok' : 'You have been logged in via CAS FIT BUT.'
 'login_cas_err' : 'CAS FIT BUT authentication failed, try it again.'
 'logout_ok' : 'You have been logged out.'
+'save_ok' : 'Changes successfully saved.'
+'save_no_change' : 'Saved but nothing was changed.'
+'save_failed' : 'Saving the changes failed!'
+'video_tag_failed' : 'Can not set a tag "%name%" with a value of "%value%"!'

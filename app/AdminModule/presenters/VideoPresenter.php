@@ -8,6 +8,7 @@ use App\Model\FileManager;
 use App\Model\VideoManager;
 use App\AdminModule\Forms\EditVideoFormFactory;
 use Kdyby\Translation\Translator;
+use Nette\Application\UI\Form;
 
 
 class VideoPresenter extends BasePresenter
@@ -42,7 +43,8 @@ class VideoPresenter extends BasePresenter
 			$this->template->thumbnail = $this->parameters['paths']['url_data_export'] .'/'. $this->template->thumbnail->path;
 		}
 
-		$this->template->prevPage = $this->getHttpRequest()->getReferer() ?? $this->link('Videos:published');
+		$this->template->prevPage = $this->getHttpRequest()->getReferer() ?? $this->link('Videos:');
+		$this->template->structureTags =  $this->parameters['structure_tag'];
 	}
 
 	/**
@@ -74,7 +76,9 @@ class VideoPresenter extends BasePresenter
 
 	protected function createComponentEditVideoForm()
 	{
-		$factory = new EditVideoFormFactory($this->videoManager, $this->presenter, $this->translator);
-		return $factory->create($this->template->video);
+		$video = $this->videoManager->getVideoById((int) $this->getParameter('id'), true);
+		$factory = new EditVideoFormFactory($this->videoManager, $this->presenter, $this->translator, $video, $this->parameters['structure_tag']);
+		$form = $factory->create();
+		return $form;
 	}
 }

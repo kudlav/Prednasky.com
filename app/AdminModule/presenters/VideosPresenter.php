@@ -44,6 +44,11 @@ class VideosPresenter extends BasePresenter
 		//$this->grid->setTranslator($this->translator);
 	}
 
+	public function renderDefault(): void
+	{
+		$this->redirect('Videos:published');
+	}
+
 	public function renderPublished(): void
 	{
 		$this->sharedTemplateValues();

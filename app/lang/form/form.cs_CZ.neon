@@ -1,0 +1,8 @@
+# Project: 'prednasky.com'
+# Language-Team: 'Vladan Kudlac <vladankudlac@gmail.com>'
+# Content-Type: 'text/plain; charset=UTF-8'
+#
+# Language: 'cs_CZ'
+
+'video_empty_tag' : 'Tag "%tag%" nemůže být prázdný!'
+'video_empty_name' : 'Název videa nemůže být prázdný!'

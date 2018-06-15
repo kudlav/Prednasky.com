@@ -12,6 +12,11 @@
 
 {form editVideoForm}
 <div class="tab-content">
+  <div n:if="$form->hasErrors()" class="alert alert-danger my-3">
+    <ul class="m-0">
+      <li n:foreach="$form->errors as $error">{$error}</li>
+    </ul>
+  </div>
   <div id="basic" class="tab-pane fade show active">
     {include 'edit-basic.latte'}
   </div>

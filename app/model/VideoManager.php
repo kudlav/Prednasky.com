@@ -214,23 +214,65 @@ class VideoManager
 	 *
 	 * @param int $videoId ID of video.
 	 * @param string $tagLevel Name (level) of tag.
-	 * @return string|null Value of tag or null when the video has no tag at this level.
+	 * @return ActiveRow|null Value of tag or null when the video has no tag at this level.
 	 */
-	public function getVideoTagValue(int $videoId, string $tagLevel): ?string
+	public function getVideoTagValue(int $videoId, string $tagLevel): ?ActiveRow
 	{
 		$row = $this->database->table(self::TABLE_VIDEO_TAG)
 			->where(self::VIDEO_TAG_VIDEO, $videoId)
-			->select('tag.name AS name, tag.value AS value')
+			->select('tag.id AS id, tag.name AS name, tag.value AS value')
 			->where('name', $tagLevel)
 			->fetch()
 		;
 
-		if ($row) {
-			return (string) $row->value;
+		return $row!==false ? $row : null;
+	}
+
+	/**
+	 * Set tag - value to the video.
+	 *
+	 * @param int $videoId Id of video.
+	 * @param string $tag Tag name.
+	 * @param string $value Tag value.
+	 * @return bool True when tag was added/updated.
+	 */
+	public function setVideoTagValue(int $videoId, string $tag, ?string $value)
+	{
+		$currentVal = $this->getVideoTagValue((int) $videoId, $tag);
+
+		// Skip if value is already set
+		if ($currentVal === null || $currentVal->value !== $value) {
+
+			// Tag doesn't exist
+			$newTag = $this->getTag($tag, $value);
+			if ($newTag === null) {
+				return false;
+			}
+
+			// Remove existing tag
+			if ($currentVal !== null) {
+				$currentTag = $this->getTag($tag, $currentVal->value);
+				if ($currentTag !== null) {
+					$this->database->table(self::TABLE_VIDEO_TAG)
+						->where(self::VIDEO_TAG_VIDEO, $videoId)
+						->where(self::VIDEO_TAG_TAG, $currentTag->id)
+						->delete()
+					;
+				}
+			}
+
+			$result = $this->database->table(self::TABLE_VIDEO_TAG)->insert([
+				self::VIDEO_TAG_VIDEO => $videoId,
+				self::VIDEO_TAG_TAG => $newTag->id,
+			]);
+
+			// Failed to update
+			if (!$result) {
+				return false;
+			}
 		}
-		else{
-			return null;
-		}
+
+		return true;
 	}
 
 	/**
@@ -406,7 +448,6 @@ class VideoManager
 		return $videos;
 	}
 
-
 	/**
 	 * Get available states.
 	 *
@@ -460,6 +501,38 @@ class VideoManager
 		;
 
 		return $token;
+	}
+
+	/**
+	 * Update multiple values of existing video.
+	 *
+	 * @param int $id Video to update.
+	 * @param array $values New values to insert.
+	 * @return bool True on success.
+	 */
+	public function updateVideo(int $id, array $values): bool
+	{
+		return $this->database->table(self::TABLE_VIDEO)
+			->get($id)
+			->update($values)
+		;
+	}
+
+	/**
+	 * Get row from TAG table using tag name and value.
+	 *
+	 * @param string $tagName
+	 * @param string|null $tagValue
+	 * @return ActiveRow|null
+	 */
+	public function getTag(string $tagName, ?string $tagValue): ?ActiveRow
+	{
+		$result = $this->database->table(self::TABLE_TAG)
+			->where(self::TAG_NAME, $tagName)
+			->where(self::TAG_VALUE, $tagValue)
+			->fetch();
+
+		return $result!==false ? $result : null;
 	}
 
 }
