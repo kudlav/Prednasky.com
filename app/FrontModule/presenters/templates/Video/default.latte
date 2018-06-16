@@ -27,9 +27,9 @@
         </div>
         <div class="row">
           <div class="col-md-6">
-            <p class="lead">{_'Published'}: {$video->published|date:'j. n. Y - g:i'}
+            <p class="lead">{_'Published'}: {$video->published|date:'j. n. Y - H:i'}
               {ifset $video->record_begin, $video->record_end}
-              <br>{_'Recorded'}: {$video->record_begin|date:'j. n. Y g:i'}{$video->record_end|date:'-g:i'}</p>
+              <br>{_'Recorded'}: {$video->record_begin|date:'j. n. Y H:i'}{$video->record_end|date:'-H:i'}</p>
               {/ifset}
           </div>
           <div class="col-md-6">

@@ -148,6 +148,10 @@ class EditVideoFormFactory
 			VideoManager::VIDEO_ABSTRACT => $values->abstract,
 		];
 
+		if ($this->video->published === null && $values->visibility !== 1) {
+			$data[VideoManager::VIDEO_PUBLISHED] = date('Y-m-d H:i:s');
+		}
+
 		$change = false;
 
 		try {
