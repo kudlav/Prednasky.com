@@ -24,7 +24,15 @@ class UserManager implements Security\IAuthenticator
 		USER_RIGHT_GROUP = 'right_group',
 		USER_INSTITUTION = 'institution',
 		USER_WEB = 'personal_web',
-		USER_ACTIVE = 'active'
+		USER_ACTIVE = 'active',
+
+		TABLE_RIGHT = 'right',
+		RIGHT_ID = 'id',
+		RIGHT_USER = 'user_id',
+
+		TABLE_RIGHT_TAG = 'right_has_tag',
+		RIGHT_TAG_RIGHT = 'right_id',
+		RIGHT_TAG_TAG = 'tag_id'
 	;
 
 	/**
@@ -112,6 +120,12 @@ class UserManager implements Security\IAuthenticator
 		return $result!==false ? $result : null;
 	}
 
+	/**
+	 * Check whether the CAS validation is required.
+	 *
+	 * @param IIdentity|null $identity
+	 * @return bool
+	 */
 	public function casExpireCheck(?IIdentity $identity): bool
 	{
 		if ($identity !== null) {
@@ -122,5 +136,59 @@ class UserManager implements Security\IAuthenticator
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Get array of user courses.
+	 *
+	 * @param int $userId
+	 * @return array Items of array are rights (arrays) containing tags in format: [tagName => ActiveRow].
+	 */
+	public function getUserCourses(int $userId): array
+	{
+		$rightArr = [];
+
+		$rightTable = $this->database->table(self::TABLE_RIGHT)
+			->where(self::RIGHT_USER, $userId)
+		;
+
+		foreach ($rightTable as $right) {
+			$tagArr = [];
+			foreach ($right->related(self::TABLE_RIGHT_TAG) as $rightTag) {
+				$tag = $rightTag->ref(VideoManager::TABLE_TAG);
+				$tagArr[$tag->name] = $tag;
+			}
+			$rightArr[] = $tagArr;
+		}
+
+		return $rightArr;
+	}
+
+	/**
+	 * Format result of getUserCourses for select.
+	 *
+	 * @param array $rightArr Array obtained from getUserCourses.
+	 * @param array $structureTags 'structure_tag' from config.
+	 * @return array Rights in format IDs as key, values as value: [0-1-84-32 => 'Lectures/2017/IMA/Demo']
+	 */
+	public function formatUserCoursesSelect(array $rightArr, array $structureTags): array
+	{
+		$selectItems = [];
+
+		// Go through rights
+		foreach ($rightArr as $right) {
+			$ids = [];
+			$values = [];
+			// Sort tags in right according to structure_tag config
+			foreach ($structureTags as $tagName) {
+					$ids[] = $right[$tagName]->id;
+				if ($right[$tagName]->value !== null) {
+					$values[] = $right[$tagName]->value;
+				}
+			}
+			$selectItems[implode('-', $ids)] = implode('/', $values);
+		}
+
+		return $selectItems;
 	}
 }

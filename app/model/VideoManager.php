@@ -169,6 +169,37 @@ class VideoManager
 	}
 
 	/**
+	 * Get videos with tags. Any tag with NULL value is skipped.
+	 *
+	 * @param array $tagIds Array containing tag IDs.
+	 * @return Selection Return rows in `video` table.
+	 */
+	public function getVideosByTag(array $tagIds): Selection
+	{
+		$tagRows = $this->database->table(self::TABLE_TAG)
+			->where(self::TAG_ID, $tagIds);
+
+		$filteredTagIds = [];
+		foreach ($tagRows as $tag) {
+			if ($tag->value !== null) {
+				$filteredTagIds[] = $tag->id;
+			}
+		}
+
+		$videoIds = $this->database->table(self::TABLE_VIDEO_TAG)
+			->where(self::VIDEO_TAG_TAG, $filteredTagIds)
+			->group(self::VIDEO_TAG_VIDEO)
+			->having('COUNT(*) = ?', count($filteredTagIds))
+			->fetchPairs(null, self::VIDEO_TAG_VIDEO)
+		;
+
+		$selection = $this->database->table(self::TABLE_VIDEO)
+			->where(self::VIDEO_ID, $videoIds);
+
+		return $selection;
+	}
+
+	/**
 	 * Get video row by ID.
 	 *
 	 * @param int $id ID of video.

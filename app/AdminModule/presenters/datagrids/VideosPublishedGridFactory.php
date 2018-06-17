@@ -37,8 +37,6 @@ class VideosPublishedGridFactory
 	{
 		$grid = new DataGrid($presenter, 'datagrid');
 
-		$grid->setDataSource($this->videoManager->getAllVideos('created DESC'));
-
 		$grid->addColumnText(null, '')
 			->setTemplateEscaping(FALSE)
 			->setAlign('center')

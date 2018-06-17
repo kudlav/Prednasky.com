@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\AdminModule\Presenters;
 
+use App\Model\UserManager;
 use Nette;
 use App\Model\FileManager;
 use Kdyby\Translation\Translator;
@@ -16,16 +17,18 @@ class VideosPresenter extends BasePresenter
 	/**
 	 * @var VideoManager $videoManager
 	 * @var FileManager $fileManager
+	 * @var UserManager $userManager
 	 * @var Translator $translator
 	 * @var DataGrid $grid
 	 */
-	private $videoManager, $fileManager, $translator, $grid;
+	private $videoManager, $fileManager, $translator, $userManager, $grid;
 
-	public function __construct(VideoManager $videoManager, FileManager $fileManager, Translator $translator)
+	public function __construct(VideoManager $videoManager, FileManager $fileManager, UserManager $userManager, Translator $translator)
 	{
 		$this->videoManager = $videoManager;
 		$this->fileManager = $fileManager;
 		$this->translator = $translator;
+		$this->userManager = $userManager;
 	}
 
 	public function startup(): void
@@ -51,6 +54,16 @@ class VideosPresenter extends BasePresenter
 
 	public function renderPublished(): void
 	{
+		$courses = $this->userManager->getUserCourses((int) $this->user->id);
+		$this->template->courses = $this->userManager->formatUserCoursesSelect($courses, $this->parameters['structure_tag']);
+
+		// Set default data source
+		if ($this->grid->getDataSource() === null) {
+			reset($this->template->courses);
+			$tagIds = explode('-', key($this->template->courses));
+			$this->grid->setDataSource($this->videoManager->getVideosByTag($tagIds));
+		}
+
 		$this->sharedTemplateValues();
 		$this->template->tab = 1;
 	}
@@ -76,5 +89,10 @@ class VideosPresenter extends BasePresenter
 	{
 		$this->template->processingCnt = 0;
 		$this->template->draftCnt = 0;
+	}
+
+	public function handleSetCourse(string $course) {
+		$this->grid->setDataSource($this->videoManager->getVideosByTag(explode('-',$course)));
+		$this->redrawControl('datagrid');
 	}
 }

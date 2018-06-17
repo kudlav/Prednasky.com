@@ -1,5 +1,32 @@
 {layout 'layout.latte'}
 
+{define selectizeCourseSelect}
+<script>
+    function setCourse(value) {
+        let www = {plink Videos:published} + '?do=setCourse&course=';
+        let jqXHR = $.nette.ajax(www+value);
+    }
+
+    $('#select-course').selectize({
+        onChange: function(value){ setCourse(value); }
+    });
+</script>
+{/define}
+
 {block data}
-  {control datagrid}
+
+  <div class="row mt-3">
+    <div class="col-sm-2 pr-0">
+      <label for="select-course" class="m-0 lead font-weight-normal">Výběr kurzu:</label>
+    </div>
+    <div class="col-sm-10">
+      <select id="select-course">
+        <option n:foreach="$courses as $id => $course" value="{$id}">{$course}</option>
+      </select>
+    </div>
+  </div>
+
+  {snippet datagrid}
+    {control datagrid}
+  {/snippet}
 {/block}
