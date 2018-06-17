@@ -70,24 +70,18 @@ DELIMITER ;
 
 -- 1.4 => 1.5 --
 CREATE TABLE IF NOT EXISTS `prednasky`.`right` (
-  `user_id` INT(10) UNSIGNED NOT NULL,
-  `tag_id` INT(10) UNSIGNED NOT NULL,
-  PRIMARY KEY (`user_id`, `tag_id`),
-  INDEX `fk_user_has_tag_tag1_idx` (`tag_id` ASC),
-  INDEX `fk_user_has_tag_user1_idx` (`user_id` ASC),
-  CONSTRAINT `fk_user_has_tag_user1`
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id` INT UNSIGNED NOT NULL,
+  INDEX `fk_right_user1_idx` (`user_id` ASC),
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC),
+  CONSTRAINT `fk_right_user1`
     FOREIGN KEY (`user_id`)
     REFERENCES `prednasky`.`user` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_user_has_tag_tag1`
-    FOREIGN KEY (`tag_id`)
-    REFERENCES `prednasky`.`tag` (`id`)
-    ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_czech_ci;
+DEFAULT CHARACTER SET = utf8;
 CREATE TABLE IF NOT EXISTS `prednasky`.`right_has_tag` (
   `right_id` INT(10) UNSIGNED NOT NULL,
   `tag_id` INT(10) UNSIGNED NOT NULL,
