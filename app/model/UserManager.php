@@ -60,7 +60,7 @@ class UserManager implements Security\IAuthenticator
 		// Get user according to CAS id
 		$user = $this->getCasUser($someIdFromCas);
 		if ($user === null) {
-			$user = $this->newUser("XXX", "XXX", 3);
+			$user = $this->newUser("XXX", "XXX", 3, 1, $someIdFromCas);
 		}
 
 		if ($user == null) {
@@ -71,7 +71,7 @@ class UserManager implements Security\IAuthenticator
 		$data = $user->toArray();
 		$data['cas_check'] = new \DateTime();
 
-		return new Identity($someIdFromCas, $roles, $data); // whatever does it return instead of two null
+		return new Identity($data['id'], $roles, $data); // whatever does it return instead of two null
 	}
 
 	/**
