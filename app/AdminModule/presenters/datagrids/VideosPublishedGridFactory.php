@@ -61,14 +61,14 @@ class VideosPublishedGridFactory
 			->setAlign('center')
 			->setRenderer(function ($item) {
 				$state = $item->ref(VideoManager::VIDEO_STATE)->name;
-				if (strpos($state, '_public') !== false) {
+				if ($state == 'public') {
 					return '<i class="fa fa-globe" aria-hidden="true"></i>';
 				}
-				elseif (strpos($state, '_logged_in') !== false) {
+				elseif ($state == 'logged_in') {
 					return '<i class="fa fa-users" aria-hidden="true"></i>';
 				}
-				elseif (strpos($state, '_private') !== false) {
-					if ($item->public_link != null) {
+				elseif ($state == 'private') {
+					if ($item->public_link !== null) {
 						return '<i class="fa fa-link fa-lg" aria-hidden="true"></i>';
 					}
 					return '<i class="fa fa-ban" aria-hidden="true"></i>';

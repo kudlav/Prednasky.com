@@ -15,6 +15,7 @@ class DashboardMenu extends Control
 
 		switch ($presenter->name) {
 			case 'Admin:Videos':
+			case 'Admin:Video':
 				$this->template->videos = true;
 			break;
 
