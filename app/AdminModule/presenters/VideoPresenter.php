@@ -16,6 +16,7 @@ class VideoPresenter extends BasePresenter
 	/**
 	 * @var VideoManager $videoManager
 	 * @var FileManager $fileManager
+	 * @var Translator $translator
 	 */
 	private $videoManager, $fileManager, $translator;
 

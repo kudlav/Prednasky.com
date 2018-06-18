@@ -21,14 +21,14 @@ class VideosPresenter extends BasePresenter
 	 * @var Translator $translator
 	 * @var DataGrid $grid
 	 */
-	private $videoManager, $fileManager, $translator, $userManager, $grid;
+	private $videoManager, $fileManager, $userManager, $translator, $grid;
 
 	public function __construct(VideoManager $videoManager, FileManager $fileManager, UserManager $userManager, Translator $translator)
 	{
 		$this->videoManager = $videoManager;
 		$this->fileManager = $fileManager;
-		$this->translator = $translator;
 		$this->userManager = $userManager;
+		$this->translator = $translator;
 	}
 
 	public function startup(): void
