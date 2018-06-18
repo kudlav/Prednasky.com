@@ -3,7 +3,7 @@
 {define selectizeCourseSelect}
 <script>
     function setCourse(value) {
-        let www = {plink Videos:published} + '?do=setCourse&course=';
+        let www = {plink Videos:published} + '?&course=';
         let jqXHR = $.nette.ajax(www+value);
     }
 

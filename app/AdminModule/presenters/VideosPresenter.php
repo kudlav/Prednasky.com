@@ -52,13 +52,17 @@ class VideosPresenter extends BasePresenter
 		$this->redirect('Videos:published');
 	}
 
-	public function renderPublished(): void
+	public function renderPublished(string $course=''): void
 	{
 		$courses = $this->userManager->getUserCourses((int) $this->user->id);
 		$this->template->courses = $this->userManager->formatUserCoursesSelect($courses, $this->parameters['structure_tag']);
 
+		if ($course != '') {
+			$this->grid->setDataSource($this->videoManager->getVideosByTag(explode('-',$course)));
+			$this->redrawControl('datagrid');
+		}
 		// Set default data source
-		if ($this->grid->getDataSource() === null) {
+		else {
 			reset($this->template->courses);
 			$tagIds = explode('-', key($this->template->courses));
 			$this->grid->setDataSource($this->videoManager->getVideosByTag($tagIds));
@@ -89,10 +93,5 @@ class VideosPresenter extends BasePresenter
 	{
 		$this->template->processingCnt = 0;
 		$this->template->draftCnt = 0;
-	}
-
-	public function handleSetCourse(string $course) {
-		$this->grid->setDataSource($this->videoManager->getVideosByTag(explode('-',$course)));
-		$this->redrawControl('datagrid');
 	}
 }
