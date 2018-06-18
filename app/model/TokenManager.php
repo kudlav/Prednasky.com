@@ -187,4 +187,14 @@ class TokenManager
 			->fetch();
 		return $result!==false ? $result : null;
 	}
+
+	/**
+	 * Get all templates
+	 *
+	 * @return Selection All rows in table `template`.
+	 */
+	public function getTemplates(): Selection
+	{
+		return $this->database->table(self::TABLE_TEMPLATE);
+	}
 }

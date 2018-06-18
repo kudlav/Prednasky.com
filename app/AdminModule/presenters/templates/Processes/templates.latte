@@ -1,4 +1,12 @@
 {layout 'layout.latte'}
 
 {block data}
+
+  <div class="row">
+    <div class="col-12 text-right">
+      <a n:href="Template:new" class="btn btn-outline-primary mx-3 mt-2">{_'Create new template'}</a>
+    </div>
+  </div>
+
+  {control datagrid}
 {/block}
