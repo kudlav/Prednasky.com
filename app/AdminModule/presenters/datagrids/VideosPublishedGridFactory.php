@@ -8,6 +8,7 @@ use App\Model\VideoManager;
 use App\Model\FileManager;
 use Nette\Application\UI\Presenter;
 use Ublaboo\DataGrid\DataGrid;
+use Kdyby\Translation\Translator;
 
 
 class VideosPublishedGridFactory
@@ -30,12 +31,15 @@ class VideosPublishedGridFactory
 
 	/**
 	 * @param Presenter $presenter
+	 * @param Translator $translator
 	 * @return DataGrid
 	 * @throws \Ublaboo\DataGrid\Exception\DataGridException
 	 */
-	public function create(Presenter $presenter): DataGrid
+	public function create(Presenter $presenter, Translator $translator): DataGrid
 	{
 		$grid = new DataGrid($presenter, 'datagrid');
+
+		$grid->setTranslator($translator);
 
 		$grid->addColumnText(null, '')
 			->setTemplateEscaping(FALSE)

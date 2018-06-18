@@ -39,7 +39,7 @@ class VideosPresenter extends BasePresenter
 
 			case 'published':
 				$gridFactory = new VideosPublishedGridFactory($this->videoManager, $this->fileManager, $this->parameters['paths']['url_data_export']);
-				$this->grid = $gridFactory->create($this);
+				$this->grid = $gridFactory->create($this, $this->translator);
 				break;
 
 		}
