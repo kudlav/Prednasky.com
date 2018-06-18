@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace App\AdminModule\Presenters;
 
-use App\Model\UserManager;
 use Nette;
-use App\Model\FileManager;
 use Kdyby\Translation\Translator;
-use App\Model\VideoManager;
 use Ublaboo\DataGrid\DataGrid;
 use App\AdminModule\Datagrids\VideosPublishedGridFactory;
+use App\Model\UserManager;
+use App\Model\VideoManager;
+use App\Model\FileManager;
 
 
 class VideosPresenter extends BasePresenter
@@ -43,8 +43,6 @@ class VideosPresenter extends BasePresenter
 				break;
 
 		}
-
-		//$this->grid->setTranslator($this->translator);
 	}
 
 	public function renderDefault(): void

@@ -63,19 +63,19 @@ class VideosPublishedGridFactory
 		$grid->addColumnText('state', 'State')
 			->setTemplateEscaping(FALSE)
 			->setAlign('center')
-			->setRenderer(function ($item) {
+			->setRenderer(function ($item) use ($translator) {
 				$state = $item->ref(VideoManager::VIDEO_STATE)->name;
 				if ($state == 'public') {
-					return '<i class="fa fa-globe" aria-hidden="true"></i>';
+					return '<i class="fa fa-globe" title="'. ucfirst($translator->translate('video_state.public')) .'" aria-hidden="true"></i>';
 				}
-				elseif ($state == 'logged_in') {
-					return '<i class="fa fa-users" aria-hidden="true"></i>';
+			elseif ($state == 'logged_in') {
+					return '<i class="fa fa-users" title="'. ucfirst($translator->translate('video_state.logged_in')) .'" aria-hidden="true"></i>';
 				}
 				elseif ($state == 'private') {
 					if ($item->public_link !== null) {
-						return '<i class="fa fa-link fa-lg" aria-hidden="true"></i>';
+						return '<i class="fa fa-link fa-lg" title="'. ucfirst($translator->translate('video_state.private')) .'" aria-hidden="true"></i>';
 					}
-					return '<i class="fa fa-ban" aria-hidden="true"></i>';
+					return '<i class="fa fa-ban" title="'. ucfirst($translator->translate('video_state.private')) .'" aria-hidden="true"></i>';
 				}
 				return '';
 			});
