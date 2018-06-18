@@ -34,7 +34,7 @@ class SignPresenter extends BasePresenter
 			$thisUrl = $this->getHttpRequest()->getUrl()->absoluteUrl;
 			$this->redirectUrl($this->parameters['cas']['url'] .'?'. $this->parameters['cas']['cookie'] .'&'. $thisUrl .'?cas=1');
 		}
-		$this->flashMessage("alert.login_cas_ok", 'info');
+		$this->flashMessage("alert.login_cas_ok", 'success');
 		$this->redirect('Homepage:default');
 	}
 
@@ -47,7 +47,7 @@ class SignPresenter extends BasePresenter
 			$this->redirectUrl($referer->absoluteUrl);
 		}
 		else {
-			$this->flashMessage("alert.logout_ok", 'info');
+			$this->flashMessage("alert.logout_ok", 'success');
 			$this->redirect('Homepage:default');
 		}
 	}
