@@ -61,9 +61,14 @@ class VideosPresenter extends BasePresenter
 		}
 		// Set default data source
 		else {
-			reset($this->template->courses);
-			$tagIds = explode('-', key($this->template->courses));
-			$this->grid->setDataSource($this->videoManager->getVideosByTag($tagIds));
+			if (empty($this->template->courses)) {
+				$this->grid->setDataSource([]);
+			}
+			else {
+				reset($this->template->courses);
+				$tagIds = explode('-', key($this->template->courses));
+				$this->grid->setDataSource($this->videoManager->getVideosByTag($tagIds));
+			}
 		}
 
 		$this->sharedTemplateValues();
