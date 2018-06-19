@@ -1,0 +1,29 @@
+{block content}
+
+<a class="btn btn-light align-text-bottom" href="{$prevPage}"><span class="fa fa-angle-left"></span> {_'Back'}</a>
+<h1 class="d-inline-block">{_'Edit template'}:</h1>
+
+{form editTemplateForm}
+
+  <div class="form-group my-2">
+    {label name}
+    {input name}
+  </div>
+  <div class="form-group my-2">
+    {label description}
+    {input description}
+  </div>
+  <div class="form-group my-2">
+    {label code}
+    {input code}
+  </div>
+  <div class="form-group my-2">
+    {label blocks}
+    {input blocks}
+  </div>
+  <div class="row my-4">
+    <div class="col-md-2">{input save}</div>
+    <div class="col-md-8"><a href="#" class="btn btn-outline-danger">{_'Delete video'}</a></div>
+  </div>
+
+{/form}

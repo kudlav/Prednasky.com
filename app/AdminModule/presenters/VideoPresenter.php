@@ -8,7 +8,6 @@ use App\Model\FileManager;
 use App\Model\VideoManager;
 use App\AdminModule\Forms\EditVideoFormFactory;
 use Kdyby\Translation\Translator;
-use Nette\Application\UI\Form;
 
 
 class VideoPresenter extends BasePresenter
@@ -79,7 +78,6 @@ class VideoPresenter extends BasePresenter
 	{
 		$video = $this->videoManager->getVideoById((int) $this->getParameter('id'), true);
 		$factory = new EditVideoFormFactory($this->videoManager, $this->presenter, $this->translator, $video, $this->parameters['structure_tag']);
-		$form = $factory->create();
-		return $form;
+		return $factory->create();
 	}
 }

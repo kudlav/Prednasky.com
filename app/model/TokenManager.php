@@ -48,11 +48,15 @@ class TokenManager
 		STATE_DONE = "done"
 	;
 
-	/** @var Context */
-	private $database;
+	/**
+	 * @var array $parameters
+	 * @var Context
+	 */
+	private $parameters, $database;
 
-	public function __construct(Context $database)
+	public function __construct(array $parameters, Context $database)
 	{
+		$this->parameters = $parameters;
 		$this->database = $database;
 	}
 
@@ -178,13 +182,25 @@ class TokenManager
 	 * Get the template by name.
 	 *
 	 * @param string $name Filename of template.
-	 * @return ActiveRow ActiveRow or null if there is no such template.
+	 * @return ActiveRow|null ActiveRow or null if there is no such template.
 	 */
 	public function getTemplateByName(string $name=""): ?ActiveRow
 	{
 		$result = $this->database->table(self::TABLE_TEMPLATE)
 			->where(self::TEMPLATE_NAME, $name)
 			->fetch();
+		return $result!==false ? $result : null;
+	}
+
+	/**
+	 * Get the template by ID.
+	 *
+	 * @param int $id ID of template.
+	 * @return ActiveRow|null ActiveRow or null if there is no such template.
+	 */
+	public function getTemplateById(int $id): ?ActiveRow
+	{
+		$result = $this->database->table(self::TABLE_TEMPLATE)->get($id);
 		return $result!==false ? $result : null;
 	}
 
@@ -196,5 +212,21 @@ class TokenManager
 	public function getTemplates(): Selection
 	{
 		return $this->database->table(self::TABLE_TEMPLATE);
+	}
+
+	/**
+	 * Get template code by template name.
+	 *
+	 * @param string $name Name of template
+	 * @return null|string Code of template or null when error occurs.
+	 */
+	public function getTemplateCode(string $name): ?string
+	{
+		$content = file_get_contents($this->parameters['paths']['path_templates'] .'/'. $name);
+		if ($content === false) {
+			Debugger::log("Token.php: Template '". $this->parameters['paths']['path_templates'] .'/'. $name ."' unreadable.", \Tracy\ILogger::ERROR);
+			return null;
+		}
+		return $content;
 	}
 }

@@ -8,7 +8,7 @@ use Nette\Utils\ArrayHash;
 use Nette\Database\Table\ActiveRow;
 use Nette\Application\UI\Form;
 use Nette\Application\UI\Presenter;
-use Kdyby\Translation\Translator;
+use Nette\Localization\ITranslator;
 use App\Model\VideoManager;
 
 
@@ -19,13 +19,13 @@ class EditVideoFormFactory
 	/**
 	 * @var VideoManager $videoManager
 	 * @var Presenter $presenter
-	 * @var Translator $translator
+	 * @var ITranslator $translator
 	 * @var ActiveRow $video
 	 * @var array $structureTags
 	 */
 	private $videoManager, $presenter, $translator, $video, $structureTags;
 
-	public function __construct(VideoManager $videoManager, Presenter $presenter, Translator $translator, ActiveRow $video, array $structureTags)
+	public function __construct(VideoManager $videoManager, Presenter $presenter, ITranslator $translator, ActiveRow $video, array $structureTags)
 	{
 		$this->videoManager = $videoManager;
 		$this->presenter = $presenter;
@@ -106,7 +106,7 @@ class EditVideoFormFactory
 		$form->addTextArea('abstract', 'Abstract')
 			->setDefaultValue($this->video->abstract)
 			->setAttribute('rows', '6')
-			->setAttribute('class', 'form-control')
+			->setAttribute('class', 'form-control tinymce')
 		;
 
 		$first = true;

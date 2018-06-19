@@ -135,9 +135,8 @@ class Token
 	public function submit(): int
 	{
 		// Load template
-		$file = file_get_contents($this->parameters['paths']['path_templates'].'/'.$this->template);
+		$file = $this->tokenManager->getTemplateCode($this->template);
 		if ($file === false) {
-			Debugger::log("Token.php: Template '".$this->parameters['paths']['path_templates'].'/'.$this->template."' became unreadable.", \Tracy\ILogger::ERROR);
 			return 0;
 		}
 

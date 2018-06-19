@@ -38,7 +38,7 @@ services:
 	- App\Model\Parameters(@container::getParameters())
 	- App\Model\VideoManager(@container::getParameters())
 	- App\Model\FileManager(@container::getParameters())
-	- App\Model\TokenManager
+	- App\Model\TokenManager(@container::getParameters())
 	- App\Model\UserManager(@container::getParameters())
 
 	acl:

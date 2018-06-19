@@ -6,3 +6,4 @@
 
 'video_empty_tag' : 'Tag "%tag%" cannot be empty!'
 'video_empty_name' : 'Name of video cannot be empty!'
+'template_empty_name' : 'Name of template cannot be empty!'
