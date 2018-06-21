@@ -11,6 +11,8 @@ parameters:
 		path_templates: ''
 		path_export: ''
 		path_wait: ''
+		callback_base_url: ''
+		datadir_base_url: ''
 
 		path_data_export: ''
 		url_data_export: ''

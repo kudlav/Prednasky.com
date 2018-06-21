@@ -556,4 +556,18 @@ class VideoManager
 		;
 	}
 
+	/**
+	 * Remove video by ID. Use when video doesn't have any dependencies (foreign keys).
+	 *
+	 * @param int $videoID
+	 * @return int
+	 */
+	public function removeVideo(int $videoID): int
+	{
+		return $this->database->table(self::TABLE_VIDEO)
+			->get($videoID)
+			->delete()
+		;
+	}
+
 }

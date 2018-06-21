@@ -13,3 +13,5 @@
 'save_no_change' : 'Saved but nothing was changed.'
 'save_failed' : 'Saving the changes failed!'
 'video_tag_failed' : 'Can not set a tag "%name%" with a value of "%value%"!'
+'run_task_ok' : 'Task was successfully created.'
+'run_task_failed' : 'Unable to run task!'

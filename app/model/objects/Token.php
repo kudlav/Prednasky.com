@@ -44,11 +44,7 @@ class Token
 		$this->created = new \Datetime();
 
 		// Default values
-		$this->values = [
-			'callback_base_url' => 'http://www.prednasky.com',
-			'datadir_base_url' => 'http://prednasky.fit.vutbr.cz',
-			'sge_priority' => 0
-		];
+		$this->values = $this->tokenManager->getTokenDefaults();
 	}
 
 

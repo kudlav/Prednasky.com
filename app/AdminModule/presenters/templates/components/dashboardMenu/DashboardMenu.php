@@ -20,6 +20,7 @@ class DashboardMenu extends Control
 			break;
 
 			case 'Admin:Processes':
+			case 'Admin:Template':
 				$this->template->processes = true;
 				break;
 

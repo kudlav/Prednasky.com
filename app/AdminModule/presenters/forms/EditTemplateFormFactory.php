@@ -77,6 +77,21 @@ class EditTemplateFormFactory
 	public function onSuccess(Form $form, ArrayHash $values): void
 	{
 
+		$data = [
+			TokenManager::TEMPLATE_NAME => $values->name,
+			TokenManager::TEMPLATE_BLOCKS => $values->blocks,
+			TokenManager::TEMPLATE_DESCRIPTION => $values->description
+		];
+
+		if ($this->tokenManager->updateTemplate((int) $this->template->id, $data, $values->code)) {
+			$this->presenter->flashMessage('alert.save_ok', 'success');
+			$this->presenter->redirect('Processes:templates');
+		}
+		else {
+			$this->presenter->flashMessage('alert.save_failed', 'danger');
+		}
+
+
 	}
 
 }
