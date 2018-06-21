@@ -90,7 +90,7 @@ class RunTemplateFormFactory
 		}
 		else {
 			$this->presenter->flashMessage('alert.run_task_ok', 'success');
-			$this->presenter->redirect('Processes:tokens');
+			$this->presenter->redirect('Video:edit', $videoID);
 		}
 	}
 
