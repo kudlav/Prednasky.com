@@ -86,7 +86,8 @@ class VideoManager
 			self::VIDEO_STATE => $state,
 			self::VIDEO_RECORD_BEGIN => $record_begin,
 			self::VIDEO_RECORD_END => $record_end,
-			self::VIDEO_ABSTRACT => $abstract
+			self::VIDEO_ABSTRACT => $abstract,
+			self::VIDEO_COMPLETE => 0
 		]);
 
 		if ($row) {
