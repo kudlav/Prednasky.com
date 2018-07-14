@@ -39,7 +39,7 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 		if ($this->userManager->casExpireCheck($this->user->getIdentity())) {
 			try {
 				$this->user->setExpiration(0);
-				$this->user->login($this->getHttpRequest()->getCookie($this->parameters['cas']['cookie']));
+				$this->user->login('1234'); // TODO $this->user->login($this->getHttpRequest()->getCookie($this->parameters['cas']['cookie']));
 			} catch (Nette\Security\AuthenticationException $e) {
 				$this->flashMessage("alert.logout_cas_timeout", 'info');
 			}
