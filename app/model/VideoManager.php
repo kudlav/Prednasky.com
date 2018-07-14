@@ -195,7 +195,8 @@ class VideoManager
 		;
 
 		$selection = $this->database->table(self::TABLE_VIDEO)
-			->where(self::VIDEO_ID, $videoIds);
+			->where(self::VIDEO_ID, $videoIds)
+		;
 
 		return $selection;
 	}

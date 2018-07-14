@@ -52,17 +52,24 @@ class VideosPublishedGridFactory
 				return '<i class="fa fa-film text-muted fa-lg d-block py-1"></i>';
 			});
 
-		$grid->addColumnText('name', 'Name');
+		$grid->addColumnText('name', 'Name')
+			->setSortable()
+		;
 
-		$grid->addColumnDateTime('created', 'Created')->setFormat('j. n. Y H:i');
+		$grid->addColumnDateTime('created', 'Created')->setFormat('j. n. Y H:i')
+			->setSortable()
+		;
 
-		$grid->addColumnText('duration', 'Duration')->setRenderer(function ($item) {
+		$grid->addColumnText('duration', 'Duration')
+			->setSortable()
+			->setRenderer(function ($item) {
 			return $item->duration != null ? gmdate("H:i:s", $item->duration) : null;
 		});
 
 		$grid->addColumnText('state', 'State')
 			->setTemplateEscaping(FALSE)
 			->setAlign('center')
+			->setSortable()
 			->setRenderer(function ($item) use ($translator) {
 				$state = $item->ref(VideoManager::VIDEO_STATE)->name;
 				if ($state == 'public') {
@@ -82,7 +89,10 @@ class VideosPublishedGridFactory
 
 		$grid->addAction('edit', '', 'Video:edit')
 			->setIcon('pencil')
-			->setClass('btn btn-light');
+			->setClass('btn btn-light')
+		;
+
+		$grid->sort = ['created' => 'DESC'];
 
 		return $grid;
 	}
