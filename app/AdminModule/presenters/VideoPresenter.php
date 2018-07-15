@@ -4,24 +4,27 @@ declare(strict_types=1);
 namespace App\AdminModule\Presenters;
 
 use Nette;
+use Kdyby\Translation\Translator;
 use App\Model\FileManager;
 use App\Model\VideoManager;
+use App\Model\UserManager;
 use App\AdminModule\Forms\EditVideoFormFactory;
-use Kdyby\Translation\Translator;
 
 
 class VideoPresenter extends BasePresenter
 {
 	/**
 	 * @var VideoManager $videoManager
+	 * @var UserManager $userManager
 	 * @var FileManager $fileManager
 	 * @var Translator $translator
 	 */
-	private $videoManager, $fileManager, $translator;
+	private $videoManager, $userManager, $fileManager, $translator;
 
-	public function __construct(VideoManager $videoManager, FileManager $fileManager, Translator $translator)
+	public function __construct(VideoManager $videoManager, UserManager $userManager, FileManager $fileManager, Translator $translator)
 	{
 		$this->videoManager = $videoManager;
+		$this->userManager = $userManager;
 		$this->fileManager = $fileManager;
 		$this->translator = $translator;
 	}
@@ -77,7 +80,7 @@ class VideoPresenter extends BasePresenter
 	protected function createComponentEditVideoForm()
 	{
 		$video = $this->videoManager->getVideoById((int) $this->getParameter('id'), true);
-		$factory = new EditVideoFormFactory($this->videoManager, $this->presenter, $this->translator, $video, $this->parameters['structure_tag']);
+		$factory = new EditVideoFormFactory($this->videoManager, $this->userManager, $this->presenter, $this->translator, $video, $this->parameters['structure_tag']);
 		return $factory->create();
 	}
 }

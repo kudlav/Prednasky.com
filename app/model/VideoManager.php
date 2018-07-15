@@ -435,27 +435,23 @@ class VideoManager
 	 *
 	 * @param int $videoId Id of video.
 	 * @param string $tag Tag name.
-	 * @param string $value Tag value.
+	 * @param int|bool $tagId Row ID of combination tag-value.
 	 * @return bool True when tag was added/updated.
 	 */
-	public function setVideoTagValue(int $videoId, string $tag, ?string $value)
+	public function setVideoTagValue(int $videoId, string $tag, ?int $tagId)
 	{
 		$currentVal = $this->getVideoTagValue((int) $videoId, $tag);
 
 		// Skip if value is already set
-		if ($currentVal === null || $currentVal->value !== $value) {
+		if (($currentVal === null) || $currentVal->id !== $tagId) {
 
-			// Tag doesn't exist
-			$newTag = $this->getTag($tag, $value);
-			if ($newTag === null) {
-				return false;
-			}
+			$result = true; // It's OK to do nothing
 
 			// Remove existing tag
 			if ($currentVal !== null) {
 				$currentTag = $this->getTag($tag, $currentVal->value);
 				if ($currentTag !== null) {
-					$this->database->table(self::TABLE_VIDEO_TAG)
+					$result = $this->database->table(self::TABLE_VIDEO_TAG)
 						->where(self::VIDEO_TAG_VIDEO, $videoId)
 						->where(self::VIDEO_TAG_TAG, $currentTag->id)
 						->delete()
@@ -463,10 +459,13 @@ class VideoManager
 				}
 			}
 
-			$result = $this->database->table(self::TABLE_VIDEO_TAG)->insert([
-				self::VIDEO_TAG_VIDEO => $videoId,
-				self::VIDEO_TAG_TAG => $newTag->id,
-			]);
+			// Insert new tag
+			if ($tagId !== null) {
+				$result = $this->database->table(self::TABLE_VIDEO_TAG)->insert([
+					self::VIDEO_TAG_VIDEO => $videoId,
+					self::VIDEO_TAG_TAG => $tagId,
+				]);
+			}
 
 			// Failed to update
 			if (!$result) {
@@ -483,7 +482,7 @@ class VideoManager
 	 * @param string $tag The tag
 	 * @return array Associative array: 'tag_id'=>'tag_value'.
 	 */
-	private function getTagValues(string $tag): array
+	public function getTagValues(string $tag): array
 	{
 		 $values = $this->database->table(self::TABLE_TAG)
 			->where(self::TAG_NAME, $tag)

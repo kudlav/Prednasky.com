@@ -10,6 +10,8 @@ use Nette\Application\UI\Form;
 use Nette\Application\UI\Presenter;
 use Nette\Localization\ITranslator;
 use App\Model\VideoManager;
+use App\Model\UserManager;
+use Tracy\Debugger;
 
 
 class EditVideoFormFactory
@@ -18,16 +20,18 @@ class EditVideoFormFactory
 
 	/**
 	 * @var VideoManager $videoManager
+	 * @var UserManager $userManager
 	 * @var Presenter $presenter
 	 * @var ITranslator $translator
 	 * @var ActiveRow $video
 	 * @var array $structureTags
 	 */
-	private $videoManager, $presenter, $translator, $video, $structureTags;
+	private $videoManager, $userManager, $presenter, $translator, $video, $structureTags;
 
-	public function __construct(VideoManager $videoManager, Presenter $presenter, ITranslator $translator, ActiveRow $video, array $structureTags)
+	public function __construct(VideoManager $videoManager, UserManager $userManager, Presenter $presenter, ITranslator $translator, ActiveRow $video, array $structureTags)
 	{
 		$this->videoManager = $videoManager;
+		$this->userManager = $userManager;
 		$this->presenter = $presenter;
 		$this->translator = $translator;
 		$this->video = $video;
@@ -109,30 +113,40 @@ class EditVideoFormFactory
 			->setAttribute('class', 'form-control tinymce')
 		;
 
-		$first = true;
-		foreach ($this->structureTags as $tag)
-		{
+		foreach ($this->structureTags as $tag) {
 			$tagRow = $this->videoManager->getVideoTagValue((int) $this->video->id, $tag);
-			$input = $form->AddText($tag)
-				->setDefaultValue($tagRow!==null ? $tagRow->value : null)
-				->setAttribute('placeholder', 'Start typing...')
-				->setAttribute('class', 'form-control')
+			$input = $form->AddSelect($tag, $tag, $this->videoManager->getTagValues($tag))
+				->setDefaultValue($tagRow!==null ? $tagRow->id : null)
+				->setPrompt('Start typing...')
+				->setAttribute('class', 'form-control select2')
 			;
-
-			if ($first) {
-				$translatedTag = $this->translator->translate('config.'. $tag);
-				$input->setRequired($this->translator->translate('form.video_empty_tag', ['tag' => $translatedTag]));
-				$first = false;
-			}
 		}
 
 		$form->addSubmit('save', 'Save')
 			->setAttribute('class', 'btn btn-primary')
 		;
 
+		$form->onValidate[] = [$this, 'onValidate'];
 		$form->onSuccess[] = [$this, 'onSuccess'];
 
 		return $form;
+	}
+
+	public function onValidate(Form $form): void
+	{
+		$values = $form->getValues();
+
+		$tags = [];
+		foreach ($this->structureTags as $tag) {
+			$tags[$tag] = $values[$tag];
+		}
+
+		$courses = $this->userManager->getUserCourses($this->presenter->user->id);
+		$courseMatch = $this->userManager->isUserCourse($courses, $this->structureTags, $tags);
+
+		if (!$courseMatch) {
+			$form->addError('form.course_not_owned');
+		}
 	}
 
 	public function onSuccess(Form $form, ArrayHash $values): void
@@ -163,19 +177,17 @@ class EditVideoFormFactory
 		}
 
 		foreach ($this->structureTags as $tag) {
-			if ($values->offsetExists($tag)) {
-				$tagValue = $values->offsetGet($tag);
-				if ($tagValue == "") {
-					$tagValue = null;
-				}
-				$result = $this->videoManager->setVideoTagValue((int) $this->video->id, $tag, $tagValue);
-				if ($result === false) {
-					$translatedTag = $this->translator->translate('config.'. $tag);
-					$this->presenter->flashMessage($this->translator->translate("alert.video_tag_failed", [
-						'name' => $translatedTag,
-						'value' => $tagValue,
-					]), 'warning');
-				}
+			$tagId = $values->offsetGet($tag);
+			if ($tagId !== null) {
+				$tagId = (int) $tagId;
+			}
+			$result = $this->videoManager->setVideoTagValue((int) $this->video->id, $tag, $tagId);
+			if ($result === false) {
+				$translatedTag = $this->translator->translate('config.'. $tag);
+				$this->presenter->flashMessage($this->translator->translate("alert.video_tag_failed", [
+					'name' => $translatedTag,
+					'value' => $tagId,
+				]), 'warning');
 			}
 		}
 

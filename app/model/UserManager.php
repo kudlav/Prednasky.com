@@ -191,4 +191,32 @@ class UserManager implements Security\IAuthenticator
 
 		return $selectItems;
 	}
+
+	/**
+	 * Check if the user is able to manage that course.
+	 *
+	 * @param array $rightArr Array obtained from getUserCourses.
+	 * @param array $structureTags 'structure_tag' from config.
+	 * @param array $checkTagIds Array of tag IDs to check in format [tagName => ID].
+	 * @return bool
+	 */
+	public function isUserCourse(array $rightArr, array $structureTags, array $checkTagIds): bool
+	{
+		// Go through rights
+		foreach ($rightArr as $right) {
+			// Browse tags in right according to structure_tag config
+			$match = true;
+			foreach ($structureTags as $tagName) {
+				if ($right[$tagName]->value !== null && $right[$tagName]->id !== $checkTagIds[$tagName]) {
+					$match = false;
+					break;
+				}
+			}
+			if ($match) {
+				return true;
+			}
+		}
+
+		return false;
+	}
 }
