@@ -99,6 +99,35 @@ class VideoManager
 	}
 
 	/**
+	 * Update multiple values of existing video.
+	 *
+	 * @param int $id Video to update.
+	 * @param array $values New values to insert.
+	 * @return bool True on success.
+	 */
+	public function updateVideo(int $id, array $values): bool
+	{
+		return $this->database->table(self::TABLE_VIDEO)
+			->get($id)
+			->update($values)
+			;
+	}
+
+	/**
+	 * Remove video by ID. Use when video doesn't have any dependencies (foreign keys).
+	 *
+	 * @param int $videoID
+	 * @return int
+	 */
+	public function removeVideo(int $videoID): int
+	{
+		return $this->database->table(self::TABLE_VIDEO)
+			->get($videoID)
+			->delete()
+			;
+	}
+
+	/**
 	 * Get all videos.
 	 *
 	 * @param string $orderBy The order of videos
@@ -251,6 +280,135 @@ class VideoManager
 		return $video;
 	}
 
+	/**
+	 * Set duration of video if not already set
+	 *
+	 * @param int $id ID of video
+	 * @param int $duration Duration of video in seconds
+	 * @return bool Return true if duration was set. False when nothing was changed.
+	 */
+	public function setDuration(int $id, int $duration): bool
+	{
+		$result = $this->database->table(self::TABLE_VIDEO)->get($id);
+
+		if ($result->duration == null) {
+			$result->update([
+				self::VIDEO_DURATION => $duration
+			]);
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Find out all people connected to the video.
+	 *
+	 * @param int $id ID of video.
+	 * @return array Rows of people divided into arrays by their role.
+	 */
+	public function getVideoPeople(int $id): array
+	{
+		$people = [];
+
+		$selection = $this->database->table(self::TABLE_VIDEO_USER)
+			->where(self::VIDEO_USER_VIDEO, $id)
+			->order(self::VIDEO_USER_ROLE.' ASC')
+		;
+
+		$prevRole = -1;
+		while ($row = $selection->fetch()) {
+			if ($row->role_id != $prevRole) {
+				$people[$row->role_id] = [];
+				$prevRole = $row->role_id;
+			}
+			$people[$row->role_id][] = $row;
+		}
+
+		return $people;
+	}
+
+	/**
+	 * Find out all videos marked as related to this video
+	 *
+	 * @param int $id ID of video.
+	 * @return array Rows of video_relation table divided into arrays by relation type.
+	 */
+	public function getRelatedVideos(int $id): array
+	{
+		$videos = [];
+
+		$selection = $this->database->table(self::TABLE_VIDEO_RELATION)
+			->where(self::VIDEO_RELATION_FROM, $id)
+			->order(self::VIDEO_RELATION_TYPE.' ASC')
+		;
+
+		$prevType = -1;
+		while ($row = $selection->fetch()) {
+			if ($row->relation_type_id != $prevType) {
+				$videos[$row->relation_type_id] = [];
+				$prevType = $row->relation_type_id;
+			}
+			$videos[$row->relation_type_id][] = $row;
+		}
+
+		return $videos;
+	}
+
+	/**
+	 * Get available states.
+	 *
+	 * @return array Array containing id => name;
+	 */
+	public function getStates(): array
+	{
+		return $this->database->table(self::TABLE_VIDEO_STATE)
+			->fetchPairs(self::STATE_ID, self::STATE_NAME)
+			;
+	}
+
+	/**
+	 * Get unique token for accessing video.
+	 *
+	 * @param int $id Video ID.
+	 * @return null|string Token containing 32 chars, or null when no link is created.
+	 */
+	public function getShareLink(int $id): ?string
+	{
+		$link = $this->database->table(self::TABLE_VIDEO)
+			->get($id)
+			->public_link
+		;
+
+		return $link!==null ? (string) $link : null;
+	}
+
+	/**
+	 * Create or clear unique token for accessing video.
+	 *
+	 * @param int $id Video ID.
+	 * @param bool $clear Set true to remove unique token.
+	 * @return null|string Token containing 32 chars.
+	 * @throws \Exception If random_bytes is unable to create secure token.
+	 */
+	public function setShareLink(int $id, bool $clear=false): ?string
+	{
+		if ($clear) {
+			$token = null;
+		}
+		else {
+			$token = bin2hex(random_bytes(16));
+		}
+
+		$this->database->table(self::TABLE_VIDEO)
+			->where(self::VIDEO_ID, $id)
+			->update([
+				self::VIDEO_LINK => $token
+			])
+		;
+
+		return $token;
+	}
+
 	/* TAGS */
 
 	/**
@@ -398,26 +556,6 @@ class VideoManager
 	}
 
 	/**
-	 * Set duration of video if not already set
-	 *
-	 * @param int $id ID of video
-	 * @param int $duration Duration of video in seconds
-	 * @return bool Return true if duration was set. False when nothing was changed.
-	 */
-	public function setDuration(int $id, int $duration): bool
-	{
-		$result = $this->database->table(self::TABLE_VIDEO)->get($id);
-
-		if ($result->duration == null) {
-			$result->update([
-				self::VIDEO_DURATION => $duration
-			]);
-			return true;
-		}
-		return false;
-	}
-
-	/**
 	 * Get row from TAG table using tag name and value.
 	 *
 	 * @param string $tagName
@@ -432,144 +570,6 @@ class VideoManager
 			->fetch();
 
 		return $result!==false ? $result : null;
-	}
-
-	/**
-	 * Find out all people connected to the video.
-	 *
-	 * @param int $id ID of video.
-	 * @return array Rows of people divided into arrays by their role.
-	 */
-	public function getVideoPeople(int $id): array
-	{
-		$people = [];
-
-		$selection = $this->database->table(self::TABLE_VIDEO_USER)
-			->where(self::VIDEO_USER_VIDEO, $id)
-			->order(self::VIDEO_USER_ROLE.' ASC')
-		;
-
-		$prevRole = -1;
-		while ($row = $selection->fetch()) {
-			if ($row->role_id != $prevRole) {
-				$people[$row->role_id] = [];
-				$prevRole = $row->role_id;
-			}
-			$people[$row->role_id][] = $row;
-		}
-
-		return $people;
-	}
-
-	/**
-	 * Find out all videos marked as related to this video
-	 *
-	 * @param int $id ID of video.
-	 * @return array Rows of video_relation table divided into arrays by relation type.
-	 */
-	public function getRelatedVideos(int $id): array
-	{
-		$videos = [];
-
-		$selection = $this->database->table(self::TABLE_VIDEO_RELATION)
-			->where(self::VIDEO_RELATION_FROM, $id)
-			->order(self::VIDEO_RELATION_TYPE.' ASC')
-		;
-
-		$prevType = -1;
-		while ($row = $selection->fetch()) {
-			if ($row->relation_type_id != $prevType) {
-				$videos[$row->relation_type_id] = [];
-				$prevType = $row->relation_type_id;
-			}
-			$videos[$row->relation_type_id][] = $row;
-		}
-
-		return $videos;
-	}
-
-	/**
-	 * Get available states.
-	 *
-	 * @return array Array containing id => name;
-	 */
-	public function getStates(): array
-	{
-		return $this->database->table(self::TABLE_VIDEO_STATE)
-			->fetchPairs(self::STATE_ID, self::STATE_NAME)
-		;
-	}
-
-	/**
-	 * Get unique token for accessing video.
-	 *
-	 * @param int $id Video ID.
-	 * @return null|string Token containing 32 chars, or null when no link is created.
-	 */
-	public function getShareLink(int $id): ?string
-	{
-		$link = $this->database->table(self::TABLE_VIDEO)
-			->get($id)
-			->public_link
-		;
-
-		return $link!==null ? (string) $link : null;
-	}
-
-	/**
-	 * Create or clear unique token for accessing video.
-	 *
-	 * @param int $id Video ID.
-	 * @param bool $clear Set true to remove unique token.
-	 * @return null|string Token containing 32 chars.
-	 * @throws \Exception If random_bytes is unable to create secure token.
-	 */
-	public function setShareLink(int $id, bool $clear=false): ?string
-	{
-		if ($clear) {
-			$token = null;
-		}
-		else {
-			$token = bin2hex(random_bytes(16));
-		}
-
-		$this->database->table(self::TABLE_VIDEO)
-			->where(self::VIDEO_ID, $id)
-			->update([
-				self::VIDEO_LINK => $token
-			])
-		;
-
-		return $token;
-	}
-
-	/**
-	 * Update multiple values of existing video.
-	 *
-	 * @param int $id Video to update.
-	 * @param array $values New values to insert.
-	 * @return bool True on success.
-	 */
-	public function updateVideo(int $id, array $values): bool
-	{
-		return $this->database->table(self::TABLE_VIDEO)
-			->get($id)
-			->update($values)
-		;
-	}
-
-	/**
-	 * Remove video by ID. Use when video doesn't have any dependencies (foreign keys).
-	 *
-	 * @param int $videoID
-	 * @return int
-	 */
-	public function removeVideo(int $videoID): int
-	{
-		return $this->database->table(self::TABLE_VIDEO)
-			->get($videoID)
-			->delete()
-		;
 	}
 
 }
