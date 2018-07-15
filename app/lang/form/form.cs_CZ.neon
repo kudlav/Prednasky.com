@@ -4,6 +4,7 @@
 #
 # Language: 'cs_CZ'
 
+'start_typing' : 'Začněte psát...'
 'course_not_owned' : 'Zadaný kurz není ve vaší správě!'
 'video_empty_name' : 'Název videa nemůže být prázdný!'
 'template_empty_name' : 'Název šablony nemůže být prázdný!'

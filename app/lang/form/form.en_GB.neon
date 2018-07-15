@@ -4,6 +4,7 @@
 #
 # Language: 'en_GB'
 
+'start_typing' : 'Start typing...'
 'course_not_owned' : 'You cannot manage selected course!'
 'video_empty_name' : 'Name of video cannot be empty!'
 'template_empty_name' : 'Name of template cannot be empty!'

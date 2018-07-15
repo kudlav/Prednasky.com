@@ -117,7 +117,7 @@ class EditVideoFormFactory
 			$tagRow = $this->videoManager->getVideoTagValue((int) $this->video->id, $tag);
 			$input = $form->AddSelect($tag, $tag, $this->videoManager->getTagValues($tag))
 				->setDefaultValue($tagRow!==null ? $tagRow->id : null)
-				->setPrompt('Start typing...')
+				->setPrompt('form.start_typing')
 				->setAttribute('class', 'form-control select2')
 			;
 		}

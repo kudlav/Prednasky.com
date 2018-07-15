@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: prednasky.com\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2018-05-27 22:57+0200\n"
+"PO-Revision-Date: 2018-07-15 23:46+0200\n"
 "Last-Translator: Vladan Kudlac <vladankudlac@gmail.com>\n"
 "Language-Team: Vladan Kudlac <vladankudlac@gmail.com>\n"
 "Language: cs_CZ\n"
@@ -10,11 +10,14 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Poedit 2.0.7\n"
+"X-Generator: Poedit 2.0.9\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
 msgid "en"
 msgstr "cs"
+
+msgid "Faculty of Information Technology, BUT"
+msgstr "Fakulta informačních technologií VUT v Brně"
 
 msgid "Administration"
 msgstr "Administrace"
@@ -46,8 +49,6 @@ msgstr "English"
 msgid " • Czech Republic"
 msgstr ""
 
-msgid "Faculty of Information Technology, BUT"
-msgstr "Fakulta informačních technologií VUT v Brně"
 
 msgid "Menu"
 msgstr "Menu"
@@ -88,11 +89,56 @@ msgstr "Tokeny"
 msgid "Templates"
 msgstr "Šablony"
 
+msgid "Create new template"
+msgstr "Vytvořit novou šablonu"
+
+msgid "Back"
+msgstr "Zpět"
+
+msgid "Edit template"
+msgstr "Upravit šablonu"
+
+msgid "Delete template"
+msgstr "Smazat šablonu"
+
+msgid "Run template"
+msgstr "Spustit šablonu"
+
+msgid "Share link"
+msgstr "Sdílet odkaz"
+
+msgid "No secret link"
+msgstr "Bez soukromého odkazu"
+
+msgid "config.'. $ta"
+msgstr ""
+
+msgid "Delete video"
+msgstr "Smazat video"
+
+msgid "Edit video"
+msgstr "Upravit video"
+
+msgid "Basic information"
+msgstr "Základní informace"
+
+msgid "Related videos"
+msgstr "Související videa"
+
+msgid "Create new video"
+msgstr "Vytvořit nové video"
+
+msgid "Upload video"
+msgstr "Nahrát video"
+
 msgid "Published"
 msgstr "Zveřejněno"
 
 msgid "Drafts"
 msgstr "Koncepty"
+
+msgid "Pick a course"
+msgstr "Vyberte kurz"
 
 msgid "Videoportal"
 msgstr "Videoportál"
@@ -139,6 +185,9 @@ msgid ""
 "Your browser sent a request that this server could not understand or process."
 msgstr ""
 "Váš prohlížeč odeslal požadavek, který tento server nedokáže zpracovat."
+
+msgid "Main page"
+msgstr "Úvodní stránka"
 
 msgid "config.'.$listGroupTitl"
 msgstr ""
