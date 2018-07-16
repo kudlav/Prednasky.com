@@ -4,8 +4,8 @@
 #
 # Database: 'v1.6'
 # Language: 'cs_CZ'
-# Table: 'video_state'
+# Table: 'video'
 
-'private' : 'neveřejné'
-'logged_in' : 'po přihlášení'
-'public' : 'veřejné'
+'name' : 'Název'
+'record_begin' : 'Začátek nahrávky'
+'record_end' : 'Konec nahrávky'

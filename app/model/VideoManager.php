@@ -438,14 +438,12 @@ class VideoManager
 	 * @param int|bool $tagId Row ID of combination tag-value.
 	 * @return bool True when tag was added/updated.
 	 */
-	public function setVideoTagValue(int $videoId, string $tag, ?int $tagId)
+	public function setVideoTagValue(int $videoId, string $tag, int $tagId)
 	{
 		$currentVal = $this->getVideoTagValue((int) $videoId, $tag);
 
 		// Skip if value is already set
 		if (($currentVal === null) || $currentVal->id !== $tagId) {
-
-			$result = true; // It's OK to do nothing
 
 			// Remove existing tag
 			if ($currentVal !== null) {
@@ -460,12 +458,10 @@ class VideoManager
 			}
 
 			// Insert new tag
-			if ($tagId !== null) {
-				$result = $this->database->table(self::TABLE_VIDEO_TAG)->insert([
-					self::VIDEO_TAG_VIDEO => $videoId,
-					self::VIDEO_TAG_TAG => $tagId,
-				]);
-			}
+			$result = $this->database->table(self::TABLE_VIDEO_TAG)->insert([
+				self::VIDEO_TAG_VIDEO => $videoId,
+				self::VIDEO_TAG_TAG => $tagId,
+			]);
 
 			// Failed to update
 			if (!$result) {

@@ -44,7 +44,7 @@ class EditVideoFormFactory
 
 		$form->setTranslator($this->translator);
 
-		$form->addText('title', 'Title')
+		$form->addText('title', 'video.name')
 			->setDefaultValue($this->video->name)
 			->setRequired('form.video_empty_name')
 			->setAttribute('placeholder', 'Video title')
@@ -57,9 +57,9 @@ class EditVideoFormFactory
 			$record_begin = $this->video->record_begin->format('j. n. Y');
 			$time_begin = $this->video->record_begin->format('H:i');
 		}
-		$form->addText('record_date_start', 'Recording start')
+		$form->addText('record_date_start', 'video.record_begin')
 			->setDefaultValue($record_begin)
-			->setAttribute('placeholder', 'dd. mm. rrrr')
+			->setAttribute('placeholder', 'form.date_format')
 			->setAttribute('data-date-format','d. m. yyyy')
 			->setAttribute('data-provide', 'datepicker')
 			->setAttribute('data-date-orientation', 'bottom')
@@ -80,9 +80,9 @@ class EditVideoFormFactory
 			$record_end = $this->video->record_end->format('j. n. Y');
 			$time_end = $this->video->record_end->format('H:i');
 		}
-		$form->addText('record_date_end', 'Recording end')
+		$form->addText('record_date_end', 'video.record_end')
 			->setDefaultValue($record_end)
-			->setAttribute('placeholder', 'dd. mm. rrrr')
+			->setAttribute('placeholder', 'form.date_format')
 			->setAttribute('data-date-format','d. m. yyyy')
 			->setAttribute('data-provide', 'datepicker')
 			->setAttribute('data-date-orientation', 'bottom')
@@ -116,13 +116,14 @@ class EditVideoFormFactory
 		foreach ($this->structureTags as $tag) {
 			$tagRow = $this->videoManager->getVideoTagValue((int) $this->video->id, $tag);
 			$input = $form->AddSelect($tag, $tag, $this->videoManager->getTagValues($tag))
-				->setDefaultValue($tagRow!==null ? $tagRow->id : null)
-				->setPrompt('form.start_typing')
+				->setDefaultValue($tagRow!==null && $tagRow->value!== null ? $tagRow->id : null)
+				->setPrompt($this->translator->translate('form.start_typing'))
+				->setTranslator(null)
 				->setAttribute('class', 'form-control select2')
 			;
 		}
 
-		$form->addSubmit('save', 'Save')
+		$form->addSubmit('save', 'form.save')
 			->setAttribute('class', 'btn btn-primary')
 		;
 
@@ -177,11 +178,9 @@ class EditVideoFormFactory
 		}
 
 		foreach ($this->structureTags as $tag) {
-			$tagId = $values->offsetGet($tag);
-			if ($tagId !== null) {
-				$tagId = (int) $tagId;
-			}
-			$result = $this->videoManager->setVideoTagValue((int) $this->video->id, $tag, $tagId);
+			$tagId = $values->offsetGet($tag) ?? $this->videoManager->getTag($tag, null)->id;
+
+			$result = $this->videoManager->setVideoTagValue((int) $this->video->id, $tag, (int) $tagId);
 			if ($result === false) {
 				$translatedTag = $this->translator->translate('config.'. $tag);
 				$this->presenter->flashMessage($this->translator->translate("alert.video_tag_failed", [
