@@ -9,3 +9,5 @@
 'name' : 'Název'
 'record_begin' : 'Začátek nahrávky'
 'record_end' : 'Konec nahrávky'
+'state' : 'Viditelnost'
+'tags' : 'Štítky'

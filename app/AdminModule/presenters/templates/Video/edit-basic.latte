@@ -60,7 +60,7 @@
       {input abstract}
     </div>
     <div class="form-group my-2">
-      <label>Tags:</label>
+      <label>{_'video.tags'}:</label>
       <div n:foreach="$structureTags as $tag" class="form-group row my-1">
         <div class="col-md-3 align-self-center"><p class="m-0 px-2">{_'config.'. $tag|capitalize}:</p></div>
         <div class="col-md-8">{input $tag}</div>

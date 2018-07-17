@@ -9,3 +9,5 @@
 'name' : 'Title'
 'record_begin' : 'Recording start'
 'record_end' : 'Recording end'
+'state' : 'Visibility'
+'tags' : 'Tags'

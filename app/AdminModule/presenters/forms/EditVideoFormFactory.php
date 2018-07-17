@@ -102,7 +102,7 @@ class EditVideoFormFactory
 			$visibilityValues[$id] = 'video_state.' . $value;
 		}
 
-		$form->addSelect('visibility', 'Visibility', $visibilityValues)
+		$form->addSelect('visibility', 'video.state', $visibilityValues)
 			->setDefaultValue($this->video->state)
 			->setAttribute('class', 'custom-select')
 		;
