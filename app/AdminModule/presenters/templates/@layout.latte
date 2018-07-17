@@ -39,7 +39,10 @@
 
 	<nav class="navbar navbar-expand-md bg-primary navbar-dark p-1">
 		<div class="container">
-			<div class="navbar-brand"><i class="fa fa-lg fa-user"></i><b> {_'User'}: </b>{if $user->loggedIn}{$user->identity->fullname}{else}{_'Not logged'}{/if}</div>
+			<div class="navbar-brand">
+				<i class="fa fa-lg fa-user {if $user->isInRole('admin')}text-danger{elseif $user->isInRole('teacher')}text-warning{/if}"></i><b> {_'User'}: </b>
+				{if $user->loggedIn}{$user->identity->fullname}{else}{_'Not logged'}{/if}
+			</div>
 			<a class="btn btn-secondary" href="
 				{if $user->loggedIn}{plink ":Front:Sign:out"}">{_'Logout'} <i class="fa fa-lg fa-sign-out"></i>{else}{plink ":Front:Sign:in"}"><i class="fa fa-lg fa-sign-in"></i> {_'Sign in'}{/if}
 			</a>

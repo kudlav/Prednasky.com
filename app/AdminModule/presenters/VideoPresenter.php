@@ -38,7 +38,7 @@ class VideoPresenter extends BasePresenter
 		}
 
 		// Check the user rights for this video
-		if (!in_array('admin', $this->user->getRoles())) {
+		if (!$this->user->isInRole('admin')) {
 			$tags = [];
 			foreach ($this->parameters['structure_tag'] as $tag) {
 				$tagRow = $this->videoManager->getVideoTagValue($id, $tag);
