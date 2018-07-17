@@ -70,7 +70,7 @@ class EditVideoFormFactory
 
 		$form->addText('record_time_start')
 			->setDefaultValue($time_begin)
-			->setAttribute('type', 'time')
+			->setAttribute('placeholder', 'form.time_format')
 			->setAttribute('class', 'form-control clockpicker')
 		;
 
@@ -93,7 +93,7 @@ class EditVideoFormFactory
 
 		$form->addText('record_time_end')
 			->setDefaultValue($time_end)
-			->setAttribute('type', 'time')
+			->setAttribute('placeholder', 'form.time_format')
 			->setAttribute('class', 'form-control clockpicker')
 		;
 

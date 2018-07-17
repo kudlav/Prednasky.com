@@ -6,6 +6,7 @@
 
 'start_typing' : 'Začněte psát...'
 'date_format' : 'dd. mm. rrrr'
+'time_format' : 'HH:MM'
 'course_not_owned' : 'Zadaný kurz není ve vaší správě!'
 'video_empty_name' : 'Název videa nemůže být prázdný!'
 'template_empty_name' : 'Název šablony nemůže být prázdný!'

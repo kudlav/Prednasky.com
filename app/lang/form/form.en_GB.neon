@@ -6,6 +6,7 @@
 
 'start_typing' : 'Start typing...'
 'date_format' : 'dd. mm. yyyy'
+'time_format' : 'HH:MM'
 'course_not_owned' : 'You cannot manage selected course!'
 'video_empty_name' : 'Name of video cannot be empty!'
 'template_empty_name' : 'Name of template cannot be empty!'
