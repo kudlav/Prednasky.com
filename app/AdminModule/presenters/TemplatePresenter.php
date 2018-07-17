@@ -30,6 +30,9 @@ class TemplatePresenter extends BasePresenter
 
 	public function renderEdit(int $id): void
 	{
+		if (!$this->user->isInRole('admin')) {
+			$this->error('Upravovat šablony smí pouze administrátor', Nette\Http\Response::S403_FORBIDDEN);
+		}
 		$this->template->prevPage = $this->getHttpRequest()->getReferer() ?? $this->link('Processes:templates');
 	}
 

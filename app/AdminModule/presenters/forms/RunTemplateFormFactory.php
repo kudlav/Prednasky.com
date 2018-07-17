@@ -56,8 +56,7 @@ class RunTemplateFormFactory
 		$form->setTranslator($this->translator);
 
 		foreach ($vars as $variable) {
-
-			if (in_array($variable, ['job_id', 'public_datadir', 'private_datadir'])) {
+			if (in_array($variable, ['job_id', 'public_datadir', 'private_datadir']) || in_array($variable, array_keys($defaultValues))) {
 				continue;
 			}
 
@@ -84,8 +83,12 @@ class RunTemplateFormFactory
 	{
 		$videoID = $this->videoManager->newVideo();
 
-		if ($this->tokenManager->submitToken($this->template, (array) $values, $videoID) === null) {
-			$this->videoManager->removeVideo($videoID);
+		$allValues = array_merge($this->tokenManager->getTokenDefaults(), (array) $values);
+
+		if ($this->tokenManager->submitToken($this->template, $allValues, $videoID) === null) {
+			try {
+				$this->videoManager->removeVideo($videoID);
+			} catch (\Exception $e) {}
 			$this->presenter->flashMessage('alert.run_task_failed', 'danger');
 		}
 		else {

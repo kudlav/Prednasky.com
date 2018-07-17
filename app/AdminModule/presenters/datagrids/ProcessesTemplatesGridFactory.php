@@ -46,9 +46,11 @@ class ProcessesTemplatesGridFactory
 			->setIcon('pencil')
 			->setClass('btn btn-light');
 
-		$grid->addAction('Run', 'Run', 'Template:run')
-			->setIcon('play')
-			->setClass('btn btn-light');
+		if ($presenter->user->isInRole('admin')) {
+			$grid->addAction('Run', 'Run', 'Template:run')
+				->setIcon('play')
+				->setClass('btn btn-light');
+		}
 
 		return $grid;
 	}
