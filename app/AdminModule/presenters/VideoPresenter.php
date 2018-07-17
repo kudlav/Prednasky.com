@@ -31,9 +31,24 @@ class VideoPresenter extends BasePresenter
 
 	public function renderEdit(int $id): void
 	{
+		// Check if the video exists
 		$this->template->video = $this->videoManager->getVideoById($id, true);
 		if ($this->template->video === null) {
 			$this->error('Video s id '. $id .' neexistuje!', Nette\Http\IResponse::S404_NOT_FOUND);
+		}
+
+		// Check the user rights for this video
+		if (!in_array('admin', $this->user->getRoles())) {
+			$tags = [];
+			foreach ($this->parameters['structure_tag'] as $tag) {
+				$tagRow = $this->videoManager->getVideoTagValue($id, $tag);
+				$tags[$tag] = $tagRow!==null ? $tagRow->id : null;
+			}
+			$courses = $this->userManager->getUserCourses($this->presenter->user->id);
+			$courseMatch = $this->userManager->isUserCourse($courses, $this->parameters['structure_tag'], $tags);
+			if (!$courseMatch) {
+				$this->error('Nemáte oprávnění k editování totoho videa', Nette\Http\IResponse::S403_FORBIDDEN);
+			}
 		}
 
 		$this->template->shareLink = $this->videoManager->getShareLink($id);
