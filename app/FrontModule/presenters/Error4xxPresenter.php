@@ -22,5 +22,7 @@ class Error4xxPresenter extends BasePresenter
 		$file = __DIR__ . "/templates/Error/{$exception->getCode()}.latte";
 		$file = is_file($file) ? $file : __DIR__ . '/templates/Error/4xx.latte';
 		$this->template->setFile($file);
+		$this->template->message = $exception->getMessage();
+		$this->template->email = $this->parameters['admin_email'];
 	}
 }

@@ -15,3 +15,4 @@
 'video_tag_failed' : 'Can not set a tag "%name%" with a value of "%value%"!'
 'run_task_ok' : 'Task was successfully created.'
 'run_task_failed' : 'Unable to run task!'
+'no_managed_course' : 'You need to have assigned at least one course.<br>To assign a course, contact the system administator <a href="mailto:%mail%" class="alert-link">%mail%</a>.'

@@ -165,6 +165,21 @@ class UserManager implements Security\IAuthenticator
 	}
 
 	/**
+	 * Check If user can manage at least one course.
+	 *
+	 * @param int $userId
+	 * @return bool True when user can manage some course, otherwise false.
+	 */
+	public function hasUserCourse(int $userId): bool
+	{
+		$courses =  $this->database->table(self::TABLE_RIGHT)
+			->where(self::RIGHT_USER, $userId)
+			->count();
+
+		return $courses>0 ? true : false;
+	}
+
+	/**
 	 * Format result of getUserCourses for select.
 	 *
 	 * @param array $rightArr Array obtained from getUserCourses.

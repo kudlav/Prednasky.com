@@ -1,0 +1,7 @@
+{block content}
+
+<div class="alert alert-danger" role="alert">
+  <h1 n:block=title class="alert-heading">{_'Error'}</h1>
+  <hr>
+  <p>{_$message, [mail => $email]|noescape}
+</div>
