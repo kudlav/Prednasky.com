@@ -518,6 +518,7 @@ COMMIT;
 START TRANSACTION;
 USE `prednasky`;
 INSERT INTO `prednasky`.`template` (`id`, `name`, `blocks`, `description`) VALUES (DEFAULT, 'config_youtube_downloader.ini', 'msg_download_start;youtubedl;msg_download_end;avprobe;msg_input_audiolength;msg_input_videolength;msg_input_hasaudio;msg_input_hasvideo;has_audio;has_video;msg_video_start;msg_video_end;convert_video;thumbnail_video;copyresults_video;avprobe_outmedia;msg_output_videolength;msg_output_audiolength;finish', 'Download video from YouTube');
+INSERT INTO `prednasky`.`template` (`id`, `name`, `blocks`, `description`) VALUES (DEFAULT, 'config_video_convert.ini', 'avprobe;msg_input_audiolength;msg_input_videolength;msg_input_hasaudio;msg_input_hasvideo;has_audio;has_video;msg_video_start;msg_video_end;convert_video;thumbnail_video;copyresults_video;avprobe_outmedia;msg_output_videolength;msg_output_audiolength;finish', 'Convert video into MP4');
 
 COMMIT;
 

@@ -8,7 +8,10 @@ use Kdyby\Translation\Translator;
 use App\Model\FileManager;
 use App\Model\VideoManager;
 use App\Model\UserManager;
+use App\Model\TokenManager;
 use App\AdminModule\Forms\EditVideoFormFactory;
+use Nette\Http\IResponse;
+use Tracy\Debugger;
 
 
 class VideoPresenter extends BasePresenter
@@ -17,16 +20,69 @@ class VideoPresenter extends BasePresenter
 	 * @var VideoManager $videoManager
 	 * @var UserManager $userManager
 	 * @var FileManager $fileManager
+	 * @var TokenManager $tokenManager
 	 * @var Translator $translator
 	 */
-	private $videoManager, $userManager, $fileManager, $translator;
+	private $videoManager, $userManager, $fileManager, $tokenManager, $translator;
 
-	public function __construct(VideoManager $videoManager, UserManager $userManager, FileManager $fileManager, Translator $translator)
+	public function __construct(VideoManager $videoManager, UserManager $userManager, FileManager $fileManager, TokenManager $tokenManager, Translator $translator)
 	{
 		$this->videoManager = $videoManager;
 		$this->userManager = $userManager;
 		$this->fileManager = $fileManager;
+		$this->tokenManager = $tokenManager;
 		$this->translator = $translator;
+	}
+
+	public function renderUpload(): void
+	{
+
+	}
+
+	public function handleUploadPart(): void
+	{
+		$httpRequest = $this->getHttpRequest();
+		$file = $httpRequest->getFile('file');
+		if ($file===null || strpos($httpRequest->getPost('dzuuid'), '/')!==false || !$this->fileManager->uploadFilePart($file, $httpRequest->getPost('dzuuid'), (int) $httpRequest->getPost('dzchunkindex'))) {
+			Debugger::log('VideoPresenter: User '. $this->user->id .' tried to upload file "'. $file->getName() .'", error code '. $file->getError(), Debugger::INFO);
+			$this->getHttpResponse()->setCode(IResponse::S400_BAD_REQUEST);
+			$this->sendJson('Chyba nahrávání souboru!');
+		}
+
+		$this->sendJson('success');
+	}
+
+	public function handleUploadEnd()
+	{
+		// Compile upload
+		$httpRequest = $this->getHttpRequest();
+		$id = $httpRequest->getQuery('id');
+		$filename = $httpRequest->getQuery('filename');
+
+		if ($id === null || $filename === null || strpos($id, '/')!==false || strpos($filename, '/')!==false) {
+			$this->getHttpResponse()->setCode(IResponse::S400_BAD_REQUEST);
+			$this->sendJson('Chybí parametry pro zkompilování uploadu!');
+		}
+
+		$this->fileManager->uploadFileEnd((string) $id, (string) $filename);
+
+		Debugger::log('VideoPresenter: User '. $this->user->id .' uploaded file "'. $filename .'"', Debugger::INFO);
+
+		// Create video and token
+		$videoID = $this->videoManager->newVideo((string) $filename);
+
+		$allValues = $this->tokenManager->getTokenDefaults();
+		$allValues['input_media'] = $this->fileManager->getTempDir() .'/'. $id .'/video.mp4';
+
+		if ($this->tokenManager->submitToken($this->tokenManager->getTemplateByName('config_video_convert.ini'), $allValues, $videoID) === null) {
+			try {
+				$this->videoManager->removeVideo($videoID);
+			} catch (\Exception $e) {}
+			$this->getHttpResponse()->setCode(IResponse::S500_INTERNAL_SERVER_ERROR);
+			$this->sendJson($this->translator->translate('alert.run_task_failed'));
+		}
+
+		$this->sendJson($videoID);
 	}
 
 	public function renderEdit(int $id): void
@@ -67,6 +123,8 @@ class VideoPresenter extends BasePresenter
 
 	/**
 	 * @secured
+	 * @param int $id Video ID
+	 * @throws Nette\Application\AbortException
 	 */
 	public function handleAddLink(int $id)
 	{
@@ -78,6 +136,7 @@ class VideoPresenter extends BasePresenter
 		catch (\Exception $e) {
 			$this->payload->status = 'err';
 		}
+
 		$this->sendPayload();
 	}
 

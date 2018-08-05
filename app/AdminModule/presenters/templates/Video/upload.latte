@@ -1,0 +1,43 @@
+{block content}
+
+<h1 class="d-inline-block">{block title}{_'Upload video'}{/block}:</h1>
+
+<script src="{$basePath}/dropzone/dropzone.js"></script>
+<link rel="stylesheet" href="{$basePath}/dropzone/dropzone.css">
+
+<script>
+	Dropzone.autoDiscover = false;
+</script>
+
+<div class="dropzone"></div>
+
+<script>
+	let videoUploader = new Dropzone('div.dropzone', {
+		url: {plink uploadPart!},
+		maxFiles: 1,
+		chunking: true,
+		forceChunking: true,
+		maxFilesize: null,
+		chunkSize: 6000000,
+		dictDefaultMessage: {_'dropzone.defaultMessage'},
+    dictFallbackMessage: {_'dropzone.fallbackMessage'},
+    dictFallbackText: {_'dropzone.fallbackText'},
+    dictFileTooBig: {_'dropzone.fileTooBig'},
+    dictInvalidFileType: {_'dropzone.invalidFileType'},
+    dictResponseError: {_'dropzone.responseError'},
+    dictCancelUpload: {_'dropzone.cancelUpload'},
+    dictUploadCanceled: {_'dropzone.uploadCanceled'},
+    dictCancelUploadConfirmation: {_'dropzone.cancelUploadConfirmation'},
+    dictRemoveFile: {_'dropzone.removeFile'},
+    dictMaxFilesExceeded: {_'dropzone.maxFilesExceeded'},
+		chunksUploaded: function(file, done) {
+			let jqXHR = $.ajax({plink uploadEnd!}+'&id='+file.upload.uuid+'&filename='+file.name);
+			jqXHR.done(function(data) {
+          done();
+				  let editLink = {plink Video:edit 0};
+				  editLink.slice(0, -1);
+          window.location.href = editLink.slice(0, -1) +'/'+ data;
+			});
+		}
+	});
+</script>

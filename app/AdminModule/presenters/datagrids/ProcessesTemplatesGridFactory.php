@@ -43,12 +43,12 @@ class ProcessesTemplatesGridFactory
 		$grid->addColumnText('description', 'Description');
 
 		if ($presenter->user->isInRole('admin')) {
-		$grid->addAction('edit', 'Edit', 'Template:edit')
+		$grid->addAction('edit', 'form.edit', 'Template:edit')
 			->setIcon('pencil')
 			->setClass('btn btn-light');
 		}
 
-		$grid->addAction('Run', 'Run', 'Template:run')
+		$grid->addAction('Run', 'form.run', 'Template:run')
 			->setIcon('play')
 			->setClass('btn btn-light');
 
