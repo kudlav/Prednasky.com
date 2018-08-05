@@ -11,7 +11,6 @@ use Nette\Application\UI\Presenter;
 use Nette\Localization\ITranslator;
 use App\Model\VideoManager;
 use App\Model\UserManager;
-use Tracy\Debugger;
 
 
 class EditVideoFormFactory

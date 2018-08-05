@@ -3,4 +3,11 @@
 <a class="btn btn-light align-text-bottom" href="{$prevPage}"><span class="fa fa-angle-left"></span> {_'Back'}</a>
 <h1 class="d-inline-block">{block title}{_'Run template'}{/block}:</h1>
 
+<div class="card my-2">
+  <div class="card-body">
+    <h5 class="card-title">{$templateName}</h5>
+    <p class="card-text">{$templateDesc}</p>
+  </div>
+</div>
+
 {control runTemplateForm}
