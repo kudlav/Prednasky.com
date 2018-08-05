@@ -1,0 +1,18 @@
+# Project: 'prednasky.com'
+# Language-Team: 'Vladan Kudlac <vladankudlac@gmail.com>'
+# Content-Type: 'text/plain; charset=UTF-8'
+#
+# Language: 'cs_CZ'
+# Version: '5.2.0'
+
+'defaultMessage' : 'Sem přetáhněte soubory pro nahrání'
+'fallbackMessage' : 'Váš prohlížeč nepodporuje drag&amp;n&amp;drop nahrávání souborů.'
+'fallbackText' : 'Použijte prosím starý formulář pro nahrávání souborů.'
+'fileTooBig' : 'Příliš velký soubor ({{filesize}} MiB). Max. velikost: {{maxFilesize}} MiB.'
+'invalidFileType' : 'Tento typ souboru nelze nahrát.'
+'responseError' : 'Server odpověděl chybou {{statusCode}}.'
+'cancelUpload' : 'Zrušit nahrávání'
+'uploadCanceled' : 'Nahrávání zrušeno.'
+'cancelUploadConfirmation' : 'Opravdu chcete zrušit toto nahrávání?'
+'removeFile' : 'Odebrat soubor'
+'maxFilesExceeded' : 'Více souborů nelze nahrát.'

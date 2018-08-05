@@ -1,0 +1,18 @@
+# Project: 'prednasky.com'
+# Language-Team: 'Vladan Kudlac <vladankudlac@gmail.com>'
+# Content-Type: 'text/plain; charset=UTF-8'
+#
+# Language: 'en_GB'
+# Version: '5.2.0'
+
+'defaultMessage' : 'Drop files here to upload'
+'fallbackMessage' : 'Your browser does not support drag&amp;n&amp;drop file uploads.'
+'fallbackText' : 'Please use the fallback form below to upload your files like in the olden days.'
+'fileTooBig' : 'File is too big ({{filesize}}MiB). Max filesize: {{maxFilesize}}MiB.'
+'invalidFileType' : 'You can&amp; upload files of this type.'
+'responseError' : 'Server responded with {{statusCode}} code.'
+'cancelUpload' : 'Cancel upload'
+'uploadCanceled' : 'Upload canceled.'
+'cancelUploadConfirmation' : 'Are you sure you want to cancel this upload?'
+'removeFile' : 'Remove file'
+'maxFilesExceeded' : 'You can&amp;t upload any more files.'
