@@ -96,14 +96,23 @@ class VideoPresenter extends BasePresenter
 		// Check the user rights for this video
 		if (!$this->user->isInRole('admin')) {
 			$tags = [];
+			$empty = true;
 			foreach ($this->parameters['structure_tag'] as $tag) {
 				$tagRow = $this->videoManager->getVideoTagValue($id, $tag);
-				$tags[$tag] = $tagRow!==null ? $tagRow->id : null;
+				if ($tagRow !== null) {
+					$tags[$tag] = $tagRow->id;
+					$empty = false;
+				}
+				else {
+					$tags[$tag] = null;
+				}
 			}
-			$courses = $this->userManager->getUserCourses($this->presenter->user->id);
-			$courseMatch = $this->userManager->isUserCourse($courses, $this->parameters['structure_tag'], $tags);
-			if (!$courseMatch) {
-				$this->error('Nemáte oprávnění k editování totoho videa', Nette\Http\IResponse::S403_FORBIDDEN);
+			if (!$empty) {
+				$courses = $this->userManager->getUserCourses($this->presenter->user->id);
+				$courseMatch = $this->userManager->isUserCourse($courses, $this->parameters['structure_tag'], $tags);
+				if (!$courseMatch) {
+					$this->error('Nemáte oprávnění k editování totoho videa', Nette\Http\IResponse::S403_FORBIDDEN);
+				}
 			}
 		}
 
