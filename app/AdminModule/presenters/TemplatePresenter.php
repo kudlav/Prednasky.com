@@ -58,10 +58,11 @@ class TemplatePresenter extends BasePresenter
 
 	public function createComponentRunTemplateForm(): Form
 	{
-		if ($this->templateRow === null) {
+		$template = $this->tokenManager->getTemplateById((int) $this->getParameter('id'));
+		if ($template === null) {
 			$this->error('Šablona s id '. $this->getParameter('id') .' neexistuje!', Nette\Http\IResponse::S404_NOT_FOUND);
 		}
-		$factory = new RunTemplateFormFactory($this, $this->translator, $this->templateRow, $this->tokenManager, $this->videoManager);
+		$factory = new RunTemplateFormFactory($this, $this->translator, $template, $this->tokenManager, $this->videoManager);
 		return $factory->create();
 	}
 

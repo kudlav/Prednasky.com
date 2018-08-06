@@ -70,7 +70,7 @@ class RunTemplateFormFactory
 			}
 		}
 
-		$form->addSubmit('save', 'Run')
+		$form->addSubmit('save', 'form.run')
 			->setAttribute('class', 'btn btn-primary')
 		;
 

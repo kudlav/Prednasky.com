@@ -65,7 +65,7 @@ class EditTemplateFormFactory
 			->setAttribute('class', 'form-control')
 		;
 
-		$form->addSubmit('save', 'Save')
+		$form->addSubmit('save', 'form.save')
 			->setAttribute('class', 'btn btn-primary')
 		;
 
