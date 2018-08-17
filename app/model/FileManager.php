@@ -166,7 +166,8 @@ class FileManager
 						.'/'. $token->private_hash
 						.'/files.list'
 		;
-		$filesList = fopen($pathFilesList, 'r');
+
+		$filesList = is_readable($pathFilesList) ? fopen($pathFilesList, 'r') : false;
 
 		if ($filesList === false) {
 			Debugger::log("FileManager: import files from token # '".$token->id.", no file 'files.list'.", \Tracy\ILogger::INFO);

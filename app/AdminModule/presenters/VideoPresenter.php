@@ -64,7 +64,7 @@ class VideoPresenter extends BasePresenter
 			$this->sendJson('Chybí parametry pro zkompilování uploadu!');
 		}
 
-		$this->fileManager->uploadFileEnd((string) $id, (string) $filename);
+		$this->fileManager->uploadFileEnd((string) $id, 'video.out');
 
 		Debugger::log('VideoPresenter: User '. $this->user->id .' uploaded file "'. $filename .'"', Debugger::INFO);
 
@@ -72,7 +72,7 @@ class VideoPresenter extends BasePresenter
 		$videoID = $this->videoManager->newVideo((string) $filename);
 
 		$allValues = $this->tokenManager->getTokenDefaults();
-		$allValues['input_media'] = $this->fileManager->getTempDir() .'/'. $id .'/video.mp4';
+		$allValues['input_media'] = $this->fileManager->getTempDir() .'/'. $id . '/video.out';
 
 		if ($this->tokenManager->submitToken($this->tokenManager->getTemplateByName('config_video_convert.ini'), $allValues, $videoID) === null) {
 			try {
