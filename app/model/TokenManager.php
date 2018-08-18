@@ -233,6 +233,7 @@ class TokenManager
 	 * @param int $videoId
 	 * @param int $priority
 	 * @return string|null Return job ID or null when unsuccessfull.
+	 * @throws \Exception If was not possible to generate random token.
 	 */
 	public function submitToken(ActiveRow $template, array $values, int $videoId, int $priority=1): ?string
 	{

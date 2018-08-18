@@ -172,8 +172,6 @@ class EditVideoFormFactory
 			$data[VideoManager::VIDEO_PUBLISHED] = date('Y-m-d H:i:s');
 		}
 
-		$change = false;
-
 		try {
 			$this->videoManager->updateVideo((int)$this->video->id, $data);
 		}

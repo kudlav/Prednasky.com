@@ -449,7 +449,7 @@ class VideoManager
 			if ($currentVal !== null) {
 				$currentTag = $this->getTag($tag, $currentVal->value);
 				if ($currentTag !== null) {
-					$result = $this->database->table(self::TABLE_VIDEO_TAG)
+					$this->database->table(self::TABLE_VIDEO_TAG)
 						->where(self::VIDEO_TAG_VIDEO, $videoId)
 						->where(self::VIDEO_TAG_TAG, $currentTag->id)
 						->delete()

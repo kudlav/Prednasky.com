@@ -1,70 +1,69 @@
 {block content}
 
-    <div class="container">
-    <div class="row">
-      <div class="col-md-3">
-        <h2>{_'Location'}</h2>
-        <div class="list-group">
-          <a n:href="Homepage:default" class="list-group-item list-group-item-action"><i class="fa fa-home" aria-hidden="true"></i> {_'Main page'}</a>
-          <a n:foreach="$listGroup as $item => $path" n:href="Homepage:default $path" class="list-group-item list-group-item-action">{$item|noescape}</a>
-        </div>
-      </div>
-
-      <div class="col-md-9">
-        <h1 class="d-inline-block">{block title}{$video->name}{/block}</h1>
-        <div class="row">
-          {if count($videoFiles) > 0}
-            <video autoplay controls class="mx-auto">
-              <source n:foreach="$videoFiles as $type => $file" src="{$dataExport}/{$file}" type="{$type}">
-              {_'Your browser does not support the video tag.'}
-            </video>
-          {else}
-            <div class="d-block text-muted media-box w-100 text-center py-5">
-              <i class=" fa fa-film fa-4x"></i>
-              <div class="lead">{_'Video is not available.'}</div>
-            </div>
-          {/if}
-        </div>
-        <div class="row">
-          <div class="col-md-6">
-            <p class="lead">{_'Published'}: {$video->published|date:'j. n. Y - H:i'}
-              {ifset $video->record_begin, $video->record_end}
-              <br>{_'Recorded'}: {$video->record_begin|date:'j. n. Y H:i'}{$video->record_end|date:'-H:i'}</p>
-              {/ifset}
-          </div>
-          <div class="col-md-6">
-            <p class="lead">{_'Duration'}: {gmdate("H:i:s",$video->duration)}</p>
-          </div>
-        </div>
-
-        {if !empty($people)}
-          <div n:foreach="$people as $rows" class="row">
-            <p class="col-sm-auto lead">{_'role.'.$rows[0]->ref('role')->name}: </p>
-            <p class="col-sm lead">
-              {foreach $rows as $row}
-                {ifset $row->ref('user')->personal_web}<a href="{$row->ref('user')->personal_web}">{$row->ref('user')->fullname}</a>{else}{$row->ref('user')->fullname}{/ifset}
-                <a n:if="$row->show_email" href="mailto:{$row->ref('user')->email}" class="fa fa-sm fa-envelope-o"></a><br>
-              {/foreach}
-            </p>
-          </div>
-        {/if}
-
-        <p>{$video->abstract|noescape}</p>
-
-        {if count($attachments)>0}
-          <h3>{_'Files'}:</h3>
-          <ul>
-            <li n:foreach="$attachments as $file" class="text-primary"><a n:href="Front:File:download $file->id">$file->name</a></li>
-          </ul>
-        {/if}
-
-        {foreach $relatedVideos as $rows}
-          <h3 class="my-0">{_'relation_type.'.$rows[0]->ref('relation_type')->name, count($rows)}:</h3>
-          <div class="row">
-            {foreach $rows as $row}{control videoCard $row->ref('video', 'video_to')}{/foreach}
-          </div>
-        {/foreach}
-        </div>
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <h2>{_'Location'}</h2>
+      <div class="list-group">
+        <a n:href="Homepage:default" class="list-group-item list-group-item-action"><i class="fa fa-home" aria-hidden="true"></i> {_'Main page'}</a>
+        <a n:foreach="$listGroup as $item => $path" n:href="Homepage:default $path" class="list-group-item list-group-item-action">{$item|noescape}</a>
       </div>
     </div>
+
+    <div class="col-md-9">
+      <h1 class="d-inline-block">{block title}{$video->name}{/block}</h1>
+      <div class="row">
+        {if count($videoFiles) > 0}
+          <video autoplay controls class="mx-auto">
+            <source n:foreach="$videoFiles as $type => $file" src="{$dataExport}/{$file}" type="{$type}">
+            {_'Your browser does not support the video tag.'}
+          </video>
+        {else}
+          <div class="d-block text-muted media-box w-100 text-center py-5">
+            <i class=" fa fa-film fa-4x"></i>
+            <div class="lead">{_'Video is not available.'}</div>
+          </div>
+        {/if}
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <p class="lead">{_'Published'}: {$video->published|date:'j. n. Y - H:i'}
+            {ifset $video->record_begin, $video->record_end}
+            <br>{_'Recorded'}: {$video->record_begin|date:'j. n. Y H:i'}{$video->record_end|date:'-H:i'}</p>
+            {/ifset}
+        </div>
+        <div class="col-md-6">
+          <p class="lead">{_'Duration'}: {gmdate("H:i:s",$video->duration)}</p>
+        </div>
+      </div>
+
+      {if !empty($people)}
+        <div n:foreach="$people as $rows" class="row">
+          <p class="col-sm-auto lead">{_'role.'.$rows[0]->ref('role')->name}: </p>
+          <p class="col-sm lead">
+            {foreach $rows as $row}
+              {ifset $row->ref('user')->personal_web}<a href="{$row->ref('user')->personal_web}">{$row->ref('user')->fullname}</a>{else}{$row->ref('user')->fullname}{/ifset}
+              <a n:if="$row->show_email" href="mailto:{$row->ref('user')->email}" class="fa fa-sm fa-envelope-o"></a><br>
+            {/foreach}
+          </p>
+        </div>
+      {/if}
+
+      <p>{$video->abstract|noescape}</p>
+
+      {if count($attachments)>0}
+        <h3>{_'Files'}:</h3>
+        <ul>
+          <li n:foreach="$attachments as $file" class="text-primary"><a n:href="Front:File:download $file->id">$file->name</a></li>
+        </ul>
+      {/if}
+
+      {foreach $relatedVideos as $rows}
+        <h3 class="my-0">{_'relation_type.'.$rows[0]->ref('relation_type')->name, count($rows)}:</h3>
+        <div class="row">
+          {foreach $rows as $row}{control videoCard $row->ref('video', 'video_to')}{/foreach}
+        </div>
+      {/foreach}
+    </div>
   </div>
+</div>

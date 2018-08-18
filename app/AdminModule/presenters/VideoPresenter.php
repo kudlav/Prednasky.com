@@ -132,7 +132,7 @@ class VideoPresenter extends BasePresenter
 
 	/**
 	 * @secured
-	 * @param int $id Video ID
+	 * @param int $id Video ID.
 	 * @throws Nette\Application\AbortException
 	 */
 	public function handleAddLink(int $id)
@@ -151,6 +151,8 @@ class VideoPresenter extends BasePresenter
 
 	/**
 	 * @secured
+	 * @param int $id Video ID.
+	 * @throws Nette\Application\AbortException
 	 */
 	public function handleDelLink(int $id)
 	{

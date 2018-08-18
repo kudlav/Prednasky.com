@@ -9,7 +9,6 @@ use Nette\Database\Table\ActiveRow;
 use Nette\Database\Table\Selection;
 use Nette\Http\FileUpload;
 use \Tracy\Debugger;
-use Tracy\ILogger;
 
 
 class FileManager
