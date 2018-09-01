@@ -56,7 +56,7 @@ class RunTemplateFormFactory
 		$form->setTranslator($this->translator);
 
 		foreach ($vars as $variable) {
-			if (in_array($variable, ['job_id', 'public_datadir', 'private_datadir']) || in_array($variable, array_keys($defaultValues))) {
+			if (in_array($variable, ['job_id', 'public_datadir', 'private_datadir']) || in_array($variable, array_keys($defaultValues)) || $form->getComponent($variable, false) !== null) {
 				continue;
 			}
 
