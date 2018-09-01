@@ -3,7 +3,7 @@
     {if isset($thumbnail)}
       <img style="max-height: 139px; max-width: 100%" src="{$thumbnail}">
     {else}
-      <i class="d-block media-box fa fa-film text-muted w-100 text-center fa-4x py-5"></i>
+      <i class="d-inline-block media-box fa fa-film text-muted w-100 text-center fa-4x py-5" style="text-decoration:none"></i>
     {/if}
     <div class="time-sticker position-absolute bg-dark px-1 font-weight-light">{gmdate("H:i:s",$video->duration)}</div>
   </div>
