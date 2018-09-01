@@ -162,14 +162,14 @@ class VideoPresenter extends BasePresenter
 
 	public function handleDel(int $id)
 	{
-		$video_name = $this->videoManager->getVideoById($id, true)->name;
+		$videoName = $this->videoManager->getVideoById($id, true)->name;
 		if ($this->videoManager->removeVideo($id)) {
-			$msg = $this->translator->translate('alert.video_delete_successfully', ['name' => $video_name]);
+			$msg = $this->translator->translate('alert.video_delete_successfully', ['name' => $videoName]);
 			$this->flashMessage($msg, 'success');
 			$this->redirect('Videos:published');
 		}
 		else {
-			$msg = $this->translator->translate('alert.video_delete_failed', ['name' => $video_name]);
+			$msg = $this->translator->translate('alert.video_delete_failed', ['name' => $videoName]);
 			$this->flashMessage($msg, 'danger');
 		}
 	}
