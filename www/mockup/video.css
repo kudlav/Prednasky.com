@@ -6260,6 +6260,9 @@ footer img {
   font-weight: bolder; }
 
 .code {
-  font-family: Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;
+  font-family: Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace;
   font-size: 85%;
   white-space: nowrap; }
+
+.datagrid {
+  padding: 0 !important; }

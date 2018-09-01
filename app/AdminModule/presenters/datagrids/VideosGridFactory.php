@@ -11,7 +11,7 @@ use Ublaboo\DataGrid\DataGrid;
 use Kdyby\Translation\Translator;
 
 
-class VideosPublishedGridFactory
+class VideosGridFactory
 {
 	use Nette\SmartObject;
 

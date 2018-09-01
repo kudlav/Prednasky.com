@@ -6,7 +6,7 @@ namespace App\AdminModule\Presenters;
 use Nette;
 use Kdyby\Translation\Translator;
 use Ublaboo\DataGrid\DataGrid;
-use App\AdminModule\Datagrids\VideosPublishedGridFactory;
+use App\AdminModule\Datagrids\VideosGridFactory;
 use App\Model\UserManager;
 use App\Model\VideoManager;
 use App\Model\FileManager;
@@ -19,9 +19,10 @@ class VideosPresenter extends BasePresenter
 	 * @var FileManager $fileManager
 	 * @var UserManager $userManager
 	 * @var Translator $translator
+	 * @var array $courses
 	 * @var DataGrid $grid
 	 */
-	private $videoManager, $fileManager, $userManager, $translator, $grid;
+	private $videoManager, $fileManager, $userManager, $translator, $courses, $grid;
 
 	public function __construct(VideoManager $videoManager, FileManager $fileManager, UserManager $userManager, Translator $translator)
 	{
@@ -35,14 +36,11 @@ class VideosPresenter extends BasePresenter
 	{
 		parent::startup();
 
-		switch ($this->view) {
+		$this->courses = $this->userManager->getUserCourses((int) $this->user->id);
+		$this->courses = $this->userManager->formatUserCoursesSelect($this->courses, $this->parameters['structure_tag']);
 
-			case 'published':
-				$gridFactory = new VideosPublishedGridFactory($this->videoManager, $this->fileManager, $this->parameters['paths']['url_data_export']);
-				$this->grid = $gridFactory->create($this, $this->translator);
-				break;
-
-		}
+		$gridFactory = new VideosGridFactory($this->videoManager, $this->fileManager, $this->parameters['paths']['url_data_export']);
+		$this->grid = $gridFactory->create($this, $this->translator);
 	}
 
 	public function renderDefault(): void
@@ -52,39 +50,44 @@ class VideosPresenter extends BasePresenter
 
 	public function renderPublished(string $course=''): void
 	{
-		$courses = $this->userManager->getUserCourses((int) $this->user->id);
-		$this->template->courses = $this->userManager->formatUserCoursesSelect($courses, $this->parameters['structure_tag']);
+		$this->template->courses = $this->courses;
 
 		if ($course != '') {
-			$this->grid->setDataSource($this->videoManager->getVideosByTag(explode('-',$course)));
+			$this->grid->setDataSource($this->videoManager->getVideosByTag(explode('-',$course), 'published'));
 			$this->redrawControl('datagrid');
 		}
 		// Set default data source
 		else {
-			if (empty($this->template->courses)) {
-				$this->grid->setDataSource([]);
-			}
-			else {
-				reset($this->template->courses);
-				$tagIds = explode('-', key($this->template->courses));
-				$this->grid->setDataSource($this->videoManager->getVideosByTag($tagIds));
-			}
+			reset($this->template->courses);
+			$tagIds = explode('-', key($this->template->courses));
+			$this->grid->setDataSource($this->videoManager->getVideosByTag($tagIds, 'published'));
 		}
 
-		$this->sharedTemplateValues();
-		$this->template->tab = 1;
+		$this->sharedTemplateValues(1);
 	}
 
 	public function renderDrafts(): void
 	{
-		$this->sharedTemplateValues();
-		$this->template->tab = 2;
+		$this->template->draftCnt = 0;
+		foreach ($this->courses as $ids => $names) {
+			$videos = $this->videoManager->getVideosByTag(explode('-', $ids), 'draft');
+			$this->grid->setDataSource($videos);
+			$this->template->draftCnt += $videos->count();
+		}
+
+		$this->sharedTemplateValues(2);
 	}
 
 	public function renderProcessing(): void
 	{
-		$this->sharedTemplateValues();
-		$this->template->tab = 3;
+		$this->template->processingCnt = 0;
+		foreach ($this->courses as $ids => $names) {
+			$videos = $this->videoManager->getVideosByTag(explode('-', $ids), 'processing');
+			$this->grid->setDataSource($videos);
+			$this->template->processingCnt += $videos->count();
+		}
+
+		$this->sharedTemplateValues(3);
 	}
 
 	public function createComponentDatagrid($name): DataGrid
@@ -92,9 +95,26 @@ class VideosPresenter extends BasePresenter
 		return $this->grid;
 	}
 
-	private function sharedTemplateValues(): void
+	private function sharedTemplateValues(int $tab): void
 	{
-		$this->template->processingCnt = 0;
-		$this->template->draftCnt = 0;
+		// tab
+		$this->template->tab = $tab;
+
+		// draftCnt
+		if (!isset($this->template->draftCnt)) {
+			$this->template->draftCnt = 0;
+			foreach ($this->courses as $ids => $names) {
+				$this->template->draftCnt += $this->videoManager->getVideosByTag(explode('-', $ids), 'draft')->count();
+			}
+		}
+
+		// processingCnt
+		if (!isset($this->template->processingCnt)) {
+			$this->template->processingCnt = 0;
+			foreach ($this->courses as $ids => $names) {
+				$this->template->processingCnt += $this->videoManager->getVideosByTag(explode('-', $ids), 'processing')->count();
+			}
+		}
+
 	}
 }

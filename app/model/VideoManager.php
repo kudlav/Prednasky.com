@@ -228,9 +228,10 @@ class VideoManager
 	 * Get videos with tags. Any tag with NULL value is skipped.
 	 *
 	 * @param array $tagIds Array containing tag IDs.
+	 * @param string|null $state Filter videos with specific state [published,draft,processing]. NULL = filter not applied.
 	 * @return Selection Return rows in `video` table.
 	 */
-	public function getVideosByTag(array $tagIds): Selection
+	public function getVideosByTag(array $tagIds, ?string $state = null): Selection
 	{
 		$tagRows = $this->database->table(self::TABLE_TAG)
 			->where(self::TAG_ID, $tagIds);
@@ -252,6 +253,35 @@ class VideoManager
 		$selection = $this->database->table(self::TABLE_VIDEO)
 			->where(self::VIDEO_ID, $videoIds)
 		;
+
+		switch ($state) {
+			case 'published':
+				$stateIds = $this->database->table(self::TABLE_VIDEO_STATE)
+					->where(self::STATE_NAME, ['public', 'logged_in'])
+					->fetchPairs(null, self::STATE_ID)
+				;
+				$selection->where(self::VIDEO_LINK .' IS NOT NULL OR '. self::VIDEO_STATE .' IN ?', $stateIds);
+				$selection->where(self::VIDEO_COMPLETE, 1);
+				break;
+
+			case 'draft':
+				$stateId = $this->database->table(self::TABLE_VIDEO_STATE)
+					->where(self::STATE_NAME, 'private')
+					->fetch()
+					->id
+				;
+				$selection->where(self::VIDEO_LINK, null);
+				$selection->where(self::VIDEO_STATE, $stateId);
+				$selection->where(self::VIDEO_COMPLETE, 1);
+				break;
+
+			case 'processing':
+				$selection->where(self::VIDEO_COMPLETE, 0);
+				break;
+
+			default:
+				Debugger::log('VideoManager: unknown option "'. $state .'" of getVideosByTag', ILogger::ERROR);
+		}
 
 		return $selection;
 	}
