@@ -128,6 +128,65 @@ USE `prednasky`$$
 CREATE FUNCTION `database_version` () RETURNS varchar(5) CHARACTER SET 'utf8'
 RETURN "1.6";$$
 
+-- 1.6 => 1.7 --
+ALTER TABLE `prednasky`.`right` DROP FOREIGN KEY `fk_right_user1`;
+ALTER TABLE `prednasky`.`token` DROP FOREIGN KEY `fk_token_video1`;
+ALTER TABLE `prednasky`.`video_has_tag` DROP FOREIGN KEY `fk_video_has_tag_video1`;
+ALTER TABLE `prednasky`.`user_has_video` DROP FOREIGN KEY `fk_user_has_video_video1`;
+ALTER TABLE `prednasky`.`video_has_file` DROP FOREIGN KEY `fk_video_has_file_video1`, DROP FOREIGN KEY `fk_video_has_file_file1`;
+ALTER TABLE `prednasky`.`video_relation` DROP FOREIGN KEY `fk_video_has_video_video1`, DROP FOREIGN KEY `fk_video_has_video_video2`;
+ALTER TABLE `prednasky`.`video_has_file` 
+ADD CONSTRAINT `fk_video_has_file_video1`
+  FOREIGN KEY (`video_id`)
+  REFERENCES `prednasky`.`video` (`id`)
+  ON DELETE CASCADE
+  ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_video_has_file_file1`
+  FOREIGN KEY (`file_id`)
+  REFERENCES `prednasky`.`file` (`id`)
+  ON DELETE CASCADE
+  ON UPDATE NO ACTION;
+ALTER TABLE `prednasky`.`user_has_video` 
+ADD CONSTRAINT `fk_user_has_video_video1`
+  FOREIGN KEY (`video_id`)
+  REFERENCES `prednasky`.`video` (`id`)
+  ON DELETE CASCADE
+  ON UPDATE NO ACTION;
+ALTER TABLE `prednasky`.`video_relation` 
+ADD CONSTRAINT `fk_video_has_video_video1`
+  FOREIGN KEY (`video_from`)
+  REFERENCES `prednasky`.`video` (`id`)
+  ON DELETE CASCADE
+  ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_video_has_video_video2`
+  FOREIGN KEY (`video_to`)
+  REFERENCES `prednasky`.`video` (`id`)
+  ON DELETE CASCADE
+  ON UPDATE NO ACTION;
+ALTER TABLE `prednasky`.`video_has_tag` 
+ADD CONSTRAINT `fk_video_has_tag_video1`
+  FOREIGN KEY (`video_id`)
+  REFERENCES `prednasky`.`video` (`id`)
+  ON DELETE CASCADE
+  ON UPDATE NO ACTION;
+ALTER TABLE `prednasky`.`token` 
+ADD CONSTRAINT `fk_token_video1`
+  FOREIGN KEY (`video`)
+  REFERENCES `prednasky`.`video` (`id`)
+  ON DELETE CASCADE
+  ON UPDATE NO ACTION;
+ALTER TABLE `prednasky`.`right` 
+ADD CONSTRAINT `fk_user_has_tag_user1`
+  FOREIGN KEY (`user_id`)
+  REFERENCES `prednasky`.`user` (`id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_user_has_tag_tag1`
+  FOREIGN KEY (`tag_id`)
+  REFERENCES `prednasky`.`tag` (`id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
 -- END HERE --
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
