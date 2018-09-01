@@ -75,9 +75,7 @@ class VideoPresenter extends BasePresenter
 		$allValues['input_media'] = $this->fileManager->getTempDir() .'/'. $id . '/video.out';
 
 		if ($this->tokenManager->submitToken($this->tokenManager->getTemplateByName('config_video_convert.ini'), $allValues, $videoID) === null) {
-			try {
-				$this->videoManager->removeVideo($videoID);
-			} catch (\Exception $e) {}
+			$this->videoManager->removeVideo($videoID);
 			$this->getHttpResponse()->setCode(IResponse::S500_INTERNAL_SERVER_ERROR);
 			$this->sendJson($this->translator->translate('alert.run_task_failed'));
 		}
@@ -160,6 +158,20 @@ class VideoPresenter extends BasePresenter
 		$this->payload->status = 'ok';
 
 		$this->sendPayload();
+	}
+
+	public function handleDel(int $id)
+	{
+		$video_name = $this->videoManager->getVideoById($id, true)->name;
+		if ($this->videoManager->removeVideo($id)) {
+			$msg = $this->translator->translate('alert.video_delete_successfully', ['name' => $video_name]);
+			$this->flashMessage($msg, 'success');
+			$this->redirect('Videos:published');
+		}
+		else {
+			$msg = $this->translator->translate('alert.video_delete_failed', ['name' => $video_name]);
+			$this->flashMessage($msg, 'danger');
+		}
 	}
 
 	protected function createComponentEditVideoForm()

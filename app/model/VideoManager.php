@@ -7,6 +7,8 @@ use Nette;
 use Nette\Database\Context;
 use Nette\Database\Table\ActiveRow;
 use Nette\Database\Table\Selection;
+use Tracy\Debugger;
+use Tracy\ILogger;
 
 
 class VideoManager
@@ -114,17 +116,41 @@ class VideoManager
 	}
 
 	/**
-	 * Remove video by ID. Use when video doesn't have any dependencies (foreign keys).
+	 * Remove video by ID.
 	 *
-	 * @param int $videoID
-	 * @return int
+	 * @param int $videoID Video to remove.
+	 * @return bool True on success, false in case of failure.
 	 */
-	public function removeVideo(int $videoID): int
+	public function removeVideo(int $videoID): bool
 	{
-		return $this->database->table(self::TABLE_VIDEO)
+		# Files
+		$files = $this->database->table(FileManager::TABLE_VIDEO_FILE)
+			->select(FileManager::VIDEO_FILE_FILE .','. FileManager::TABLE_FILE .'.'. FileManager::FILE_TYPE)
+			->where(FileManager::VIDEO_FILE_VIDEO, $videoID)
+			->where(FileManager::FILE_TYPE .' = "thumbnail" OR '. FileManager::FILE_TYPE .' LIKE "video/%"')
+			->fetchPairs(null, FileManager::VIDEO_FILE_FILE)
+		;
+		$deleted = $this->database->table(FileManager::TABLE_FILE)
+			->where(FileManager::FILE_ID, $files)
+			->delete()
+		;
+		if (count($files) === $deleted) {
+			Debugger::log('VideoManager: Deleting video '. $videoID .'deleted linked files: '. implode(',', $files), ILogger::INFO);
+		}
+		else {
+			Debugger::log('VideoManager: Deleting video '. $videoID .'unable to remove all linked files: '. implode(',', $files), ILogger::WARNING);
+		}
+
+		# Token
+		// TODO remove token physically from drive
+
+		# Video
+		$result = $this->database->table(self::TABLE_VIDEO)
 			->get($videoID)
 			->delete()
-			;
+		;
+
+		return $result===1 ? true : false;
 	}
 
 	/**

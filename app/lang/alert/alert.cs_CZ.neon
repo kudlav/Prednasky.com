@@ -13,6 +13,8 @@
 'save_no_change' : 'Uloženo beze změny.'
 'save_failed' : 'Provedené změny nebylo možné uložit!'
 'video_tag_failed' : 'Videu nebylo možné nastavit tag "%name%" s hodnotou "%value%"!'
+'video_delete_successfully' : 'Video "%name%" bylo úspěsně smazáno."'
+'video_delete_failed' : 'Při odstraňování videa "%name%" došlo k chybě!'
 'run_task_ok' : 'Úloha byla úspěšně vytvořena.'
 'run_task_failed' : 'Úlohu se nepodařilo spustit!'
 'no_managed_course' : 'Nemáte přidělená práva pro správu alespoň jednoho kurzu.<br>Pokud chcete přidělit kurz, kontaktujte systémového administrátora <a href="mailto:%mail%" class="alert-link">%mail%</a>.'

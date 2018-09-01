@@ -18,6 +18,7 @@ class FileManager
 	const
 		// Table file
 		TABLE_FILE = 'file',
+		FILE_ID = 'id',
 		FILE_TYPE = 'type',
 		FILE_PATH = 'path',
 		FILE_NAME = 'name',
