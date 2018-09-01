@@ -68,24 +68,24 @@ class VideosPresenter extends BasePresenter
 
 	public function renderDrafts(): void
 	{
-		$this->template->draftCnt = 0;
+		$videos = [];
 		foreach ($this->courses as $ids => $names) {
-			$videos = $this->videoManager->getVideosByTag(explode('-', $ids), 'draft');
-			$this->grid->setDataSource($videos);
-			$this->template->draftCnt += $videos->count();
+			$videos = array_merge($videos, $this->videoManager->getVideosByTag(explode('-', $ids), 'draft')->fetchAll());
 		}
+		$this->grid->setDataSource($videos);
+		$this->template->draftCnt = count($videos);
 
 		$this->sharedTemplateValues(2);
 	}
 
 	public function renderProcessing(): void
 	{
-		$this->template->processingCnt = 0;
+		$videos = [];
 		foreach ($this->courses as $ids => $names) {
-			$videos = $this->videoManager->getVideosByTag(explode('-', $ids), 'processing');
-			$this->grid->setDataSource($videos);
-			$this->template->processingCnt += $videos->count();
+			$videos = array_merge($videos, $this->videoManager->getVideosByTag(explode('-', $ids), 'processing')->fetchAll());
 		}
+		$this->grid->setDataSource($videos);
+		$this->template->processingCnt = count($videos);
 
 		$this->sharedTemplateValues(3);
 	}
