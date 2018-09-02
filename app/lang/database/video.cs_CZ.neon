@@ -7,7 +7,12 @@
 # Table: 'video'
 
 'name' : 'Název'
+'created' : 'Vytvořeno'
 'record_begin' : 'Začátek nahrávky'
 'record_end' : 'Konec nahrávky'
+'duration' : 'Délka'
+'abstract' : 'Abstrakt'
 'state' : 'Viditelnost'
 'tags' : 'Štítky'
+'name_placeholder' : 'Název videa'
+'delete' : 'Smazat video'

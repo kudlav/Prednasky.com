@@ -46,7 +46,7 @@ class EditVideoFormFactory
 		$form->addText('title', 'video.name')
 			->setDefaultValue($this->video->name)
 			->setRequired('form.video_empty_name')
-			->setAttribute('placeholder', 'Video title')
+			->setAttribute('placeholder', 'video.name_placeholder')
 			->setAttribute('class', 'form-control')
 		;
 
@@ -106,7 +106,7 @@ class EditVideoFormFactory
 			->setAttribute('class', 'custom-select')
 		;
 
-		$form->addTextArea('abstract', 'Abstract')
+		$form->addTextArea('abstract', 'video.abstract')
 			->setDefaultValue($this->video->abstract)
 			->setAttribute('rows', '6')
 			->setAttribute('class', 'form-control tinymce')

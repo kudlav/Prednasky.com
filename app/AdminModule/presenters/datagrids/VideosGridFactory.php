@@ -52,21 +52,21 @@ class VideosGridFactory
 				return '<i class="fa fa-film text-muted fa-lg d-block py-1"></i>';
 			});
 
-		$grid->addColumnText('name', 'Name')
+		$grid->addColumnText('name', 'video.name')
 			->setSortable()
 		;
 
-		$grid->addColumnDateTime('created', 'Created')->setFormat('j. n. Y H:i')
+		$grid->addColumnDateTime('created', 'video.created')->setFormat('j. n. Y H:i')
 			->setSortable()
 		;
 
-		$grid->addColumnText('duration', 'Duration')
+		$grid->addColumnText('duration', 'video.duration')
 			->setSortable()
 			->setRenderer(function ($item) {
 			return $item->duration != null ? gmdate("H:i:s", $item->duration) : null;
 		});
 
-		$grid->addColumnText('state', 'State')
+		$grid->addColumnText('state', 'video.state')
 			->setTemplateEscaping(FALSE)
 			->setAlign('center')
 			->setSortable()

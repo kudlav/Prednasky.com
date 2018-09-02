@@ -7,7 +7,12 @@
 # Table: 'video'
 
 'name' : 'Title'
+'created' : 'Created'
 'record_begin' : 'Recording start'
 'record_end' : 'Recording end'
+'duration' : 'Duration'
+'abstract' : 'Abstract'
 'state' : 'Visibility'
 'tags' : 'Tags'
+'name_placeholder' : 'Video title'
+'delete' : 'Delete video'

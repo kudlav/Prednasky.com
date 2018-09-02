@@ -40,12 +40,6 @@ class ProcessesPresenter extends BasePresenter
 		}
 	}
 
-	public function renderProcesses(): void
-	{
-		$this->sharedTemplateValues();
-		$this->template->tab = 1;
-	}
-
 	public function renderTokens(): void
 	{
 		$this->sharedTemplateValues();

@@ -38,9 +38,9 @@ class ProcessesTemplatesGridFactory
 
 		$grid->setTranslator($translator);
 
-		$grid->addColumnText('name', 'Name');
+		$grid->addColumnText('name', 'template.name');
 
-		$grid->addColumnText('description', 'Description');
+		$grid->addColumnText('description', 'template.description');
 
 		if ($presenter->user->isInRole('admin')) {
 		$grid->addAction('edit', 'form.edit', 'Template:edit')

@@ -1,0 +1,10 @@
+# Project: 'prednasky.com'
+# Language-Team: 'Vladan Kudlac <vladankudlac@gmail.com>'
+# Content-Type: 'text/plain; charset=UTF-8'
+#
+# Database: 'v1.7'
+# Language: 'en_GB'
+# Table: 'template'
+
+'name' : 'Name'
+'description' : 'Description'
