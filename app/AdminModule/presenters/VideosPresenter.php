@@ -38,9 +38,13 @@ class VideosPresenter extends BasePresenter
 
 		$this->courses = $this->userManager->getUserCourses((int) $this->user->id);
 		$this->courses = $this->userManager->formatUserCoursesSelect($this->courses, $this->parameters['structure_tag']);
-
 		$gridFactory = new VideosGridFactory($this->videoManager, $this->fileManager, $this->parameters['paths']['url_data_export']);
-		$this->grid = $gridFactory->create($this, $this->translator);
+		if ($this->action == 'published') {
+			$this->grid = $gridFactory->create($this, $this->translator, true);
+		}
+		else {
+			$this->grid = $gridFactory->create($this, $this->translator, false);
+		}
 	}
 
 	public function renderDefault(): void

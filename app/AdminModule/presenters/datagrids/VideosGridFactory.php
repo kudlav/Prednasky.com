@@ -32,10 +32,11 @@ class VideosGridFactory
 	/**
 	 * @param Presenter $presenter
 	 * @param Translator $translator
+	 * @param bool $actionView
 	 * @return DataGrid
 	 * @throws \Ublaboo\DataGrid\Exception\DataGridException
 	 */
-	public function create(Presenter $presenter, Translator $translator): DataGrid
+	public function create(Presenter $presenter, Translator $translator, bool $actionView=false): DataGrid
 	{
 		$grid = new DataGrid($presenter, 'datagrid');
 
@@ -91,6 +92,13 @@ class VideosGridFactory
 			->setIcon('pencil')
 			->setClass('btn btn-light')
 		;
+
+		if ($actionView) {
+			$grid->addAction('view', '', ':Front:Video:default')
+				->setIcon('play-circle-o')
+				->setClass('btn btn-light')
+			;
+		}
 
 		$grid->sort = ['created' => 'DESC'];
 
