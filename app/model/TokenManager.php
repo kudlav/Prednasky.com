@@ -95,10 +95,10 @@ class TokenManager
 	/**
 	 * Get tokens by video id.
 	 *
-	 * @param int $video_id The video identifier.
+	 * @param array $video_id The video identifiers.
 	 * @return Selection The tokens by video.
 	 */
-	public function getTokensByVideo(int $video_id): Selection
+	public function getTokensByVideo(array $video_id): Selection
 	{
 		return $this->database->table(self::TABLE_TOKEN)->where(self::TOKEN_VIDEO, $video_id);
 	}

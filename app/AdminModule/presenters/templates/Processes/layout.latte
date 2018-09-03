@@ -2,14 +2,14 @@
 
 {block content}
 
-<h1>{block title}{_'Tokens and templates'}{/block}:</h1>
+<h1>{block title}{_'Tasks and templates'}{/block}:</h1>
 
 <ul class="nav nav-tabs float-none">
 	<li class="nav-item mx-2">
-		<a n:href="Processes:tokens" class="nav-link {if $tab===2}active{/if}"><i class="fa fa-files-o"></i>&nbsp;{_'Tokens'}</a>
+		<a n:href="Processes:tokens" class="nav-link {if $tab===2}active{/if}"><i class="fa fa-tasks" aria-hidden="true"></i>&nbsp;{_'Tasks'}</a>
 	</li>
 	<li class="nav-item">
-		<a n:href="Processes:templates" class="nav-link {if $tab===3}active{/if}"><i class="fa fa-book"></i>&nbsp;{_'Templates'}</a>
+		<a n:href="Processes:templates" class="nav-link {if $tab===3}active{/if}"><i class="fa fa-book" aria-hidden="true"></i>&nbsp;{_'Templates'}</a>
 	</li>
 </ul>
 

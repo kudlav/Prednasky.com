@@ -78,14 +78,4 @@ class HomepagePresenter extends BasePresenter
 	{
 		return new VideoCard($this->fileManager, $this->parameters['paths']['url_data_export']);
 	}
-
-	public function renderDownload(): void
-	{
-		$this->template->videos = $this->videoManager->getAllVideos();
-		$this->template->tokens = [];
-
-		foreach ($this->template->videos as $row) {
-			$this->template->tokens[$row->id] = $this->tokenManager->getTokensByVideo($row->id);
-		}
-	}
 }
