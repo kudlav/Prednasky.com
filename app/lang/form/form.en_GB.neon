@@ -18,3 +18,8 @@
 'run' : 'Run'
 'share_link' : 'Share link'
 'no_share_link' : 'No share link'
+'create_link' : 'Create link'
+'remove_link' : 'Remove link'
+'thumbnail' : 'Thumbnail'
+'remove_thumbnail' : 'Remove thumbnail'
+'upload_thumbnail' : 'Upload thumbnail'

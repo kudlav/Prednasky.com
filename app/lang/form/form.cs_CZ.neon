@@ -18,3 +18,8 @@
 'run' : 'Spustit'
 'share_link' : 'Sdílet odkaz'
 'no_share_link' : 'Bez soukromého odkazu'
+'create_link' : 'Vytvořit odkaz'
+'remove_link' : 'Odebrat odkaz'
+'thumbnail' : 'Miniatura'
+'remove_thumbnail' : 'Odebrat miniaturu'
+'upload_thumbnail' : 'Nahrát miniaturu'

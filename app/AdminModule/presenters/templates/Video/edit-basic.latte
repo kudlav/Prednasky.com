@@ -30,18 +30,18 @@
           <input id="shareLinkEntry" readonly type="text" class="form-control" placeholder="{_'form.no_share_link'}" value="{$shareLink}">
         </div>
         <div class="col-md-3 p-0">
-          <button type='button' id="aShareLink" class="btn btn-outline-primary {if isset($shareLink)}d-none{/if}" onclick="addShareLink(this)">Create link</button>
-          <button type='button' id="dShareLink" class="btn btn-outline-danger {if !isset($shareLink)}d-none{/if}" onclick="delShareLink(this)">Remove link</button>
+          <button type='button' id="aShareLink" class="btn btn-outline-primary {if isset($shareLink)}d-none{/if}" onclick="addShareLink(this)">{_'form.create_link'}</button>
+          <button type='button' id="dShareLink" class="btn btn-outline-danger {if !isset($shareLink)}d-none{/if}" onclick="delShareLink(this)">{_'form.remove_link'}</button>
         </div>
       </div>
     </div>
   </div>
   <div class="col-md-6">
     <br>
-    <label><b class="">Edit video:</b></label>
-    <a href="#" class="btn btn-outline-primary">Video editor</a>
+    <label><b>{_'Edit video'}:</b></label>
+    <a href="#" class="btn btn-outline-primary">{_'Video editor'}</a>
     <div class="form-group my-2">
-      <label>Thumbnail:</label>
+      <label>{_'form.thumbnail'}:</label>
       <div class="d-block position-relative">
         {ifset $thumbnail}
           <img style="max-height: 160px; max-width: 100%" src="{$thumbnail}">
@@ -49,7 +49,11 @@
           <i class="d-block media-box fa fa-film text-muted w-100 text-center fa-4x py-5"></i>
         {/ifset}
       </div>
-      <a href="#" class="btn btn-outline-primary my-2">Upload thumbnail</a>
+      {ifset $thumbnail}
+        <a href="#" class="btn btn-outline-danger my-2">{_'form.remove_thumbnail'}</a>
+      {else}
+        <a href="#" class="btn btn-outline-primary my-2">{_'form.upload_thumbnail'}</a>
+      {/ifset}
     </div>
   </div>
 </div>
