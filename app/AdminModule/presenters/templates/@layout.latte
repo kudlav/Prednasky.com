@@ -3,25 +3,10 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>{ifset title}{include title|stripHtml} | {/ifset}Prednasky.com</title>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
 	<link rel="stylesheet" href="{$basePath}/resources/bootstrap/bootstrap.css">
 	<link rel="shortcut icon" href="{$basePath}/resources/images/fit_icon.png">
-
-	<link rel="stylesheet" type="text/css" href="{$basePath}/resources/node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css">
-	<link rel="stylesheet" type="text/css" href="{$basePath}/resources/node_modules/ublaboo-datagrid/assets/dist/datagrid.min.css">
-
-	<!-- Use this css for ajax spinners -->
-	<link rel="stylesheet" type="text/css" href="{$basePath}/resources/node_modules/ublaboo-datagrid/assets/dist/datagrid-spinners.min.css">
-
-	<!-- Include this css when using FilterMultiSelect (silviomoreto.github.io/bootstrap-select) -->
-	<link rel="stylesheet" type="text/css" href="{$basePath}/resources/node_modules/bootstrap-select/dist/css/bootstrap-select.min.css">
-
-	<!-- ClockPicker Stylesheet -->
-	<link rel="stylesheet" type="text/css" href="{$basePath}/resources/node_modules/clockpicker/dist/bootstrap4-clockpicker.min.css">
-
-	<link rel="stylesheet" type="text/css" href="{$basePath}/resources/selectize/selectize.bootstrap3.css">
-
-	<title>{ifset title}{include title|stripHtml} | {/ifset}Prednasky.com</title>
 </head>
 
 <body>
@@ -96,62 +81,105 @@
 	</footer>
 
 	{block scripts}
-		<script src="{$basePath}/resources/node_modules/popper.js/dist/popper.min.js"></script>
 
 		<script src="{$basePath}/resources/node_modules/jquery/dist/jquery.min.js"></script>
+		<script src="{$basePath}/resources/node_modules/popper.js/dist/popper.min.js"></script>
+		<script src="{$basePath}/resources/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+
 		<script src="{$basePath}/resources/node_modules/nette-forms/src/assets/netteForms.min.js"></script>
 		<script src="{$basePath}/resources/node_modules/nette.ajax.js/nette.ajax.js"></script>
 
-		<script src="{$basePath}/resources/node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
-		<script src="{$basePath}/resources/node_modules/jquery-ui-sortable/jquery-ui.min.js"></script>
-		<script src="{$basePath}/resources/node_modules/ublaboo-datagrid/assets/dist/datagrid.min.js"></script>
+		{ifset $resDatepicker}
+			<link rel="stylesheet" type="text/css" href="{$basePath}/resources/node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css">
+			<script src="{$basePath}/resources/node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+		{/ifset}
 
-		<!-- It is recommended to include this JS file with just a few bits. It refreshes URL on non ajax request -->
-		<script src="{$basePath}/resources/node_modules/ublaboo-datagrid/assets/dist/datagrid-instant-url-refresh.min.js"></script>
+		{ifset $resClockpicker} {* ClockPicker script *}
+			<link rel="stylesheet" type="text/css" href="{$basePath}/resources/node_modules/clockpicker/dist/bootstrap4-clockpicker.min.css">
+			<script type="text/javascript" src="{$basePath}/resources/node_modules/clockpicker/dist/bootstrap4-clockpicker.min.js"></script>
+			<script type="text/javascript">
+				$('.clockpicker').clockpicker();
+			</script>
+		{/ifset}
 
-		<!-- Use this little extension for ajax spinners -->
-		<script src="{$basePath}/resources/node_modules/ublaboo-datagrid/assets/dist/datagrid-spinners.min.js"></script>
+		{ifset $resDatagrid}
+			<link rel="stylesheet" type="text/css" href="{$basePath}/resources/node_modules/ublaboo-datagrid/assets/dist/datagrid.min.css">
+			{* Use this css for ajax spinners *}
+			<link rel="stylesheet" type="text/css" href="{$basePath}/resources/node_modules/ublaboo-datagrid/assets/dist/datagrid-spinners.min.css">
+			<script src="{$basePath}/resources/node_modules/ublaboo-datagrid/assets/dist/datagrid.min.js"></script>
+			{* It is recommended to include this JS file with just a few bits. It refreshes URL on non ajax request *}
+			<script src="{$basePath}/resources/node_modules/ublaboo-datagrid/assets/dist/datagrid-instant-url-refresh.min.js"></script>
+			{* Use this little extension for ajax spinners *}
+			<script src="{$basePath}/resources/node_modules/ublaboo-datagrid/assets/dist/datagrid-spinners.min.js"></script>
+		{/ifset}
 
-		<!-- Include bootstrap.js for proper behaviour of ColumnStatus -->
-		<script src="{$basePath}/resources/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+		{ifset $resSelect}
+			<link rel="stylesheet" type="text/css" href="{$basePath}/resources/selectize/selectize.bootstrap3.css">
+			<script type="text/javascript" src="{$basePath}/resources/selectize/selectize.min.js"></script>
+			<script>
+				$('.select2').selectize();
+			</script>
+		{/ifset}
 
-		<!-- Include bootstrap-select.js when using FilterMultiSelect (silviomoreto.github.io/bootstrap-select) -->
-		<script src="{$basePath}/resources/node_modules/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+		{ifset $resTinymce}
+			<script src="{$basePath}/resources/tinymce/tinymce.min.js"></script>
+			<script>
+				tinymce.init({
+					selector: ".tinymce",
+					plugins: [
+						"advlist autolink link image lists charmap hr anchor",
+						"code fullscreen media nonbreaking",
+						"table textpattern"
+					],
+					toolbar1: "bold italic underline strikethrough subscript superscript | alignleft aligncenter alignright alignjustify | formatselect fontsizeselect table",
+					toolbar2: "undo redo | bullist numlist | outdent indent blockquote | link unlink image media | nonbreaking | hr removeformat | charmap | fullscreen code",
+					menubar: false,
+					toolbar_items_size: 'small'{_tinymce.language|noescape}
+				});
+			</script>
+		{/ifset}
 
-		<!-- ClockPicker script -->
-		<script type="text/javascript" src="{$basePath}/resources/node_modules/clockpicker/dist/bootstrap4-clockpicker.min.js"></script>
+		{ifset $resDropzone}
+			<link rel="stylesheet" href="{$basePath}/resources/dropzone/dropzone.css">
+			<script src="{$basePath}/resources/dropzone/dropzone.js"></script>
+			<script>
+				Dropzone.autoDiscover = false;
 
-		<script src="{$basePath}/resources/tinymce/tinymce.min.js"></script>
+				let videoUploader = new Dropzone('div.dropzone', {
+					url: {plink uploadPart!},
+					maxFiles: 1,
+					chunking: true,
+					forceChunking: true,
+					maxFilesize: null,
+					chunkSize: 6000000,
+					timeout: 60000,
+					dictDefaultMessage: {_'dropzone.defaultMessage'},
+					dictFallbackMessage: {_'dropzone.fallbackMessage'},
+					dictFallbackText: {_'dropzone.fallbackText'},
+					dictFileTooBig: {_'dropzone.fileTooBig'},
+					dictInvalidFileType: {_'dropzone.invalidFileType'},
+					dictResponseError: {_'dropzone.responseError'},
+					dictCancelUpload: {_'dropzone.cancelUpload'},
+					dictUploadCanceled: {_'dropzone.uploadCanceled'},
+					dictCancelUploadConfirmation: {_'dropzone.cancelUploadConfirmation'},
+					dictRemoveFile: {_'dropzone.removeFile'},
+					dictMaxFilesExceeded: {_'dropzone.maxFilesExceeded'},
+					chunksUploaded: function(file, done) {
+						let jqXHR = $.ajax({plink uploadEnd!}+'&id='+file.upload.uuid+'&filename='+file.name);
+						jqXHR.done(function(data) {
+							done();
+							let editLink = {plink Video:edit 0};
+							editLink.slice(0, -1);
+							window.location.href = editLink.slice(0, -1) +'/'+ data;
+						});
+					}
+				});
+			</script>
+		{/ifset}
 
-		<script type="text/javascript" src="{$basePath}/resources/selectize/selectize.min.js"></script>
-
-		<!-- Initialize nette.ajax.js after loading the DOM. -->
+		{* Initialize nette.ajax.js after loading the DOM. *}
 		<script>
 			$.nette.init();
-		</script>
-
-		<script type="text/javascript">
-        $('.clockpicker').clockpicker();
-		</script>
-
-		<script>
-        tinymce.init({
-            selector: ".tinymce",
-            plugins: [
-                "advlist autolink link image lists charmap hr anchor",
-                "code fullscreen media nonbreaking",
-                "table textpattern"
-            ],
-
-            toolbar1: "bold italic underline strikethrough subscript superscript | alignleft aligncenter alignright alignjustify | formatselect fontsizeselect table",
-            toolbar2: "undo redo | bullist numlist | outdent indent blockquote | link unlink image media | nonbreaking | hr removeformat | charmap | fullscreen code",
-            menubar: false,
-            toolbar_items_size: 'small'{_tinymce.language|noescape}
-        });
-		</script>
-
-		<script>
-				$('.select2').selectize();
 		</script>
 
 		{block selectizeCourseSelect /}

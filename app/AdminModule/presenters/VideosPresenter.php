@@ -68,6 +68,8 @@ class VideosPresenter extends BasePresenter
 		}
 
 		$this->sharedTemplateValues(1);
+		$this->template->resDatagrid = true;
+		$this->template->resSelect = true;
 	}
 
 	public function renderDrafts(): void
@@ -80,6 +82,7 @@ class VideosPresenter extends BasePresenter
 		$this->template->draftCnt = count($videos);
 
 		$this->sharedTemplateValues(2);
+		$this->template->resDatagrid = true;
 	}
 
 	public function renderProcessing(): void
@@ -92,6 +95,7 @@ class VideosPresenter extends BasePresenter
 		$this->template->processingCnt = count($videos);
 
 		$this->sharedTemplateValues(3);
+		$this->template->resDatagrid = true;
 	}
 
 	public function createComponentDatagrid($name): DataGrid

@@ -61,11 +61,13 @@ class ProcessesPresenter extends BasePresenter
 	public function renderTokens(): void
 	{
 		$this->template->tab = 2;
+		$this->template->resDatagrid = true;
 	}
 
 	public function renderTemplates(): void
 	{
 		$this->template->tab = 3;
+		$this->template->resDatagrid = true;
 	}
 
 	public function createComponentDatagrid(): DataGrid

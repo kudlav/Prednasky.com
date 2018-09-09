@@ -36,7 +36,7 @@ class VideoPresenter extends BasePresenter
 
 	public function renderUpload(): void
 	{
-
+		$this->template->resDropzone = true;
 	}
 
 	public function handleUploadPart(): void
@@ -126,6 +126,11 @@ class VideoPresenter extends BasePresenter
 
 		$this->template->prevPage = $this->getHttpRequest()->getReferer() ?? $this->link('Videos:');
 		$this->template->structureTags =  $this->parameters['structure_tag'];
+
+		$this->template->resDatepicker = true;
+		$this->template->resClockpicker = true;
+		$this->template->resSelect = true;
+		$this->template->resTinymce = true;
 	}
 
 	/**
