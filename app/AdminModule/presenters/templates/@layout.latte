@@ -145,8 +145,7 @@
 			<script src="{$basePath}/resources/dropzone/dropzone.js"></script>
 			<script>
 				Dropzone.autoDiscover = false;
-
-				let videoUploader = new Dropzone('div.dropzone', {
+				new Dropzone('div.dropzone', {
 					url: {plink uploadPart!},
 					maxFiles: 1,
 					chunking: true,
@@ -169,9 +168,7 @@
 						let jqXHR = $.ajax({plink uploadEnd!}+'&id='+file.upload.uuid+'&filename='+file.name);
 						jqXHR.done(function(data) {
 							done();
-							let editLink = {plink Video:edit 0};
-							editLink.slice(0, -1);
-							window.location.href = editLink.slice(0, -1) +'/'+ data;
+							window.location.href = data;
 						});
 					}
 				});

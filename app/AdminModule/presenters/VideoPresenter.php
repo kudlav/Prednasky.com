@@ -41,14 +41,10 @@ class VideoPresenter extends BasePresenter
 
 	public function handleUploadPart(): void
 	{
-		$httpRequest = $this->getHttpRequest();
-		$file = $httpRequest->getFile('file');
-		if ($file===null || strpos($httpRequest->getPost('dzuuid'), '/')!==false || !$this->fileManager->uploadFilePart($file, $httpRequest->getPost('dzuuid'), (int) $httpRequest->getPost('dzchunkindex'))) {
-			Debugger::log('VideoPresenter: User '. $this->user->id .' tried to upload file "'. $file->getName() .'", error code '. $file->getError(), Debugger::INFO);
+		if (!$this->fileManager->uploadFilePart($this->user->id, $this->getHttpRequest())) {
 			$this->getHttpResponse()->setCode(IResponse::S400_BAD_REQUEST);
 			$this->sendJson('Chyba nahrávání souboru!');
 		}
-
 		$this->sendJson('success');
 	}
 
@@ -80,7 +76,7 @@ class VideoPresenter extends BasePresenter
 			$this->sendJson($this->translator->translate('alert.run_task_failed'));
 		}
 
-		$this->sendJson($videoID);
+		$this->sendJson($this->link('Video:edit', ['id' => $videoID]));
 	}
 
 	public function renderEdit(int $id): void
