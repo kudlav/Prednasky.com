@@ -99,7 +99,9 @@
 			<link rel="stylesheet" type="text/css" href="{$basePath}/resources/node_modules/clockpicker/dist/bootstrap4-clockpicker.min.css">
 			<script type="text/javascript" src="{$basePath}/resources/node_modules/clockpicker/dist/bootstrap4-clockpicker.min.js"></script>
 			<script type="text/javascript">
-				$('.clockpicker').clockpicker();
+				$('.clockpicker').clockpicker({
+					autoclose: true
+				});
 			</script>
 		{/ifset}
 
