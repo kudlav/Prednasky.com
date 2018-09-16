@@ -24,10 +24,6 @@ class DashboardMenu extends Control
 				$this->template->processes = true;
 				break;
 
-			case 'Admin:Lectures':
-				$this->template->lectures = true;
-				break;
-
 			case 'Admin:Files':
 				$this->template->files = true;
 				break;
