@@ -254,33 +254,28 @@ class VideoManager
 			->where(self::VIDEO_ID, $videoIds)
 		;
 
-		switch ($state) {
-			case 'published':
-				$stateIds = $this->database->table(self::TABLE_VIDEO_STATE)
-					->where(self::STATE_NAME, ['public', 'logged_in'])
-					->fetchPairs(null, self::STATE_ID)
-				;
-				$selection->where(self::VIDEO_LINK .' IS NOT NULL OR '. self::VIDEO_STATE .' IN ?', $stateIds);
-				$selection->where(self::VIDEO_COMPLETE, 1);
-				break;
+		if ($state !== null) {
+			switch ($state) {
+				case 'published':
+					$stateIds = $this->database->table(self::TABLE_VIDEO_STATE)->where(self::STATE_NAME, ['public', 'logged_in'])->fetchPairs(null, self::STATE_ID);
+					$selection->where(self::VIDEO_LINK . ' IS NOT NULL OR ' . self::VIDEO_STATE . ' IN ?', $stateIds);
+					$selection->where(self::VIDEO_COMPLETE, 1);
+					break;
 
-			case 'draft':
-				$stateId = $this->database->table(self::TABLE_VIDEO_STATE)
-					->where(self::STATE_NAME, 'private')
-					->fetch()
-					->id
-				;
-				$selection->where(self::VIDEO_LINK, null);
-				$selection->where(self::VIDEO_STATE, $stateId);
-				$selection->where(self::VIDEO_COMPLETE, 1);
-				break;
+				case 'draft':
+					$stateId = $this->database->table(self::TABLE_VIDEO_STATE)->where(self::STATE_NAME, 'private')->fetch()->id;
+					$selection->where(self::VIDEO_LINK, null);
+					$selection->where(self::VIDEO_STATE, $stateId);
+					$selection->where(self::VIDEO_COMPLETE, 1);
+					break;
 
-			case 'processing':
-				$selection->where(self::VIDEO_COMPLETE, 0);
-				break;
+				case 'processing':
+					$selection->where(self::VIDEO_COMPLETE, 0);
+					break;
 
-			default:
-				Debugger::log('VideoManager: unknown option "'. $state .'" of getVideosByTag', ILogger::ERROR);
+				default:
+					Debugger::log('VideoManager: unknown option "' . $state . '" of getVideosByTag', ILogger::ERROR);
+			}
 		}
 
 		return $selection;
