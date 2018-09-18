@@ -2,10 +2,10 @@
 # Language-Team: 'Vladan Kudlac <vladankudlac@gmail.com>'
 # Content-Type: 'text/plain; charset=UTF-8'
 #
-# Database: 'v1.6'
+# Database: 'v1.8'
 # Language: 'cs_CZ'
 # Table: 'video_state'
 
 'private' : 'neveřejné'
-'logged_in' : 'po přihlášení'
+'logged_in' : 'po přihlášení CAS'
 'public' : 'veřejné'

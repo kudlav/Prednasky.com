@@ -7,7 +7,7 @@
 		<h1>{block title}{_'Educational videos'}{/block}:</h1>
 	</div>
 	<div class="col-md-6 text-right">
-		<a n:href="Template:run 1" class="btn btn-outline-primary mt-2">{_'Create new video'}</a>
+		<a href="#" class="btn btn-outline-primary disabled mt-2">{_'Video creator'}</a>
 		<a n:href="Video:upload" class="btn btn-outline-primary mt-2">{_'Upload video'}</a>
 	</div>
 </div>
@@ -16,7 +16,7 @@
 		<a n:href="Videos:published" class="nav-link {if $tab===1}active{/if}"><i class="fa fa-globe"></i>&nbsp;{_'Published'}</a>
 	</li>
 	<li class="nav-item mx-2">
-		<a n:href="Videos:drafts" class="nav-link {if $tab===2}active{/if}"><i class="fa fa-file"></i>&nbsp;{_'Drafts'} <span class="badge badge-light">{$draftCnt}</span></a>
+		<a n:href="Videos:drafts" class="nav-link {if $tab===2}active{/if}"><i class="fa fa-file"></i>&nbsp;{_'Private'} <span class="badge badge-light">{$draftCnt}</span></a>
 	</li>
 	<li class="nav-item">
 		<a n:href="Videos:processing" class="nav-link {if $tab===3}active{/if}"><i class="fa fa-spinner"></i>&nbsp;{_'Processing'} <span class="badge badge-light">{$processingCnt}</span></a>
