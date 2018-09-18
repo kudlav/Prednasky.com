@@ -149,7 +149,8 @@
 					toolbar1: "bold italic underline strikethrough subscript superscript | alignleft aligncenter alignright alignjustify | formatselect fontsizeselect table",
 					toolbar2: "undo redo | bullist numlist | outdent indent blockquote | link unlink image media | nonbreaking | hr removeformat | charmap | fullscreen code",
 					menubar: false,
-					toolbar_items_size: 'small'{_tinymce.language|noescape}
+					toolbar_items_size: 'small'
+					{if $locale!='en_GB'},language: {$locale}{/if}
 				});
 			</script>
 		{/ifset}
