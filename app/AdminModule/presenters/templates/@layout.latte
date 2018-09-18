@@ -92,6 +92,19 @@
 		{ifset $resDatepicker}
 			<link rel="stylesheet" type="text/css" href="{$basePath}/resources/node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css">
 			<script src="{$basePath}/resources/node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+		{dump $locale}
+			{if $locale!='en_GB'}
+				<script src="{$basePath}/resources/node_modules/bootstrap-datepicker/dist/locales/bootstrap-datepicker.{$locale}.min.js"></script>
+			{/if}
+			<script>
+				$('.datepicker').datepicker({
+					autoclose: 'true',
+					todayHighlight: 'true',
+					orientation: 'bottom',
+					format: 'd. m. yyyy'
+					{if $locale!='en_GB'},language: {$locale}{/if}
+				});
+			</script>
 		{/ifset}
 
 		{ifset $resClockpicker} {* ClockPicker script *}

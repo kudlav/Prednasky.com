@@ -59,12 +59,7 @@ class EditVideoFormFactory
 		$form->addText('record_date_start', 'video.record_begin')
 			->setDefaultValue($record_begin)
 			->setAttribute('placeholder', 'form.date_format')
-			->setAttribute('data-date-format','d. m. yyyy')
-			->setAttribute('data-provide', 'datepicker')
-			->setAttribute('data-date-orientation', 'bottom')
-			->setAttribute('data-date-today-highlight', 'true')
-			->setAttribute('data-date-autoclose', 'true')
-			->setAttribute('class', 'form-control')
+			->setAttribute('class', 'form-control datepicker')
 		;
 
 		$form->addText('record_time_start')
@@ -82,12 +77,7 @@ class EditVideoFormFactory
 		$form->addText('record_date_end', 'video.record_end')
 			->setDefaultValue($record_end)
 			->setAttribute('placeholder', 'form.date_format')
-			->setAttribute('data-date-format','d. m. yyyy')
-			->setAttribute('data-provide', 'datepicker')
-			->setAttribute('data-date-orientation', 'bottom')
-			->setAttribute('data-date-today-highlight', 'true')
-			->setAttribute('data-date-autoclose', 'true')
-			->setAttribute('class', 'form-control')
+			->setAttribute('class', 'form-control datepicker')
 		;
 
 		$form->addText('record_time_end')

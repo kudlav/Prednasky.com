@@ -57,6 +57,7 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 		}
 
 		$this->template->user = $this->getUser();
+		$this->template->locale = $this->locale;
 	}
 
 	protected function createComponentDashboardMenu(): DashboardMenu
