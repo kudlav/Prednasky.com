@@ -45,13 +45,12 @@
 		</div>
 	</nav>
 
-	<main class="container pt-3">
+	<main class="container pt-2">
 		<div n:foreach="$flashes as $flash" n:class="alert, 'alert-'.$flash->type, 'alert-dismissible fade show'">{$flash->message|translate}
       <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
-    <div class="container">
       <div class="row">
         {* Begin ListGroup *}
         <div class="col-md-3">
@@ -61,7 +60,6 @@
           {include content}
         </div>
       </div>
-    </div>
 	</main>
 
 	<footer class="bg-light text-muted py-2">
@@ -92,7 +90,6 @@
 		{ifset $resDatepicker}
 			<link rel="stylesheet" type="text/css" href="{$basePath}/resources/node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css">
 			<script src="{$basePath}/resources/node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
-		{dump $locale}
 			{if $locale!='en_GB'}
 				<script src="{$basePath}/resources/node_modules/bootstrap-datepicker/dist/locales/bootstrap-datepicker.{$locale}.min.js"></script>
 			{/if}
