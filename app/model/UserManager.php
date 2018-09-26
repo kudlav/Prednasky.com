@@ -24,15 +24,7 @@ class UserManager implements Security\IAuthenticator
 		USER_RIGHT_GROUP = 'right_group',
 		USER_INSTITUTION = 'institution',
 		USER_WEB = 'personal_web',
-		USER_ACTIVE = 'active',
-
-		TABLE_RIGHT = 'right',
-		RIGHT_ID = 'id',
-		RIGHT_USER = 'user_id',
-
-		TABLE_RIGHT_TAG = 'right_has_tag',
-		RIGHT_TAG_RIGHT = 'right_id',
-		RIGHT_TAG_TAG = 'tag_id'
+		USER_ACTIVE = 'active'
 	;
 
 	/**
@@ -135,103 +127,6 @@ class UserManager implements Security\IAuthenticator
 				return true;
 			}
 		}
-		return false;
-	}
-
-	/**
-	 * Get array of user courses.
-	 *
-	 * @param int $userId
-	 * @return array Items of array are rights (arrays) containing tags in format: [tagName => ActiveRow].
-	 */
-	public function getUserCourses(int $userId): array
-	{
-		$rightArr = [];
-
-		$rightTable = $this->database->table(self::TABLE_RIGHT)
-			->where(self::RIGHT_USER, $userId)
-		;
-
-		foreach ($rightTable as $right) {
-			$tagArr = [];
-			foreach ($right->related(self::TABLE_RIGHT_TAG) as $rightTag) {
-				$tag = $rightTag->ref(VideoManager::TABLE_TAG);
-				$tagArr[$tag->name] = $tag;
-			}
-			$rightArr[] = $tagArr;
-		}
-
-		return $rightArr;
-	}
-
-	/**
-	 * Check If user can manage at least one course.
-	 *
-	 * @param int $userId
-	 * @return bool True when user can manage some course, otherwise false.
-	 */
-	public function hasUserCourse(int $userId): bool
-	{
-		$courses =  $this->database->table(self::TABLE_RIGHT)
-			->where(self::RIGHT_USER, $userId)
-			->count();
-
-		return $courses>0 ? true : false;
-	}
-
-	/**
-	 * Format result of getUserCourses for select.
-	 *
-	 * @param array $rightArr Array obtained from getUserCourses.
-	 * @param array $structureTags 'structure_tag' from config.
-	 * @return array Rights in format IDs as key, values as value: [0-1-84-32 => 'Lectures/2017/IMA/Demo']
-	 */
-	public function formatUserCoursesSelect(array $rightArr, array $structureTags): array
-	{
-		$selectItems = [];
-
-		// Go through rights
-		foreach ($rightArr as $right) {
-			$ids = [];
-			$values = [];
-			// Sort tags in right according to structure_tag config
-			foreach ($structureTags as $tagName) {
-					$ids[] = $right[$tagName]->id;
-				if ($right[$tagName]->value !== null) {
-					$values[] = $right[$tagName]->value;
-				}
-			}
-			$selectItems[implode('-', $ids)] = implode('/', $values);
-		}
-
-		return $selectItems;
-	}
-
-	/**
-	 * Check if the user is able to manage that course.
-	 *
-	 * @param array $rightArr Array obtained from getUserCourses.
-	 * @param array $structureTags 'structure_tag' from config.
-	 * @param array $checkTagIds Array of tag IDs to check in format [tagName => ID].
-	 * @return bool
-	 */
-	public function isUserCourse(array $rightArr, array $structureTags, array $checkTagIds): bool
-	{
-		// Go through rights
-		foreach ($rightArr as $right) {
-			// Browse tags in right according to structure_tag config
-			$match = true;
-			foreach ($structureTags as $tagName) {
-				if ($right[$tagName]->value !== null && $right[$tagName]->id !== $checkTagIds[$tagName]) {
-					$match = false;
-					break;
-				}
-			}
-			if ($match) {
-				return true;
-			}
-		}
-
 		return false;
 	}
 }

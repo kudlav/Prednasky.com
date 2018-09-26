@@ -52,10 +52,6 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 			$this->error('Nemáte dostatečná oprávnění k zobrazení této stránky.', Nette\Http\IResponse::S403_FORBIDDEN);
 		}
 
-		if (!$this->userManager->hasUserCourse($this->user->id)) {
-			$this->error("alert.no_managed_course", Nette\Http\Response::S200_OK);
-		}
-
 		$this->template->user = $this->getUser();
 		$this->template->locale = $this->locale;
 	}

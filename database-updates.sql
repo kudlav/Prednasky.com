@@ -186,6 +186,21 @@ ADD CONSTRAINT `fk_user_has_tag_tag1`
   REFERENCES `prednasky`.`tag` (`id`)
   ON DELETE NO ACTION
   ON UPDATE NO ACTION;
+DROP function IF EXISTS `prednasky`.`database_version`;
+DELIMITER $$
+USE `prednasky`$$
+CREATE FUNCTION `database_version` () RETURNS varchar(5) CHARACTER SET 'utf8'
+RETURN "1.7";$$
+
+-- 1.7 => 1.8-
+INSERT INTO `prednasky`.`role` (`id`, `name`) VALUES (DEFAULT, 'owner');
+DROP TABLE IF EXISTS `prednasky`.`right_has_tag`;
+DROP TABLE IF EXISTS `prednasky`.`right`;
+DROP function IF EXISTS `prednasky`.`database_version`;
+DELIMITER $$
+USE `prednasky`$$
+CREATE FUNCTION `database_version` () RETURNS varchar(5) CHARACTER SET 'utf8'
+RETURN "1.8";$$
 
 -- END HERE --
 SET SQL_MODE=@OLD_SQL_MODE;

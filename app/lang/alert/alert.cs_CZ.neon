@@ -17,4 +17,3 @@
 'video_delete_failed' : 'Při odstraňování videa "%name%" došlo k chybě!'
 'run_task_ok' : 'Úloha byla úspěšně vytvořena.'
 'run_task_failed' : 'Úlohu se nepodařilo spustit!'
-'no_managed_course' : 'Nemáte přidělená práva pro správu alespoň jednoho kurzu.<br>Pokud chcete přidělit kurz, kontaktujte systémového administrátora <a href="mailto:%mail%" class="alert-link">%mail%</a>.'

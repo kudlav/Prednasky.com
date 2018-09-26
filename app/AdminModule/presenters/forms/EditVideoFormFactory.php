@@ -122,27 +122,9 @@ class EditVideoFormFactory
 			->setAttribute('class', 'btn btn-primary')
 		;
 
-		$form->onValidate[] = [$this, 'onValidate'];
 		$form->onSuccess[] = [$this, 'onSuccess'];
 
 		return $form;
-	}
-
-	public function onValidate(Form $form): void
-	{
-		$values = $form->getValues();
-
-		$tags = [];
-		foreach ($this->structureTags as $tag) {
-			$tags[$tag] = $values[$tag];
-		}
-
-		$courses = $this->userManager->getUserCourses($this->presenter->user->id);
-		$courseMatch = $this->userManager->isUserCourse($courses, $this->structureTags, $tags);
-
-		if (!$courseMatch) {
-			$form->addError('form.course_not_owned');
-		}
 	}
 
 	public function onSuccess(Form $form, ArrayHash $values): void

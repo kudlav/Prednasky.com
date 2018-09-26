@@ -65,7 +65,7 @@ class VideoPresenter extends BasePresenter
 		Debugger::log('VideoPresenter: User '. $this->user->id .' uploaded file "'. $filename .'"', Debugger::INFO);
 
 		// Create video and token
-		$videoID = $this->videoManager->newVideo((string) $filename);
+		$videoID = $this->videoManager->newVideo($this->user, (string) $filename);
 
 		$allValues = $this->tokenManager->getTokenDefaults();
 		$allValues['input_media'] = $this->fileManager->getTempDir() .'/'. $id . '/video.out';
@@ -89,24 +89,12 @@ class VideoPresenter extends BasePresenter
 
 		// Check the user rights for this video
 		if (!$this->user->isInRole('admin')) {
-			$tags = [];
-			$empty = true;
-			foreach ($this->parameters['structure_tag'] as $tag) {
-				$tagRow = $this->videoManager->getVideoTagValue($id, $tag);
-				if ($tagRow !== null) {
-					$tags[$tag] = $tagRow->id;
-					$empty = false;
-				}
-				else {
-					$tags[$tag] = null;
-				}
-			}
-			if (!$empty) {
-				$courses = $this->userManager->getUserCourses($this->presenter->user->id);
-				$courseMatch = $this->userManager->isUserCourse($courses, $this->parameters['structure_tag'], $tags);
-				if (!$courseMatch) {
-					$this->error('Nemáte oprávnění k editování totoho videa', Nette\Http\IResponse::S403_FORBIDDEN);
-				}
+			$video = $this->videoManager->getVideosByUser($this->user)
+				->where(VideoManager::VIDEO_ID, $id)
+				->fetch()
+			;
+			if ($video === false) {
+				$this->error('Nemáte oprávnění k editování totoho videa', Nette\Http\IResponse::S403_FORBIDDEN);
 			}
 		}
 

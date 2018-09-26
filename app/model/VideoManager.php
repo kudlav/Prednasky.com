@@ -7,6 +7,7 @@ use Nette;
 use Nette\Database\Context;
 use Nette\Database\Table\ActiveRow;
 use Nette\Database\Table\Selection;
+use Nette\Security\User;
 use Tracy\Debugger;
 use Tracy\ILogger;
 
@@ -50,11 +51,18 @@ class VideoManager
 		TABLE_VIDEO_USER = 'user_has_video',
 		VIDEO_USER_VIDEO = 'video_id',
 		VIDEO_USER_ROLE = 'role_id',
+		VIDEO_USER_USER = 'user_id',
+		VIDEO_USER_EMAIL = 'show_email',
 
 		// Video_relation table
 		TABLE_VIDEO_RELATION = 'video_relation',
 		VIDEO_RELATION_FROM = 'video_from',
-		VIDEO_RELATION_TYPE = 'relation_type_id'
+		VIDEO_RELATION_TYPE = 'relation_type_id',
+
+		// Role table
+		TABLE_ROLE = 'role',
+		ROLE_ID = 'id',
+		ROLE_NAME = 'name'
 	;
 
 	/**
@@ -72,6 +80,7 @@ class VideoManager
 	/**
 	 * Insert video into database
 	 *
+	 * @param User $user Owner of video
 	 * @param string $name Name of video
 	 * @param int $state State according to `video_state` table
 	 * @param int|null $record_begin Timestamp when the recording was started
@@ -80,7 +89,7 @@ class VideoManager
 	 *
 	 * @return int|null ID of new video or null
 	 */
-	public function newVideo(string $name="Unnamed", int $state=1, int $record_begin=null, int $record_end=null, string $abstract=null): ?int
+	public function newVideo(?User $user=null, string $name="Unnamed", int $state=1, int $record_begin=null, int $record_end=null, string $abstract=null): ?int
 	{
 		$row = $this->database->table(self::TABLE_VIDEO)->insert([
 			self::VIDEO_NAME => $name,
@@ -94,6 +103,25 @@ class VideoManager
 
 		if ($row) {
 			\Tracy\Debugger::log("VideoManager: Created video 'id':'".$row->id."'", \Tracy\ILogger::INFO);
+
+			if ($user !== null) {
+				$role = $this->database->table(self::TABLE_ROLE)
+					->where(self::ROLE_NAME, 'owner')
+					->fetch()
+				;
+
+				$userHasVideo = $this->database->table(self::TABLE_VIDEO_USER)->insert([
+					self::VIDEO_USER_USER => $user->id,
+					self::VIDEO_USER_VIDEO => $row->id,
+					self::VIDEO_USER_ROLE => $role->id,
+					self::VIDEO_USER_EMAIL => false
+				]);
+
+				if (!$userHasVideo) {
+					\Tracy\Debugger::log("VideoManager: Unable to assign video '".$row->id."' to user '".$user->id."'", \Tracy\ILogger::ERROR);
+				}
+			}
+
 			return (int) $row->id;
 		}
 		\Tracy\Debugger::log("VideoManager: Unable to create video '".$name."'", \Tracy\ILogger::ERROR);
@@ -225,34 +253,24 @@ class VideoManager
 	}
 
 	/**
-	 * Get videos with tags. Any tag with NULL value is skipped.
+	 * Get users videos with tags
 	 *
-	 * @param array $tagIds Array containing tag IDs.
-	 * @param string|null $state Filter videos with specific state [published,draft,processing]. NULL = filter not applied.
+	 * @param User $user
+	 * @param string|null $state Filter videos with specific state [published,drafts,processing]. NULL = filter not applied.
 	 * @return Selection Return rows in `video` table.
 	 */
-	public function getVideosByTag(array $tagIds, ?string $state = null): Selection
+	public function getVideosByUser(User $user, ?string $state = null): Selection
 	{
-		$tagRows = $this->database->table(self::TABLE_TAG)
-			->where(self::TAG_ID, $tagIds);
+		$selection = $this->database->table(self::TABLE_VIDEO);
 
-		$filteredTagIds = [];
-		foreach ($tagRows as $tag) {
-			if ($tag->value !== null) {
-				$filteredTagIds[] = $tag->id;
-			}
+		if (!$user->isInRole('admin')) {
+			$videoIds = $this->database->table(self::TABLE_VIDEO_USER)
+				->where('role.name = "owner"')
+				->where(self::VIDEO_USER_USER, $user->id)
+				->fetchPairs(null, self::VIDEO_USER_VIDEO)
+			;
+			$selection = $selection->where(self::VIDEO_ID, $videoIds);
 		}
-
-		$videoIds = $this->database->table(self::TABLE_VIDEO_TAG)
-			->where(self::VIDEO_TAG_TAG, $filteredTagIds)
-			->group(self::VIDEO_TAG_VIDEO)
-			->having('COUNT(*) = ?', count($filteredTagIds))
-			->fetchPairs(null, self::VIDEO_TAG_VIDEO)
-		;
-
-		$selection = $this->database->table(self::TABLE_VIDEO)
-			->where(self::VIDEO_ID, $videoIds)
-		;
 
 		if ($state !== null) {
 			switch ($state) {
@@ -262,7 +280,7 @@ class VideoManager
 					$selection->where(self::VIDEO_COMPLETE, 1);
 					break;
 
-				case 'draft':
+				case 'drafts':
 					$stateId = $this->database->table(self::TABLE_VIDEO_STATE)->where(self::STATE_NAME, 'private')->fetch()->id;
 					$selection->where(self::VIDEO_LINK, null);
 					$selection->where(self::VIDEO_STATE, $stateId);

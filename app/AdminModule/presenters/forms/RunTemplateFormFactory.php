@@ -81,7 +81,7 @@ class RunTemplateFormFactory
 
 	public function onSuccess(Form $form, ArrayHash $values): void
 	{
-		$videoID = $this->videoManager->newVideo();
+		$videoID = $this->videoManager->newVideo($this->presenter->user);
 
 		$allValues = array_merge($this->tokenManager->getTokenDefaults(), (array) $values);
 

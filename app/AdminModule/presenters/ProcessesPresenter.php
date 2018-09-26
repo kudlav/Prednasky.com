@@ -45,12 +45,7 @@ class ProcessesPresenter extends BasePresenter
 				break;
 
 			case 'tokens':
-				$courses = $this->userManager->getUserCourses((int) $this->user->id);
-				$courses = $this->userManager->formatUserCoursesSelect($courses, $this->parameters['structure_tag']);
-				$videoIds = [];
-				foreach ($courses as $ids => $names) {
-					$videoIds = array_merge($videoIds, $this->videoManager->getVideosByTag(explode('-', $ids))->fetchPairs(null, VideoManager::VIDEO_ID));
-				}
+				$videoIds = $this->videoManager->getVideosByUser($this->user)->fetchPairs(null, VideoManager::VIDEO_ID);
 				$gridFactory = new ProcessesTokensGridFactory();
 				$this->grid = $gridFactory->create($this->presenter, $this->translator);
 				$this->grid->setDataSource($this->tokenManager->getTokensByVideo($videoIds));
