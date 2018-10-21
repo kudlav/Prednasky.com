@@ -7,9 +7,9 @@ use Nette;
 use App\Model\VideoManager;
 use App\Model\FileManager;
 use Nette\Application\UI\Presenter;
-use Nette\Database\Table\Selection;
 use Ublaboo\DataGrid\DataGrid;
 use Kdyby\Translation\Translator;
+use Ublaboo\NetteDatabaseDataSource\NetteDatabaseDataSource;
 
 
 class VideosGridFactory
@@ -35,12 +35,12 @@ class VideosGridFactory
 	/**
 	 * @param Presenter $presenter
 	 * @param Translator $translator
-	 * @param Selection $dataSource
+	 * @param NetteDatabaseDataSource $dataSource
 	 * @param bool $actionView
 	 * @return DataGrid
 	 * @throws \Ublaboo\DataGrid\Exception\DataGridException
 	 */
-	public function create(Presenter $presenter, Translator $translator, Selection $dataSource, bool $actionView=false): DataGrid
+	public function create(Presenter $presenter, Translator $translator, NetteDatabaseDataSource $dataSource, bool $actionView=false): DataGrid
 	{
 		$grid = new DataGrid($presenter, 'datagrid');
 
@@ -77,7 +77,7 @@ class VideosGridFactory
 			->setAlign('center')
 			->setSortable()
 			->setRenderer(function ($item) use ($translator) {
-				$state = $item->ref(VideoManager::VIDEO_STATE)->name;
+				$state = $item->state_name;
 				if ($state == 'public') {
 					return '<i class="fa fa-globe" title="'. ucfirst($translator->translate('video_state.public')) .'" aria-hidden="true"></i>';
 				}
@@ -93,21 +93,9 @@ class VideosGridFactory
 				return '';
 			});
 
-		$videoIds = $dataSource->fetchPairs(null, VideoManager::VIDEO_ID);
 		foreach ($this->structureTags as $structureTag) {
-			$options = $this->videoManager->getTagValues($structureTag);
-
 			$grid->addColumnText($structureTag, 'config.'.$structureTag)
-				->setRenderer(function ($item) use ($structureTag) {
-					$tag = $item->related(VideoManager::TABLE_VIDEO_TAG)
-						->where(VideoManager::TABLE_TAG.'.'.VideoManager::TAG_NAME, $structureTag)
-						->fetch()
-					;
-					if ($tag !== false) {
-						return $tag->ref(VideoManager::TABLE_TAG)->value;
-					}
-					return "";
-				})
+				->setSortable()
 			;
 		}
 

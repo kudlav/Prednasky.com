@@ -10,6 +10,7 @@ use Nette\Database\Table\Selection;
 use Nette\Security\User;
 use Tracy\Debugger;
 use Tracy\ILogger;
+use Ublaboo\NetteDatabaseDataSource\NetteDatabaseDataSource;
 
 
 class VideoManager
@@ -103,6 +104,13 @@ class VideoManager
 
 		if ($row) {
 			\Tracy\Debugger::log("VideoManager: Created video 'id':'".$row->id."'", \Tracy\ILogger::INFO);
+
+			foreach ($this->parameters['structure_tag'] as $tag) {
+				$result = $this->setVideoTagValue((int) $row->id, $tag, (int) $this->getTag($tag, null)->id);
+				if (!$result) {
+					\Tracy\Debugger::log("VideoManager: Creating video 'id':'".$row->id."', unable to set default ". $tag ."tag", \Tracy\ILogger::ERROR);
+				}
+			}
 
 			if ($user !== null) {
 				$role = $this->database->table(self::TABLE_ROLE)
@@ -257,38 +265,49 @@ class VideoManager
 	 *
 	 * @param User $user
 	 * @param string|null $state Filter videos with specific state [published,drafts,processing]. NULL = filter not applied.
-	 * @return Selection Return rows in `video` table.
+	 * @return NetteDatabaseDataSource Return rows in `video` table.
 	 */
-	public function getVideosByUser(User $user, ?string $state = null): Selection
+	public function getVideosByUser(User $user, ?string $state = null): NetteDatabaseDataSource
 	{
-		$selection = $this->database->table(self::TABLE_VIDEO);
+		$select = [];
+		$where = [];
+		$join = [];
 
-		if (!$user->isInRole('admin')) {
-			$videoIds = $this->database->table(self::TABLE_VIDEO_USER)
-				->where('role.name = "owner"')
-				->where(self::VIDEO_USER_USER, $user->id)
-				->fetchPairs(null, self::VIDEO_USER_VIDEO)
-			;
-			$selection = $selection->where(self::VIDEO_ID, $videoIds);
+		$select[] = "`video`.*";
+		$select[] = "`video_state`.`name` AS `state_name`";
+		$join[] = "`video_state` ON `video`.`state`=`video_state`.`id`";
+
+		// Category columns
+		foreach ($this->parameters['structure_tag'] as $tag) {
+			$select[] = sprintf("`tag_%s`.`value` AS `%s`", $tag, $tag);
+			$where[] = sprintf("(`tag_%s`.`name`='%s' OR `tag_%s`.`name` IS NULL)", $tag, $tag, $tag);
+			$join[] = sprintf("`video_has_tag` AS vht_%s ON `video`.`id`=vht_%s.`video_id`", $tag, $tag);
+			$join[] = sprintf("`tag` AS `tag_%s` ON vht_%s.`tag_id`=`tag_%s`.`id`", $tag, $tag, $tag);
 		}
 
+		// Filter owned videos
+		if (!$user->isInRole('admin')) {
+			$join[] = "`user_has_video` ON `video`.`id`=`user_has_video`.`video_id`";
+			$join[] = "`role` ON `user_has_video`.`role_id`=`role`.`id`";
+			$where[] = sprintf("`role`.`name`='owner' AND `user_has_video`.`user_id`=%d", $user->id);
+		}
+
+		// Filter videos according to visibility
 		if ($state !== null) {
 			switch ($state) {
 				case 'published':
-					$stateIds = $this->database->table(self::TABLE_VIDEO_STATE)->where(self::STATE_NAME, ['public', 'logged_in'])->fetchPairs(null, self::STATE_ID);
-					$selection->where(self::VIDEO_LINK . ' IS NOT NULL OR ' . self::VIDEO_STATE . ' IN ?', $stateIds);
-					$selection->where(self::VIDEO_COMPLETE, 1);
+					$where[] = "`video`.`complete`=1";
+					$where[] = "(`video`.`public_link` IS NOT NULL OR `video_state`.`name` IN ('public', 'logged_in'))";
 					break;
 
 				case 'drafts':
-					$stateId = $this->database->table(self::TABLE_VIDEO_STATE)->where(self::STATE_NAME, 'private')->fetch()->id;
-					$selection->where(self::VIDEO_LINK, null);
-					$selection->where(self::VIDEO_STATE, $stateId);
-					$selection->where(self::VIDEO_COMPLETE, 1);
+					$where[] = "`video`.`complete`=1";
+					$where[] = "`video`.`public_link` IS NULL";
+					$where[] = "`video_state`.`name`='private'";
 					break;
 
 				case 'processing':
-					$selection->where(self::VIDEO_COMPLETE, 0);
+					$where[] = "`video`.`complete`=0";
 					break;
 
 				default:
@@ -296,7 +315,13 @@ class VideoManager
 			}
 		}
 
-		return $selection;
+		$query = "SELECT " . implode(",", $select)
+			. " FROM `video`"
+			. " LEFT JOIN " . implode(" LEFT JOIN ", $join)
+			. " WHERE " . implode(" AND ", $where)
+		;
+
+		return new NetteDatabaseDataSource($this->database, $query);
 	}
 
 	/**

@@ -11,6 +11,7 @@ use App\AdminModule\Datagrids\VideosGridFactory;
 use App\Model\UserManager;
 use App\Model\VideoManager;
 use App\Model\FileManager;
+use Ublaboo\NetteDatabaseDataSource\NetteDatabaseDataSource;
 
 
 class VideosPresenter extends BasePresenter
@@ -20,7 +21,7 @@ class VideosPresenter extends BasePresenter
 	 * @var FileManager $fileManager
 	 * @var UserManager $userManager
 	 * @var Translator $translator
-	 * @var Selection $videos
+	 * @var NetteDatabaseDataSource $videos
 	 * @var DataGrid $grid
 	 */
 	private $videoManager, $fileManager, $userManager, $translator, $grid, $videos;
@@ -61,13 +62,13 @@ class VideosPresenter extends BasePresenter
 
 	public function renderDrafts(): void
 	{
-		$this->template->draftCnt = $this->videos->count();
+		$this->template->draftCnt = $this->videos->getCount();
 		$this->sharedTemplateValues(2);
 	}
 
 	public function renderProcessing(): void
 	{
-		$this->template->processingCnt = $this->videos->count();
+		$this->template->processingCnt = $this->videos->getCount();
 		$this->sharedTemplateValues(3);
 	}
 
@@ -85,12 +86,12 @@ class VideosPresenter extends BasePresenter
 
 		// draftCnt
 		if (!isset($this->template->draftCnt)) {
-			$this->template->draftCnt = $this->videoManager->getVideosByUser($this->user, 'drafts')->count();
+			$this->template->draftCnt = $this->videoManager->getVideosByUser($this->user, 'drafts')->getCount();
 		}
 
 		// processingCnt
 		if (!isset($this->template->processingCnt)) {
-			$this->template->processingCnt = $this->videoManager->getVideosByUser($this->user, 'processing')->count();
+			$this->template->processingCnt = $this->videoManager->getVideosByUser($this->user, 'processing')->getCount();
 		}
 
 	}

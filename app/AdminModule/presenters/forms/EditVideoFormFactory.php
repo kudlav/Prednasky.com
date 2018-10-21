@@ -102,7 +102,6 @@ class EditVideoFormFactory
 			->setAttribute('class', 'form-control tinymce')
 		;
 
-		$first = true;
 		foreach ($this->structureTags as $tag) {
 			$tagRow = $this->videoManager->getVideoTagValue((int) $this->video->id, $tag);
 			$input = $form->AddSelect($tag, $tag, $this->videoManager->getTagValues($tag))
@@ -111,11 +110,6 @@ class EditVideoFormFactory
 				->setTranslator(null)
 				->setAttribute('class', 'form-control select2')
 			;
-
-			if ($first) {
-				$input->addRule(Form::REQUIRED, "form.course_empty");
-				$first = false;
-			}
 		}
 
 		$form->addSubmit('save', 'form.save')
