@@ -35,12 +35,12 @@ class VideosGridFactory
 	/**
 	 * @param Presenter $presenter
 	 * @param Translator $translator
-	 * @param NetteDatabaseDataSource $dataSource
+	 * @param array $dataSource
 	 * @param bool $actionView
 	 * @return DataGrid
 	 * @throws \Ublaboo\DataGrid\Exception\DataGridException
 	 */
-	public function create(Presenter $presenter, Translator $translator, NetteDatabaseDataSource $dataSource, bool $actionView=false): DataGrid
+	public function create(Presenter $presenter, Translator $translator, array $dataSource, bool $actionView=false): DataGrid
 	{
 		$grid = new DataGrid($presenter, 'datagrid');
 
@@ -51,7 +51,7 @@ class VideosGridFactory
 			->setTemplateEscaping(FALSE)
 			->setAlign('center')
 			->setRenderer(function ($item) {
-				$thumbnail = $this->fileManager->getVideoThumbnail($item->id);
+				$thumbnail = $this->fileManager->getVideoThumbnail($item['id']);
 				if ($thumbnail !== null) {
 					return '<img style="height:2rem" src="'. $this->urlDataExport .'/'. $thumbnail->path .'"></div>';
 				}
@@ -69,7 +69,7 @@ class VideosGridFactory
 		$grid->addColumnText('duration', 'video.duration')
 			->setSortable()
 			->setRenderer(function ($item) {
-				return $item->duration != null ? gmdate("H:i:s", $item->duration) : null;
+				return $item['duration'] != null ? gmdate("H:i:s", $item['duration']) : null;
 		});
 
 		$grid->addColumnText('state', 'video.state')
@@ -77,7 +77,7 @@ class VideosGridFactory
 			->setAlign('center')
 			->setSortable()
 			->setRenderer(function ($item) use ($translator) {
-				$state = $item->state_name;
+				$state = $item['state_name'];
 				if ($state == 'public') {
 					return '<i class="fa fa-globe" title="'. ucfirst($translator->translate('video_state.public')) .'" aria-hidden="true"></i>';
 				}
@@ -85,7 +85,7 @@ class VideosGridFactory
 					return '<i class="fa fa-users" title="'. ucfirst($translator->translate('video_state.logged_in')) .'" aria-hidden="true"></i>';
 				}
 				elseif ($state == 'private') {
-					if ($item->public_link !== null) {
+					if ($item['public_link'] !== null) {
 						return '<i class="fa fa-link fa-lg" title="'. ucfirst($translator->translate('video_state.private')) .'" aria-hidden="true"></i>';
 					}
 					return '<i class="fa fa-ban" title="'. ucfirst($translator->translate('video_state.private')) .'" aria-hidden="true"></i>';
@@ -93,9 +93,21 @@ class VideosGridFactory
 				return '';
 			});
 
+		$filterTags = [];
+		foreach ($dataSource as $row) {
+			foreach ($this->structureTags as $structureTag) {
+				if ($row[$structureTag] !== null) {
+					$filterTags[$structureTag][$row[$structureTag]] = $row[$structureTag];
+				}
+			}
+		}
+
 		foreach ($this->structureTags as $structureTag) {
+			$filterTagsShow = ['' => $translator->translate('ublaboo_datagrid.all')];
+			$filterTagsShow = array_merge($filterTagsShow, $filterTags[$structureTag] ?? []);
 			$grid->addColumnText($structureTag, 'config.'.$structureTag)
 				->setSortable()
+				->setReplacement($filterTags[$structureTag] ?? [])->setFilterSelect($filterTagsShow);
 			;
 		}
 
@@ -106,7 +118,7 @@ class VideosGridFactory
 
 		if ($actionView) {
 			$grid->addAction('view', '', ':Front:Video:default')
-				->setIcon('play-circle-o')
+				->setIcon('eye')
 				->setClass('btn btn-light')
 			;
 		}

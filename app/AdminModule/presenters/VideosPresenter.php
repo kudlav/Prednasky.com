@@ -62,13 +62,13 @@ class VideosPresenter extends BasePresenter
 
 	public function renderDrafts(): void
 	{
-		$this->template->draftCnt = $this->videos->getCount();
+		$this->template->draftCnt = count($this->videos);
 		$this->sharedTemplateValues(2);
 	}
 
 	public function renderProcessing(): void
 	{
-		$this->template->processingCnt = $this->videos->getCount();
+		$this->template->processingCnt = count($this->videos);
 		$this->sharedTemplateValues(3);
 	}
 
@@ -86,12 +86,12 @@ class VideosPresenter extends BasePresenter
 
 		// draftCnt
 		if (!isset($this->template->draftCnt)) {
-			$this->template->draftCnt = $this->videoManager->getVideosByUser($this->user, 'drafts')->getCount();
+			$this->template->draftCnt = count($this->videoManager->getVideosByUser($this->user, 'drafts'));
 		}
 
 		// processingCnt
 		if (!isset($this->template->processingCnt)) {
-			$this->template->processingCnt = $this->videoManager->getVideosByUser($this->user, 'processing')->getCount();
+			$this->template->processingCnt = count($this->videoManager->getVideosByUser($this->user, 'processing'));
 		}
 
 	}

@@ -45,7 +45,7 @@ class ProcessesPresenter extends BasePresenter
 				break;
 
 			case 'tokens':
-				$videoIds = $this->videoManager->getVideosByUser($this->user)->fetchPairs(null, VideoManager::VIDEO_ID);
+				$videoIds = array_keys($this->videoManager->getVideosByUser($this->user));
 				$gridFactory = new ProcessesTokensGridFactory();
 				$this->grid = $gridFactory->create($this->presenter, $this->translator);
 				$this->grid->setDataSource($this->tokenManager->getTokensByVideo($videoIds));

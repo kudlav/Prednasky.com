@@ -265,9 +265,9 @@ class VideoManager
 	 *
 	 * @param User $user
 	 * @param string|null $state Filter videos with specific state [published,drafts,processing]. NULL = filter not applied.
-	 * @return NetteDatabaseDataSource Return rows in `video` table.
+	 * @return array|null Return rows in `video` table.
 	 */
-	public function getVideosByUser(User $user, ?string $state = null): NetteDatabaseDataSource
+	public function getVideosByUser(User $user, ?string $state = null): ?array
 	{
 		$select = [];
 		$where = [];
@@ -321,7 +321,7 @@ class VideoManager
 			. " WHERE " . implode(" AND ", $where)
 		;
 
-		return new NetteDatabaseDataSource($this->database, $query);
+		return $this->database->query($query)->fetchAssoc('id');
 	}
 
 	/**

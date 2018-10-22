@@ -89,11 +89,7 @@ class VideoPresenter extends BasePresenter
 
 		// Check the user rights for this video
 		if (!$this->user->isInRole('admin')) {
-			$video = $this->videoManager->getVideosByUser($this->user)
-				->where(VideoManager::VIDEO_ID, $id)
-				->fetch()
-			;
-			if ($video === false) {
+			if (!isset($this->videoManager->getVideosByUser($this->user)[$id])) {
 				$this->error('Nemáte oprávnění k editování totoho videa', Nette\Http\IResponse::S403_FORBIDDEN);
 			}
 		}
