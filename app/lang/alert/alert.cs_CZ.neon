@@ -15,5 +15,7 @@
 'video_tag_failed' : 'Videu nebylo možné nastavit tag "%name%" s hodnotou "%value%"!'
 'video_delete_successfully' : 'Video "%name%" bylo úspěsně smazáno."'
 'video_delete_failed' : 'Při odstraňování videa "%name%" došlo k chybě!'
+'video_upload_successfully' : 'Video bylo nahráno a předáno ke zpracování.'
+'video_upload_failed' : 'Video se nepodařilo nahrát.'
 'run_task_ok' : 'Úloha byla úspěšně vytvořena.'
 'run_task_failed' : 'Úlohu se nepodařilo spustit!'

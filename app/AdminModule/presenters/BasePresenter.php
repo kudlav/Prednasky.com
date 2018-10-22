@@ -52,6 +52,15 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 			$this->error('Nemáte dostatečná oprávnění k zobrazení této stránky.', Nette\Http\IResponse::S403_FORBIDDEN);
 		}
 
+		// Flush flash messages in session
+		$session = $this->getSession('flashMessages');
+		if (isset($session->flashMessages)) {
+			foreach ($session->flashMessages as $flashMessage) {
+				$this->flashMessage($flashMessage['msg'], $flashMessage['type']);
+			}
+			unset($session->flashMessages);
+		}
+
 		$this->template->user = $this->getUser();
 		$this->template->locale = $this->locale;
 	}

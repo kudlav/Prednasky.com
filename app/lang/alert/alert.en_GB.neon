@@ -15,5 +15,7 @@
 'video_tag_failed' : 'Can not set a tag "%name%" with a value of "%value%"!'
 'video_delete_successfully' : 'Video "%name%" successfully removed."'
 'video_delete_failed' : 'Unable to remove video "%name%", an error occured!'
+'video_upload_successfully' : 'Video successfully uploaded and is being processed.'
+'video_upload_failed' : 'An error occured when uploading video.'
 'run_task_ok' : 'Task was successfully created.'
 'run_task_failed' : 'Unable to run task!'

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\AdminModule\Presenters;
 
+use App\AdminModule\Forms\YoutubeUploadFormFactory;
 use Nette;
 use Kdyby\Translation\Translator;
 use App\Model\FileManager;
@@ -10,6 +11,7 @@ use App\Model\VideoManager;
 use App\Model\UserManager;
 use App\Model\TokenManager;
 use App\AdminModule\Forms\EditVideoFormFactory;
+use Nette\Application\UI\Form;
 use Nette\Http\IResponse;
 use Tracy\Debugger;
 
@@ -70,11 +72,25 @@ class VideoPresenter extends BasePresenter
 		$allValues = $this->tokenManager->getTokenDefaults();
 		$allValues['input_media'] = $this->fileManager->getTempDir() .'/'. $id . '/video.out';
 
+		$session = $this->getSession('flashMessages');
+		if (!isset($session->flashMessages)) {
+			$session->flashMessages = [];
+		}
+
 		if ($this->tokenManager->submitToken($this->tokenManager->getTemplateByName('config_video_convert.ini'), $allValues, $videoID) === null) {
+			$session->flashMessages[] = [
+				'msg' => 'alert.video_upload_failed',
+				'type' => 'danger',
+			];
 			$this->videoManager->removeVideo($videoID);
 			$this->getHttpResponse()->setCode(IResponse::S500_INTERNAL_SERVER_ERROR);
-			$this->sendJson($this->translator->translate('alert.run_task_failed'));
+			$this->sendJson($this->translator->translate('alert.video_upload_failed'));
 		}
+
+		$session->flashMessages[] = [
+			'msg' => 'alert.video_upload_successfully',
+			'type' => 'success',
+		];
 
 		$this->sendJson($this->link('Video:edit', ['id' => $videoID]));
 	}
@@ -159,10 +175,16 @@ class VideoPresenter extends BasePresenter
 		}
 	}
 
-	protected function createComponentEditVideoForm()
+	protected function createComponentEditVideoForm(): Form
 	{
 		$video = $this->videoManager->getVideoById((int) $this->getParameter('id'), true);
 		$factory = new EditVideoFormFactory($this->videoManager, $this->userManager, $this->presenter, $this->translator, $video, $this->parameters['structure_tag']);
+		return $factory->create();
+	}
+
+	protected function createComponentYoutubeUpload(): Form
+	{
+		$factory = new YoutubeUploadFormFactory($this, $this->translator, $this->tokenManager, $this->videoManager);
 		return $factory->create();
 	}
 }

@@ -2,4 +2,13 @@
 
 <h1 class="d-inline-block">{block title}{_'Upload video'}{/block}:</h1>
 
-<div class="dropzone"></div>
+<div class="row">
+  <div class="col-md pb-3" style="border-right: 1px solid #dfdfdf;">
+    <h5><i class="fa fa-upload" aria-hidden="true"></i> {_'Upload from computer'}:</h5>
+    <div class="dropzone"></div>
+  </div>
+  <div class="col-md">
+    <h5><i class="fa fa-youtube-play" aria-hidden="true"></i> {_'Upload from YouTube'}:</h5>
+    {control youtubeUpload}
+  </div>
+</div>

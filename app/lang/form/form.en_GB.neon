@@ -11,6 +11,7 @@
 'course_empty' : 'You have to fill in at least first tag.'
 'video_empty_name' : 'Name of video cannot be empty!'
 'template_empty_name' : 'Name of template cannot be empty!'
+'url_empty' : 'URL cannot be empty!'
 'save' : 'Save'
 'upload' : 'Upload'
 'edit' : 'Edit'
