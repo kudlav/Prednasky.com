@@ -39,7 +39,7 @@ class ApiPresenter extends BasePresenter
 		$videoRows = $this->videoManager->searchVideos($query, $this->user->loggedIn);
 		foreach ($videoRows as $video) {
 			$thumbnail = $this->fileManager->getVideoThumbnail((int) $video->id);
-			if ($thumbnail !== null) $thumbnail = $this->parameters['paths']['url_data_export'] . '/' . $thumbnail;
+			if ($thumbnail !== null) $thumbnail = $this->parameters['paths']['url_data_export'] . '/' . $thumbnail->path;
 			$result[] = [
 				'name' => $video->name,
 				'thumbnail' => $thumbnail,
