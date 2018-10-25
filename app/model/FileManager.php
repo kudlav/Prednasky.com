@@ -232,7 +232,7 @@ class FileManager
 		$part = (int) $httpRequest->getPost('dzchunkindex');
 
 		if ($file===null || strpos($id, '/')!==false || $file->getError()) {
-			Debugger::log('VideoPresenter: User '. $userId .' tried to upload file "'. $file!==null?$file->getName():'null' .'", error code '. $file!==null?$file->getError():'null', Debugger::INFO);
+			Debugger::log('VideoPresenter: User '. $userId .' tried to upload file "'. ($file!==null?$file->getName():'null') .'", error code '. ($file!==null?$file->getError():'null')	, Debugger::INFO);
 			return false;
 		}
 
