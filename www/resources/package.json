@@ -15,7 +15,6 @@
   "dependencies": {
     "bootstrap": "^4.1.1",
     "bootstrap-datepicker": "^1.8.0",
-    "bootstrap-select": "^1.13.1",
     "clockpicker": "github:djibe/clockpicker#gh-pages",
     "jquery": "^3.3.1",
     "jquery-ui-sortable": "^1.0.0",
