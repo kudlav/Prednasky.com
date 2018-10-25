@@ -12,6 +12,11 @@
 
 <body>
 
+	<script src="{$basePath}/resources/node_modules/jquery/dist/jquery.min.js"></script>
+	{ifset $resSelect}
+		<script type="text/javascript" src="{$basePath}/resources/selectize/selectize.min.js"></script>
+	{/ifset}
+
 	<header class="container">
 		<div class="row py-2">
 			<div class="col-6">
@@ -72,9 +77,11 @@
 	</footer>
 
 	{block scripts}
-		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="{$basePath}/resources/node_modules/popper.js/dist/popper.min.js"></script>
     <script src="{$basePath}/resources/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+		{ifset $resSelect}
+			<link rel="stylesheet" type="text/css" href="{$basePath}/resources/selectize/selectize.bootstrap3.css">
+		{/ifset}
 	{/block}
 
 </body>

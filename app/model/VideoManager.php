@@ -5,12 +5,12 @@ namespace App\Model;
 
 use Nette;
 use Nette\Database\Context;
+use Nette\Database\ResultSet;
 use Nette\Database\Table\ActiveRow;
 use Nette\Database\Table\Selection;
 use Nette\Security\User;
 use Tracy\Debugger;
 use Tracy\ILogger;
-use Ublaboo\NetteDatabaseDataSource\NetteDatabaseDataSource;
 
 
 class VideoManager
@@ -187,6 +187,45 @@ class VideoManager
 		;
 
 		return $result===1 ? true : false;
+	}
+
+	/**
+	 * Search videos by text in name or obstract
+	 *
+	 * @param string $query Search query.
+	 * @param bool $loggedIn True if user is logged in.
+	 * @return ResultSet Video rows.
+	 */
+	public function searchVideos(string $query, bool $loggedIn=false): ResultSet
+	{
+		$stateQuery = $this->database->table(self::TABLE_VIDEO_STATE);
+		if ($loggedIn) {
+			$stateQuery->where(self::STATE_NAME, ['public', 'logged_in']);
+		}
+		else {
+			$stateQuery->where(self::STATE_NAME, 'public');
+		}
+		$stateIds = $stateQuery->fetchPairs(null, self::STATE_ID);
+
+		if ($this->parameters['fulltext_search']) {
+			$result = $this->database->query('
+				SELECT *
+				FROM `video`
+				WHERE `state` IN (?)
+				AND (MATCH(`name`,`abstract`) AGAINST (? IN BOOLEAN MODE))
+				ORDER BY 5 * MATCH(`name`) AGAINST (?) + MATCH(`abstract`) AGAINST (?) DESC
+			', $stateIds, $query, $query, $query);
+		}
+		else {
+			$result = $this->database->query('
+				SELECT *
+				FROM `video`
+				WHERE `state` IN (?)
+				AND `name` like ? OR `abstract` like ?
+			', $stateIds, '%'.$query.'%', '%'.$query.'%');
+		}
+
+		return $result;
 	}
 
 	/**

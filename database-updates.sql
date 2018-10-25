@@ -193,6 +193,14 @@ CREATE FUNCTION `database_version` () RETURNS varchar(5) CHARACTER SET 'utf8'
 RETURN "1.7";$$
 
 -- 1.7 => 1.8-
+ALTER TABLE `prednasky`.`video`
+  DROP COLUMN `plane_width`,
+  DROP COLUMN `plane_points`,
+  CHANGE COLUMN `complete` `complete` TINYINT(1) NOT NULL ,
+  ADD FULLTEXT INDEX `fulltext_name` (`name`),
+  ADD FULLTEXT INDEX `fulltext_abstract` (`abstract`),
+  ADD FULLTEXT INDEX `fulltext_name_abstract` (`name`, `abstract`);
+;
 INSERT INTO `prednasky`.`role` (`id`, `name`) VALUES (DEFAULT, 'owner');
 DROP TABLE IF EXISTS `prednasky`.`right_has_tag`;
 DROP TABLE IF EXISTS `prednasky`.`right`;

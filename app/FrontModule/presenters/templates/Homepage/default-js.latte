@@ -1,0 +1,36 @@
+<script>
+    $('#video-search').selectize({
+        valueField: 'url',
+        labelField: 'name',
+        searchField: ['name', 'abstract'],
+        maxItems: '1',
+        create: false,
+        render: {
+            option: function(item, escape) {
+                return '<div class="row">' +
+                    '<div class="col-auto">' + (item.thumbnail ? '<img style="height:2rem" src="' + item.thumbnail + '">' : '<i class="fa fa-film text-muted fa-lg d-block py-2"></i>') + '</div>' +
+                    '<div class="col">' +
+                    '<div class="row"><span>' + escape(item.name) + '</span></div>' +
+                    '<div class="row small text-muted"><i class="fa fa-calendar p-1" aria-hidden="true"></i>' + (item.record_begin ? escape(item.record_begin) : '??') + '<i class="fa fa-clock-o p-1 pl-3" aria-hidden="true"></i>' + (item.duration ? escape(item.duration) : '??') + '</div>' +
+                    '</div>' +
+                    '</div>';
+            }
+        },
+        load: function(query, callback) {
+            if (!query.length) return callback();
+            $.ajax({
+                url: '/api/searchvideo?query=' + encodeURIComponent(query),
+                type: 'GET',
+                error: function() {
+                    callback();
+                },
+                success: function(res) {
+                    callback(res.videos.slice(0, 10));
+                }
+            });
+        },
+        onItemAdd: function(value) {
+            window.location.href = value;
+        }
+    });
+</script>

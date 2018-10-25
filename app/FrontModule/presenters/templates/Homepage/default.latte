@@ -22,11 +22,23 @@
       </div>
       {* End ListGroup *}
       <div class="col-md-9">
-        <h1 class="d-inline-block">{block title}{if isset($title)}{$title}{else}{_'New videos'}{/if}{/block}:</h1>
-        {*
-        <input class="form-control d-inline mx-3 w-auto w-25" type="search" placeholder="{_'Search'}">
-        <button class="btn btn-primary" type="submit">{_'Search'}</button>
-        *}
+        <div class="row">
+          <div class="col-auto">
+            <h1 class="d-inline-block">{block title}{if isset($title)}{$title}{else}{_'New videos'}{/if}{/block}:</h1>
+          </div>
+          <div class="col">
+            <div class="row pt-2">
+              <div class="col">
+                <input type="search" id="video-search" class="repositories" placeholder="{_'Search'}">
+              </div>
+              {*<div class="col-auto pl-0">
+                <button class="btn btn-primary" type="submit">{_'Search'}</button>
+              </div>*}
+            </div>
+          </div>
+        </div>
+        {include default-js.latte}
+
         {* Begin Listing *}
           {if count($videoList)>0}
             <div class="row py-2">

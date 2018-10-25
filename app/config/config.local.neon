@@ -6,6 +6,7 @@
 parameters:
 	sign_verification: yes
 	salt: 'asdf'
+	fulltext_search: yes
 
 	paths:
 		path_templates: ''

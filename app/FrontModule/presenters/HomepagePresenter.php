@@ -72,6 +72,8 @@ class HomepagePresenter extends BasePresenter
 		// Paginator
 		$this->template->page = $page;
 		$this->template->lastPage = $lastPage;
+
+		$this->template->resSelect = true;
 	}
 
 	protected function createComponentVideoCard(): VideoCard
