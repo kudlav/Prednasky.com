@@ -25,22 +25,22 @@
           </div>
         {/if}
       </div>
-      <div class="row">
+      <div class="row" style="font-size: 110%">
         <div class="col-md-6">
-          <p class="lead">{_'Published'}: {$video->published|date:'j. n. Y - H:i'}
+          <p>{_'Published'}: {$video->published|date:'j. n. Y - H:i'}
             {ifset $video->record_begin, $video->record_end}
             <br>{_'Recorded'}: {$video->record_begin|date:'j. n. Y H:i'}{$video->record_end|date:'-H:i'}</p>
             {/ifset}
         </div>
         <div class="col-md-6">
-          <p class="lead">{_'Duration'}: {gmdate("H:i:s",$video->duration)}</p>
+          <p>{_'video.duration'}: {gmdate("H:i:s",$video->duration)}</p>
         </div>
       </div>
 
       {if !empty($people)}
-        <div n:foreach="$people as $rows" class="row">
-          <p class="col-sm-auto lead">{_'role.'.$rows[0]->ref('role')->name}: </p>
-          <p class="col-sm lead">
+        <div n:foreach="$people as $rows" class="row" style="font-size: 110%">
+          <p class="col-sm-auto">{_'role.'.$rows[0]->ref('role')->name}: </p>
+          <p class="col-sm">
             {foreach $rows as $row}
               {ifset $row->ref('user')->personal_web}<a href="{$row->ref('user')->personal_web}">{$row->ref('user')->fullname}</a>{else}{$row->ref('user')->fullname}{/ifset}
               <a n:if="$row->show_email" href="mailto:{$row->ref('user')->email}" class="fa fa-sm fa-envelope-o"></a><br>
@@ -48,7 +48,7 @@
           </p>
         </div>
       {/if}
-
+      <hr>
       <p>{$video->abstract|noescape}</p>
 
       {if count($attachments)>0}
