@@ -131,7 +131,7 @@ class TokenManager
 		;
 
 		if ($stateId === false) {
-			Debugger::log("TokenManager: Tried to update token with unknown state '".$values['status']."'", \Tracy\ILogger::ERROR);
+			Debugger::log("TokenManager: Tried to update token with unknown state '{$values['status']}'", \Tracy\ILogger::ERROR);
 		}
 		else {
 			// Always update time of last update
@@ -259,7 +259,7 @@ class TokenManager
 		$token_path = $this->parameters['paths']['path_export'] . $token_path;
 
 		if (!mkdir($token_path, 0770, true)) {
-			Debugger::log("TokenManager: Unable to create dir '". $token_path ."'", \Tracy\ILogger::ERROR);
+			Debugger::log("TokenManager: Unable to create dir '$token_path'", \Tracy\ILogger::ERROR);
 			return null;
 		}
 
@@ -315,14 +315,14 @@ class TokenManager
 		$isFilled = preg_match_all('~\$PHP\["([a-z_]+)"\]~', $file, $notFilled);
 		if ($isFilled !== 0) {
 			foreach ($notFilled[1] as $value) {
-				Debugger::log("TokenManager: Unable to fill template, missing '". $value ."'", \Tracy\ILogger::ERROR);
+				Debugger::log("TokenManager: Unable to fill template, missing '$value'", \Tracy\ILogger::ERROR);
 			}
 			return false;
 		}
 
 		// Save config.ini to DATA-EXPORT
 		if (file_put_contents($token_path .'/config.ini', $file, LOCK_EX) === false) {
-			Debugger::log("TokenManager: Unable to fill template, unable to write into: '". $token_path ."/config.ini'");
+			Debugger::log("TokenManager: Unable to fill template, unable to write into: '$token_path/config.ini");
 			return false;
 		}
 
@@ -375,7 +375,7 @@ class TokenManager
 	{
 		$content = file_get_contents($this->parameters['paths']['path_templates'] .'/'. $name);
 		if ($content === false) {
-			Debugger::log("TokenManager: Template '". $this->parameters['paths']['path_templates'] .'/'. $name ."' unreadable.", \Tracy\ILogger::ERROR);
+			Debugger::log("TokenManager: Template '{$this->parameters['paths']['path_templates']}/$name' unreadable.", \Tracy\ILogger::ERROR);
 			return null;
 		}
 		return $content;

@@ -103,12 +103,12 @@ class VideoManager
 		]);
 
 		if ($row) {
-			\Tracy\Debugger::log("VideoManager: Created video 'id':'".$row->id."'", \Tracy\ILogger::INFO);
+			\Tracy\Debugger::log("VideoManager: Created video 'id':'$row->id'", \Tracy\ILogger::INFO);
 
 			foreach ($this->parameters['structure_tag'] as $tag) {
 				$result = $this->setVideoTagValue((int) $row->id, $tag, (int) $this->getTag($tag, null)->id);
 				if (!$result) {
-					\Tracy\Debugger::log("VideoManager: Creating video 'id':'".$row->id."', unable to set default ". $tag ."tag", \Tracy\ILogger::ERROR);
+					\Tracy\Debugger::log("VideoManager: Creating video 'id':'$row->id', unable to set default $tag tag", \Tracy\ILogger::ERROR);
 				}
 			}
 
@@ -126,13 +126,13 @@ class VideoManager
 				]);
 
 				if (!$userHasVideo) {
-					\Tracy\Debugger::log("VideoManager: Unable to assign video '".$row->id."' to user '".$user->id."'", \Tracy\ILogger::ERROR);
+					\Tracy\Debugger::log("VideoManager: Unable to assign video '$row->id' to user '$user->id'", \Tracy\ILogger::ERROR);
 				}
 			}
 
 			return (int) $row->id;
 		}
-		\Tracy\Debugger::log("VideoManager: Unable to create video '".$name."'", \Tracy\ILogger::ERROR);
+		\Tracy\Debugger::log("VideoManager: Unable to create video '$name'", \Tracy\ILogger::ERROR);
 		return null;
 	}
 
@@ -171,10 +171,10 @@ class VideoManager
 			->delete()
 		;
 		if (count($files) === $deleted) {
-			Debugger::log('VideoManager: Deleting video '. $videoID .'deleted linked files: '. implode(',', $files), ILogger::INFO);
+			Debugger::log("VideoManager: Deleting video $videoID deleted linked files: ". implode(',', $files), ILogger::INFO);
 		}
 		else {
-			Debugger::log('VideoManager: Deleting video '. $videoID .'unable to remove all linked files: '. implode(',', $files), ILogger::WARNING);
+			Debugger::log("VideoManager: Deleting video $videoID unable to remove all linked files: ". implode(',', $files), ILogger::WARNING);
 		}
 
 		# Token
@@ -350,7 +350,7 @@ class VideoManager
 					break;
 
 				default:
-					Debugger::log('VideoManager: unknown option "' . $state . '" of getVideosByTag', ILogger::ERROR);
+					Debugger::log("VideoManager: unknown option '$state' of getVideosByTag", ILogger::ERROR);
 			}
 		}
 
