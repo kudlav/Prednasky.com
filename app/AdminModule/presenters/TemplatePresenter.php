@@ -25,16 +25,24 @@ class TemplatePresenter extends BasePresenter
 
 	public function __construct(TokenManager $tokenManager, VideoManager $videoManager, Translator $translator)
 	{
+		parent::__construct();
+
 		$this->tokenManager = $tokenManager;
 		$this->videoManager = $videoManager;
 		$this->translator = $translator;
 	}
 
+	public function startup(): void
+	{
+		parent::startup();
+
+		if (!$this->user->isInRole('admin')) {
+			$this->error('Spravovat šablony smí pouze administrátor', Nette\Http\Response::S403_FORBIDDEN);
+		}
+	}
+
 	public function renderEdit(int $id): void
 	{
-		if (!$this->user->isInRole('admin')) {
-			$this->error('Upravovat šablony smí pouze administrátor', Nette\Http\Response::S403_FORBIDDEN);
-		}
 		$this->template->prevPage = $this->getHttpRequest()->getReferer() ?? $this->link('Processes:templates');
 	}
 

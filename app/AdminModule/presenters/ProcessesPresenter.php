@@ -37,6 +37,10 @@ class ProcessesPresenter extends BasePresenter
 	{
 		parent::startup();
 
+		if (!$this->user->isInRole('admin')) {
+			$this->error('Procesy a šablony smí spravovat pouze administrátor', Nette\Http\Response::S403_FORBIDDEN);
+		}
+
 		switch ($this->view) {
 
 			case 'templates':

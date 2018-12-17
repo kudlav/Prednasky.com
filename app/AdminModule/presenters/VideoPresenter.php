@@ -29,6 +29,8 @@ class VideoPresenter extends BasePresenter
 
 	public function __construct(VideoManager $videoManager, UserManager $userManager, FileManager $fileManager, TokenManager $tokenManager, Translator $translator)
 	{
+		parent::__construct();
+
 		$this->videoManager = $videoManager;
 		$this->userManager = $userManager;
 		$this->fileManager = $fileManager;

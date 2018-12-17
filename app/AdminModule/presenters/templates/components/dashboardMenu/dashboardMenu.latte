@@ -9,7 +9,7 @@
     {_'Files'}
   </a>
 
-  <a href="{plink 'Processes:tokens'}" class="list-group-item list-group-item-action{ifset $processes} active{/ifset}">
+  <a n:if="$user->isInRole('admin')" href="{plink 'Processes:tokens'}" class="list-group-item list-group-item-action{ifset $processes} active{/ifset}">
     {_'Tasks and templates'}
   </a>
 
