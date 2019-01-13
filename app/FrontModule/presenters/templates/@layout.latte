@@ -77,8 +77,8 @@
 	</footer>
 
 	{block scripts}
-    <script src="{$basePath}/resources/node_modules/popper.js/dist/popper.min.js"></script>
-    <script src="{$basePath}/resources/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script async src="{$basePath}/resources/node_modules/popper.js/dist/umd/popper.min.js"></script>
+    <script async src="{$basePath}/resources/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 		{ifset $resSelect}
 			<link rel="stylesheet" type="text/css" href="{$basePath}/resources/selectize/selectize.bootstrap3.css">
 		{/ifset}
