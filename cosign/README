@@ -1,0 +1,148 @@
+
+Cosign filter implementation in PHP
+Version 0.9.5
+Copyright (c) 2010,2018 FIT Brno University of Technology
+See attached LICENSE file
+
+FEATURES:
+
+- Cosign v0/v2/v3 client protocol in PHP
+- Cosign v3 validation service (compatible with Apache filter implementation)
+- Kerberos ticket retrieval support (not tested)
+- Multiple Cosignd server support (DNS load balancing)
+
+LIMITATIONS:
+
+- PHP-5.3.x and greater (tested in 5.3, 5.6, 7.1)
+- PHP compiled with SSL socket transport (--with-openssl)
+- No persistent cosignd connections (SSL setup cost during cookie file
+  validation, in default setup once per 60 seconds/client)
+- No proxy support
+- Factor support not tested
+
+INSTALLATION
+
+Before you begin:
+
+For documentation and information see: http://weblogin.org/
+
+Notice, that documentation on the Web is not up to date. The only valid
+documentation is in the latest cosign-3.1.1.tar.gz distribution.
+
+Setup:
+
+- If you want to use V3 protocol, setup validation service first:
+
+1. Copy the php source "valid" to you Web server root directory ROOT/cosign:
+
+	mkdir ROOT/cosign
+	cp valid ROOT/cosign
+
+2. If you are running Apache, copy also .htaccess file to this directory  
+   (in other case, setup you server to execute "valid" as PHP script):
+
+   	cp .htaccess ROOT/cosign
+
+3. Setup appropriate access rights so the file is readable to Web server:
+	
+	chgrp www ROOT/cosign 
+	chgrp www ROOT/cosign/valid
+	chgrp www ROOT/cosign/.htaccess
+	chmod 750 ROOT/cosign
+	chmod 640 ROOT/cosign/valid
+	chmod 640 ROOT/cosign/.htaccess
+
+4. Modify CosignValidationErrorRedirect and CosignValidReference to
+   match your setup (see cosign-3.1.1/README) in ROOT/cosign/valid:
+
+   	vi ROOT/cosign/valid
+
+- Copy PHP scripts cosign.php and cosign_config.php to your PHP include 
+  directory (you have to setup it in php.ini!):
+
+  	cp cosign.php cosign_config.php /usr/local/include/php
+
+- Edit configuration file and setup all config options:
+
+	vi /usr/local/include/php/cosign_config.php
+
+1. Certificate file - copy Cosign client certificate and private key
+   in PEM format to one file (CosignCryptoLocalCert)
+
+2. CA certificate to verify Cosign server certificate (CosignCryptoCAFile)
+
+3. Cosign server hostname (CosignHostname) and URL (CosignRedirect)
+
+4. Cosign service (CosignService)
+
+5. Cookie directory location (CosignFilterDB - must be writable by your Web 
+   server!)
+	
+6. Filter log file (CosignFilterLog)
+
+7. Setup Cosign protocol version (CosignProtocolVersion). Version 2 filter
+   can communicate with version 3 cosignd server (if allowed in cosign.conf).
+
+8. Leave debug output initially on (CosignFilterDebug)
+
+Configuration options are merged from the global configuration file
+(cosign_config.php), local configuration file (.cosign.php in Web page
+directory) and the first argument in cosign_auth() call.
+All configuration options have the same meaning as in the original Apache 
+filter module. Only boolean options have different values false (off) and 
+true (on).
+
+USAGE
+
+Each page that is protected by Cosign must call cosign_auth() function
+at the beginning:
+
+<?php
+// Some Web page in PHP
+	require_once("cosign.php");
+	if (cosign_auth()) {	// Authentication OK
+	    echo "Authenticated as ".$_SERVER['REMOTE_USER']."<br>";
+	} else {		// Authentication failure
+	    echo "Not authenticated";
+	    die();
+	}
+....
+?>
+
+Function cosign_auth(array, boolean):
+
+The first argument is configuration options array. Your script can
+localy change any configuration option from cosign_config.php.
+The second argument can suppress internal ob_start() in cosign_auth(),
+if your script is doing it:
+
+<?php
+// Some Web page with ob_start()
+	ob_start();
+	require_once("cosign.php");
+	...
+	if (cosign_auth(array(), false)) { 	...
+	...
+?>
+
+After setup verification and testing, change CosignFilterDebug to false
+to suppress debug logging.
+
+BUG REPORTS
+
+Report bugs to <cosign-php@fit.vutbr.cz>
+
+SECURITY NOTICE
+
+Filter Certificate file has to be readable by Web server executing PHP
+scripts. That means, any user PHP script on this Web server can read this
+Certificate file (and its private key). Don't use Web server certificate
+as Cosign Filter Certificate! If Cosign Filter Certificate is used only 
+for cosign client verification, its disclosure should be probably harmless.
+
+LICENSE NOTICE
+
+This software is based on the Cosign protocol specification and implementation.
+Copyright (c) 2002 - 2004 Regents of The University of Michigan.
+All Rights Reserved.
+

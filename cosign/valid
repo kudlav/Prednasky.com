@@ -1,0 +1,32 @@
+<?
+// Copyright (C) 2010 FIT Brno University of Technology
+// All Rights Reserved. See LICENSE.
+// Petr Lampa <lampa@fit.vutbr.cz>
+// $Id: valid,v 1.1 2010/03/01 10:32:16 lampa Exp $
+// vi:set ts=8 sts=4 sw=4:
+
+// Cosign validation service /cosign/valid
+// Setup .htaccess to run php for this URI
+// <Files valid>
+// ForceType application/x-httpd-php
+// </Files>
+
+ob_start();
+require_once("cosign.php");
+
+if (!cosign_auth(array(
+//
+// setup validation arguments here, don't put them into cosign_config.php!
+//
+    "CosignValidLocation"=>"/cosign/valid",
+    "CosignValidationErrorRedirect"=>"https://weblogin.umich.edu/cosign/validation_error.html",
+    "CosignValidReference"=>"^https?:\/\/.*\.umich\.edu(/.*)?",
+	))) {
+	error_log("cosign valid service failed");
+	ob_end_flush();
+	header("503 Service Temporarily Unavailable");
+	echo "Cosign validation service failed";
+	exit();
+}
+// if success, request was already redirected
+?>

@@ -21,6 +21,8 @@ parameters:
 		path_attachment: ''
 		url_attachment: ''
 
+		ldap_server: 'ldap.fit.vutbr.cz'
+
 database:
 	dsn: 'mysql:host=localhost;dbname=database'
 	user: 'admin'

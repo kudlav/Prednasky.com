@@ -6,9 +6,12 @@ namespace App\Model;
 use Nette;
 use Nette\Database\Context;
 use Nette\Database\Table\ActiveRow;
+use Nette\Database\Table\Selection;
 use Nette\Security;
 use Nette\Security\Identity;
 use Nette\Security\IIdentity;
+use Tracy\Debugger;
+use Tracy\ILogger;
 
 
 class UserManager implements Security\IAuthenticator
@@ -43,7 +46,7 @@ class UserManager implements Security\IAuthenticator
 	 * Performs an authentication against e.g. database.
 	 * and returns IIdentity on success or throws AuthenticationException
 	 *
-	 * @param array $credentials Array with token on 0 index.
+	 * @param array $credentials Array with CAS id on 0 index.
 	 * @return IIdentity
 	 * @throws Security\AuthenticationException
 	 */
@@ -52,15 +55,15 @@ class UserManager implements Security\IAuthenticator
 		if (!isset($credentials[0])) {
 			throw new Security\AuthenticationException('An error occurred during authentication.', self::FAILURE);
 		}
-		$token = $credentials[0];
-
-		// Get ?some? id from CAS
-		$someIdFromCas = 196195; // Fake response
+		$casId = $credentials[0];
 
 		// Get user according to CAS id
-		$user = $this->getCasUser($someIdFromCas);
+		$user = $this->getCasUser($casId);
 		if ($user === null) {
-			$user = $this->newUser("XXX", "XXX", 3, 1, $someIdFromCas);
+			$userInfo = $this->getLdapUser($casId);
+			if ($userInfo !== null) {
+				$user = $this->newUser($userInfo['cn'], $userInfo['mail'], 3, 1, $casId);
+			}
 		}
 
 		if ($user == null) {
@@ -77,10 +80,10 @@ class UserManager implements Security\IAuthenticator
 	/**
 	 * Get user by CAS ID.
 	 *
-	 * @param int $casId
+	 * @param string $casId
 	 * @return ActiveRow|null ActiveRow with user or null when there is no user with that CAS ID.
 	 */
-	private function getCasUser(int $casId): ?ActiveRow
+	private function getCasUser(string $casId): ?ActiveRow
 	{
 		$result = $this->database->table(self::TABLE_USER)->where(self::USER_CAS, $casId)->fetch();
 		return $result!==false ? $result : null;
@@ -128,5 +131,64 @@ class UserManager implements Security\IAuthenticator
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Search user by fullname or/and by email
+	 *
+	 * @param string $query
+	 * @param string|null $secondQuery
+	 * @return Selection
+	 */
+	public function searchUser(string $query, ?string $secondQuery = null): Selection
+	{
+		$selection = $this->database->table(self::TABLE_USER)
+			->where(self::USER_FULLNAME .' LIKE ? OR '. self::USER_EMAIL .' LIKE ?', '%'.$query.'%', '%'.$query.'%')
+		;
+
+		if ($secondQuery !== null) {
+			$selection->where(self::USER_FULLNAME .' LIKE ? OR '. self::USER_EMAIL .' LIKE ?', '%'.$secondQuery.'%', '%'.$secondQuery.'%');
+		}
+
+		return $selection;
+	}
+
+	/**
+	 * Get email and fullname of VUT FIT person using LDAP search.
+	 *
+	 * @param string $user CAS ID.
+	 * @return array|null Array containing 'cn' and 'mail' entry. Null when error.
+	 */
+	public function getLdapUser(string $user): ?array
+	{
+		$server = $this->parameters['paths']['ldap_server'];
+
+		$connection = ldap_connect($server);
+		if (($connection === false) OR (!ldap_bind($connection))) {
+			Debugger::log("UserManager: Unable to connect to LDAP server '$server'", ILogger::ERROR);
+			return null;
+		}
+
+		$result = ldap_list($connection, 'dc=fit,dc=vutbr,dc=cz', "uid=$user", ['mail','cn']);
+		if ($result === false) {
+			Debugger::log("UserManager: error when retrieving data from LDAP server '$server'", ILogger::ERROR);
+			return null;
+		}
+
+		$entries = ldap_get_entries($connection, $result);
+		if ($entries === false) {
+			Debugger::log("UserManager: error when parsing data from LDAP server '$server'", ILogger::ERROR);
+			return null;
+		}
+
+		if ($entries['count'] !== 1) {
+			Debugger::log("UserManager: LDAP server '$server' contains {$entries['count']} entries for uid=$user", ILogger::ERROR);
+			return null;
+		}
+
+		return [
+			'cn' => $entries[0]['cn'][0],
+			'mail' => $entries[0]['mail'][0],
+		];
 	}
 }

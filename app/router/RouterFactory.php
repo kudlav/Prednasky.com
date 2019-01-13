@@ -34,6 +34,12 @@ class RouterFactory
 
 		// Front module
 
+		$router[] = new Route('cosign/valid', array(
+			'module' => 'Front',
+			'presenter' => 'Sign',
+			'action' => 'cosignValid'
+		), Route::ONE_WAY);
+
 		$router[] = new Route('[<locale=cs cs|en>/]ls/<path>',[
 			'module' => 'Front',
 			'presenter' => 'Homepage',
