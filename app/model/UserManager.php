@@ -101,7 +101,7 @@ class UserManager implements Security\IAuthenticator
 	 * @param string $casId optional
 	 * @return ActiveRow|null
 	 */
-	private function newUser(string $name, string $email, int $rightGroup, int $active=1, int $casId=null): ?ActiveRow
+	private function newUser(string $name, string $email, int $rightGroup, int $active=1, string $casId=null): ?ActiveRow
 	{
 		$result = $this->database->table(self::TABLE_USER)->insert([
 			self::USER_CAS => $casId,
