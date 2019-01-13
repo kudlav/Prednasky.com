@@ -74,7 +74,6 @@ class UserManager implements Security\IAuthenticator
 
 		$roles = array_slice($this->parameters['user_role'], 0, $user->right_group);
 		$data = $user->toArray();
-		$data['cas_check'] = new \DateTime();
 
 		return new Identity($data['id'], $roles, $data); // whatever does it return instead of two null
 	}
@@ -111,24 +110,6 @@ class UserManager implements Security\IAuthenticator
 			self::USER_ACTIVE => $active
 		]);
 		return $result!==false ? $result : null;
-	}
-
-	/**
-	 * Check whether the CAS validation is required.
-	 *
-	 * @param IIdentity|null $identity
-	 * @return bool
-	 */
-	public function casExpireCheck(?IIdentity $identity): bool
-	{
-		if ($identity !== null) {
-			$now = new \DateTime();
-			$timeDiff = $now->getTimestamp() - $identity->cas_check->getTimestamp();
-			if ($timeDiff > $this->parameters['cas']['reauth_timeout']) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	/**

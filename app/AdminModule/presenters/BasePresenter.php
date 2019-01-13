@@ -38,16 +38,6 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 	{
 		parent::startup();
 
-		// Periodically check CAS state
-		if ($this->userManager->casExpireCheck($this->user->getIdentity())) {
-			try {
-				$this->user->setExpiration(0);
-				$this->user->login('1234'); // TODO $this->user->login($this->getHttpRequest()->getCookie($this->parameters['cas']['cookie']));
-			} catch (Nette\Security\AuthenticationException $e) {
-				$this->flashMessage("alert.logout_cas_timeout", 'info');
-			}
-		}
-
 		if (!$this->user->isInRole('teacher')) {
 			$this->error('Nemáte dostatečná oprávnění k zobrazení této stránky.', Nette\Http\IResponse::S403_FORBIDDEN);
 		}
