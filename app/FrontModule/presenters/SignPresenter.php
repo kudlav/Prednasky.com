@@ -5,6 +5,8 @@ namespace App\FrontModule\Presenters;
 
 use App\Model\UserManager;
 use Nette\Security\AuthenticationException;
+use Tracy\Debugger;
+use Tracy\ILogger;
 
 
 class SignPresenter extends BasePresenter
@@ -19,7 +21,7 @@ class SignPresenter extends BasePresenter
 		$this->userManager = $userManager;
 	}
 
-	public function actionIn(int $cas=0): void
+	public function actionIn(): void
 	{
 
 		$this->setLayout(NULL);
@@ -35,26 +37,11 @@ class SignPresenter extends BasePresenter
 			"CosignValidationErrorRedirect"=>"https://cas.fit.vutbr.cz/validation_error.html",
 			"CosignValidReference"=>"#^https?:\/\/prednasky\.com(\/.*)?#",
 		))) {
-			error_log("cosign valid service failed");
+			Debugger::log("cosign valid service failed", ILogger::ERROR);
 			ob_end_flush();
 			header("503 Service Temporarily Unavailable");
 			echo "Cosign validation service failed";
 			exit();
-		}
-	}
-
-	public function actionCosignValid()
-	{
-		require_once("../cosign/cosign.php");
-
-		if (!cosign_auth(array(
-			// setup validation arguments here, don't put them into cosign_config.php!
-			"CosignValidLocation"=>"/index.php",
-			"CosignValidationErrorRedirect"=>"https://cas.fit.vutbr.cz/validation_error.html",
-			"CosignValidReference"=>"#^https?:\/\/prednasky\.com(\/.*)?#",
-		))) {
-			error_log("cosign valid service failed");
-			$this->error("Cosign validation service failed", 503);
 		}
 
 		// Verified FIT person
@@ -70,6 +57,25 @@ class SignPresenter extends BasePresenter
 		$this->redirect('Homepage:default');
 	}
 
+	public function actionCosignValid()
+	{
+		$this->setLayout(NULL);
+
+		ob_start();
+		require_once("../cosign/cosign.php");
+
+		if (!cosign_auth(array(
+			// setup validation arguments here, don't put them into cosign_config.php!
+			"CosignValidLocation"=>"/index.php",
+			"CosignValidationErrorRedirect"=>"https://cas.fit.vutbr.cz/validation_error.html",
+			"CosignValidReference"=>"#^https?:\/\/prednasky\.com(\/.*)?#",
+		))) {
+			ob_end_flush();
+			Debugger::log("cosign valid service failed", ILogger::ERROR);
+			$this->error("Cosign validation service failed", 503);
+		}
+	}
+
 	public function actionOut(): void
 	{
 		$this->user->logout(true);
@@ -79,7 +85,6 @@ class SignPresenter extends BasePresenter
 			$this->redirectUrl($referer->absoluteUrl);
 		}
 		else {
-			$this->flashMessage("alert.logout_ok", 'success');
 			$this->redirect('Homepage:default');
 		}
 	}

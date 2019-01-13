@@ -48,7 +48,7 @@ $cosign_cfg['CosignFactorSuffix'] = '-junk';
 $cosign_cfg['CosignFactorSuffixIgnore'] = false;
 
 // URL to which the user is redirected after login
-$cosign_cfg['CosignSiteEntry'] = 'http://prednasky.com';
+$cosign_cfg['CosignSiteEntry'] = 'https://prednasky.com/sign/in';
 
 // Use only http protocol to redirect back after login
 $cosign_cfg['CosignHTTPOnly'] = false;

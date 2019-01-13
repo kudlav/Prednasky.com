@@ -210,6 +210,24 @@ USE `prednasky`$$
 CREATE FUNCTION `database_version` () RETURNS varchar(5) CHARACTER SET 'utf8'
 RETURN "1.8";$$
 
+-- 1.8 => 1.9 --
+ALTER TABLE `prednasky`.`user`
+  DROP COLUMN `personal_web`,
+  DROP COLUMN `institution`,
+  CHANGE COLUMN `CAS_id` `CAS_id` VARCHAR(45) NULL DEFAULT NULL;
+ALTER TABLE `prednasky`.`video`
+  CHANGE COLUMN `complete` `complete` TINYINT(1) NOT NULL ,
+  ADD FULLTEXT INDEX `fulltext_name` (`name`),
+  ADD FULLTEXT INDEX `fulltext_abstract` (`abstract`),
+  ADD FULLTEXT INDEX `fulltext_name_abstract` (`name`, `abstract`);
+;
+DROP function IF EXISTS `prednasky`.`database_version`;
+DELIMITER $$
+USE `prednasky`$$
+CREATE FUNCTION `database_version` () RETURNS varchar(5) CHARACTER SET 'utf8'
+RETURN "1.9";$$
+DELIMITER ;
+
 -- END HERE --
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

@@ -25,8 +25,6 @@ class UserManager implements Security\IAuthenticator
 		USER_FULLNAME = 'fullname',
 		USER_EMAIL = 'email',
 		USER_RIGHT_GROUP = 'right_group',
-		USER_INSTITUTION = 'institution',
-		USER_WEB = 'personal_web',
 		USER_ACTIVE = 'active'
 	;
 
@@ -60,7 +58,11 @@ class UserManager implements Security\IAuthenticator
 		// Get user according to CAS id
 		$user = $this->getCasUser($casId);
 		if ($user === null) {
-			$userInfo = $this->getLdapUser($casId);
+			//$userInfo = $this->getLdapUser($casId);
+			$userInfo = [
+				'cn' => $casId,
+				'mail' => $casId . '@XXX.YY',
+			];
 			if ($userInfo !== null) {
 				$user = $this->newUser($userInfo['cn'], $userInfo['mail'], 3, 1, $casId);
 			}
@@ -96,20 +98,16 @@ class UserManager implements Security\IAuthenticator
 	 * @param string $email Email address
 	 * @param int $rightGroup
 	 * @param int $active 0 = inactive, 1 = active, default 1
-	 * @param int $casId optional
-	 * @param string $institution optional
-	 * @param string $web optional
+	 * @param string $casId optional
 	 * @return ActiveRow|null
 	 */
-	private function newUser(string $name, string $email, int $rightGroup, int $active=1, int $casId=null, string $institution=null, string $web=null): ?ActiveRow
+	private function newUser(string $name, string $email, int $rightGroup, int $active=1, int $casId=null): ?ActiveRow
 	{
 		$result = $this->database->table(self::TABLE_USER)->insert([
 			self::USER_CAS => $casId,
 			self::USER_FULLNAME => $name,
 			self::USER_EMAIL => $email,
 			self::USER_RIGHT_GROUP => $rightGroup,
-			self::USER_INSTITUTION => $institution,
-			self::USER_WEB => $web,
 			self::USER_ACTIVE => $active
 		]);
 		return $result!==false ? $result : null;
