@@ -58,11 +58,7 @@ class UserManager implements Security\IAuthenticator
 		// Get user according to CAS id
 		$user = $this->getCasUser($casId);
 		if ($user === null) {
-			//$userInfo = $this->getLdapUser($casId);
-			$userInfo = [
-				'cn' => $casId,
-				'mail' => $casId . '@XXX.YY',
-			];
+			$userInfo = $this->getLdapUser($casId);
 			if ($userInfo !== null) {
 				$user = $this->newUser($userInfo['cn'], $userInfo['mail'], 3, 1, $casId);
 			}
