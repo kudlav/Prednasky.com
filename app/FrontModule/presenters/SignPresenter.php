@@ -53,7 +53,7 @@ class SignPresenter extends BasePresenter
 			$this->flashMessage("alert.login_cas_err", 'danger');
 			$this->redirect('Homepage:default');
 		}
-		Debugger::log("SignPresenter: User ('$casId') signed in", ILogger::INFO);
+		Debugger::log("SignPresenter: User ('{$_SERVER['REMOTE_USER']}') signed in", ILogger::INFO);
 		$this->flashMessage("alert.login_cas_ok", 'success');
 		$this->redirect('Homepage:default');
 	}
