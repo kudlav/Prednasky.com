@@ -25,7 +25,8 @@ class UserManager implements Security\IAuthenticator
 		USER_FULLNAME = 'fullname',
 		USER_EMAIL = 'email',
 		USER_RIGHT_GROUP = 'right_group',
-		USER_ACTIVE = 'active'
+		USER_ACTIVE = 'active',
+		USER_LAST_LOGIN = 'last_login'
 	;
 
 	/**
@@ -61,6 +62,12 @@ class UserManager implements Security\IAuthenticator
 			$userInfo = $this->getLdapUser($casId);
 			if ($userInfo !== null) {
 				$user = $this->newUser($userInfo['cn'], $userInfo['mail'], 3, 1, $casId);
+				if ($user !== null) {
+					Debugger::log("UserManager: Registered CAS user ('$casId'), user ID: {$user->id}", ILogger::INFO);
+				}
+				else {
+					Debugger::log("UserManager: Unable to register CAS user ('$casId')", ILogger::ERROR);
+				}
 			}
 		}
 
@@ -68,6 +75,9 @@ class UserManager implements Security\IAuthenticator
 			throw new Security\AuthenticationException('We are not able to authenticate you.', self::INVALID_CREDENTIAL);
 		}
 
+		$user->update([
+			self::USER_LAST_LOGIN => date('Y-m-d H:i:s'),
+		]);
 		$roles = array_slice($this->parameters['user_role'], 0, $user->right_group);
 		$data = $user->toArray();
 
