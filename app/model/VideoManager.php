@@ -461,6 +461,60 @@ class VideoManager
 	}
 
 	/**
+	 * Create relation between video and user.
+	 *
+	 * @param int $userId
+	 * @param int $videoId
+	 * @param int $roleId
+	 * @param bool $showEmail
+	 * @return bool Success/failure.
+	 */
+	public function addVideoPeople(int $userId, int $videoId, int $roleId, bool $showEmail): bool {
+		try {
+			$result = $this->database->table(self::TABLE_VIDEO_USER)->insert([
+				self::VIDEO_USER_USER => $userId,
+				self::VIDEO_USER_VIDEO => $videoId,
+				self::VIDEO_USER_ROLE => $roleId,
+				self::VIDEO_USER_EMAIL => $showEmail,
+			]);
+		}
+		catch (Nette\Database\UniqueConstraintViolationException $e) {
+			return false;
+		}
+
+		return ($result !== false);
+	}
+
+	/**
+	 * Remove relation between video and user.
+	 *
+	 * @param int $userId
+	 * @param int $videoId
+	 * @param int $roleId
+	 * @return bool Success/failure.
+	 */
+	public function removeVideoPeople(int $userId, int $videoId, int $roleId) {
+		$result = $this->database->table(self::TABLE_VIDEO_USER)
+			->where(self::VIDEO_USER_USER, $userId)
+			->where(self::VIDEO_USER_VIDEO, $videoId)
+			->where(self::VIDEO_USER_ROLE, $roleId)
+			->delete()
+		;
+
+		return ($result === 1);
+	}
+
+	/**
+	 * Get all user roles in connection with video
+	 *
+	 * @return Selection rows of roles
+	 */
+	public function getRoles(): Selection
+	{
+		return $this->database->table(self::TABLE_ROLE);
+	}
+
+	/**
 	 * Find out all videos marked as related to this video
 	 *
 	 * @param int $id ID of video.

@@ -187,6 +187,31 @@
 			</script>
 		{/ifset}
 
+		{ifset $resFrmUsrName}
+			<script>
+				$('.frm-usr-role-search').selectize({
+					valueField: 'user',
+					labelField: 'user',
+					searchField: ['user'],
+					maxItems: '1',
+					create: false,
+					load: function(query, callback) {
+						if (!query.length) return callback();
+						$.ajax({
+							url: {$searchUsrUrl|noescape},
+							type: 'GET',
+							error: function() {
+								callback();
+							},
+							success: function(res) {
+								callback(res.users);
+							}
+						});
+					},
+				});
+			</script>
+		{/ifset}
+
 		{* Initialize nette.ajax.js after loading the DOM. *}
 		<script>
 			$.nette.init();

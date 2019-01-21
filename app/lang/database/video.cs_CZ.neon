@@ -15,4 +15,5 @@
 'state' : 'Viditelnost'
 'tags' : 'Štítky'
 'name_placeholder' : 'Název videa'
+'role' : 'role'
 'delete' : 'Smazat video'

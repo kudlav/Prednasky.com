@@ -14,6 +14,7 @@ use App\AdminModule\Forms\EditVideoFormFactory;
 use Nette\Application\UI\Form;
 use Nette\Http\IResponse;
 use Tracy\Debugger;
+use Tracy\ILogger;
 
 
 class VideoPresenter extends BasePresenter
@@ -97,6 +98,98 @@ class VideoPresenter extends BasePresenter
 		$this->sendJson($this->link('Video:edit', ['id' => $videoID]));
 	}
 
+	/**
+	 * @throws Nette\Application\AbortException
+	 */
+	public function handleAddPeople()
+	{
+		$info = $this->managePeople();
+
+		// Add new relation between user and video
+		if (!$this->videoManager->addVideoPeople($info['userId'], $info['videoId'], $info['roleId'], $info['showEmail'])) {
+			$this->payload->status = $this->translator->translate('alert.role_exists');
+			$this->getHttpResponse()->setCode(IResponse::S400_BAD_REQUEST);
+			$this->sendPayload();
+		}
+
+		$this->payload->status = 'ok';
+		$this->sendPayload();
+	}
+
+	/**
+	 * @throws Nette\Application\AbortException
+	 */
+	public function handleRemovePeople()
+	{
+		$info = $this->managePeople();
+
+		// Remove relation between user and video
+		if (!$this->videoManager->removeVideoPeople($info['userId'], $info['videoId'], $info['roleId'])) {
+			$this->payload->status = $this->translator->translate('alert.role_remove_error');
+			$this->getHttpResponse()->setCode(IResponse::S400_BAD_REQUEST);
+			$this->sendPayload();
+		}
+
+		$this->payload->status = 'ok';
+		$this->sendPayload();
+	}
+
+	/**
+	 * @return array Contains: showEmail, videoId, roleId, userId
+	 * @throws Nette\Application\AbortException
+	 */
+	public function managePeople() {
+		$user = (string) $this->getParameter('name');
+		$info = [
+			'showEmail' => (bool) ($this->getParameter('show_email') == "true"),
+			'videoId' => (int) $this->getParameter('id'),
+			'roleId' => (int) $this->getParameter('role'),
+			'userId' => null,
+		];
+
+		// Find user by fullname and email
+		$match = [];
+		if ((preg_match('/(.*) <(.*)>/', $user, $match) !== 1) OR (count($match) !== 3)) {
+			$this->payload->status = $this->translator->translate('alert.role_format_error');
+			$this->getHttpResponse()->setCode(IResponse::S400_BAD_REQUEST);
+			$this->sendPayload();
+		}
+		$users = $this->userManager->searchUser($match[1], $match[2]);
+
+		if ($users->count() !== 1) {
+			if ($users->count() === 0) {
+				$this->payload->status = $this->translator->translate('alert.role_no_user_error');
+			}
+			else {
+				Debugger::log("VideoPresenter: ambiguous user query '$user'", ILogger::ERROR);
+				$this->payload->status = $this->translator->translate('alert.role_ambiguous_user_error');
+			}
+			$this->getHttpResponse()->setCode(IResponse::S400_BAD_REQUEST);
+			$this->sendPayload();
+		}
+
+		$info['userId'] = (int) $users->fetch()->id;
+
+		return $info;
+	}
+
+	/**
+	 * @param string $query
+	 * @throws Nette\Application\AbortException
+	 */
+	public function handleSearchUsr(string $query = "")
+	{
+		$this->payload->users = [];
+		if (!empty($query)) {
+			$users = $this->userManager->searchUser($query)->limit(10);
+			foreach ($users as $user) {
+				$this->payload->users[] = ['user' => $user->fullname .' <'. $user->email .'>'];
+			}
+		}
+
+		$this->sendPayload();
+	}
+
 	public function renderEdit(int $id): void
 	{
 		// Check if the video exists
@@ -125,10 +218,15 @@ class VideoPresenter extends BasePresenter
 		$this->template->prevPage = $this->getHttpRequest()->getReferer() ?? $this->link('Videos:');
 		$this->template->structureTags =  $this->parameters['structure_tag'];
 
+		$this->template->people = $this->videoManager->getVideoPeople($id);
+		$this->template->roles = $this->videoManager->getRoles();
+		$this->template->searchUsrUrl = "'". $this->link('searchUsr!'). "&query=' + encodeURIComponent(query)";
+
 		$this->template->resDatepicker = true;
 		$this->template->resClockpicker = true;
 		$this->template->resSelect = true;
 		$this->template->resTinymce = true;
+		$this->template->resFrmUsrName = true;
 	}
 
 	/**

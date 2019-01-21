@@ -15,4 +15,5 @@
 'state' : 'Visibility'
 'tags' : 'Tags'
 'name_placeholder' : 'Video title'
+'role' : 'role'
 'delete' : 'Delete video'

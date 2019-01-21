@@ -37,6 +37,9 @@ class EditVideoFormFactory
 		$this->structureTags = $structureTags;
 	}
 
+	/**
+	 * @return Form
+	 */
 	public function create(): Form
 	{
 		$form = new Form;
@@ -104,7 +107,7 @@ class EditVideoFormFactory
 
 		foreach ($this->structureTags as $tag) {
 			$tagRow = $this->videoManager->getVideoTagValue((int) $this->video->id, $tag);
-			$input = $form->AddSelect($tag, $tag, $this->videoManager->getTagValues($tag))
+			$form->AddSelect($tag, $tag, $this->videoManager->getTagValues($tag))
 				->setDefaultValue($tagRow!==null && $tagRow->value!== null ? $tagRow->id : null)
 				->setPrompt($this->translator->translate('form.start_typing'))
 				->setTranslator(null)
