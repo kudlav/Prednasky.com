@@ -40,6 +40,10 @@ class VideosPresenter extends BasePresenter
 	{
 		parent::startup();
 
+		if (!in_array($this->view, ['published', 'drafts', 'processing'])) {
+			$this->redirect('Videos:published');
+		}
+
 		$gridFactory = new VideosGridFactory($this->videoManager, $this->fileManager, $this->parameters['paths']['url_data_export'], $this->parameters['structure_tag']);
 
 		$this->videos = $this->videoManager->getVideosByUser($this->user, $this->view);
@@ -50,11 +54,6 @@ class VideosPresenter extends BasePresenter
 		else {
 			$this->grid = $gridFactory->create($this, $this->translator, $this->videos, false);
 		}
-	}
-
-	public function renderDefault(): void
-	{
-		$this->redirect('Videos:published');
 	}
 
 	public function renderPublished(): void

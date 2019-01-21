@@ -350,7 +350,7 @@ class VideoManager
 					break;
 
 				default:
-					Debugger::log("VideoManager: unknown option '$state' of getVideosByTag", ILogger::ERROR);
+					Debugger::log("VideoManager: unknown option '$state' of getVideosByUser", ILogger::ERROR);
 			}
 		}
 
