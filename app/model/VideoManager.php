@@ -256,10 +256,7 @@ class VideoManager
 
 		// List all or only published videos
 		if (!$all) {
-			$state = ['public'];
-			if ($loggedIn) {
-				$state[] = 'logged_in';
-			}
+			$state = $loggedIn ? ['public', 'logged_in'] : ['public'];
 			$stateIDs = $this->database->table(self::TABLE_VIDEO_STATE)
 				->where(self::STATE_NAME, $state)
 				->fetchPairs(null, self::STATE_ID)
@@ -272,28 +269,31 @@ class VideoManager
 		if ($level != null) {
 			$selection->where(self::VIDEO_ID, $videosId);
 
-			$tagCount = 0;
-			$tagIDs = [];
-			$thisLevelVideos = $this->database->table(self::TABLE_VIDEO_TAG);
+			$levelsCount = count($this->parameters['structure_tag']);
+			if ($level < $levelsCount) { // If lowest level, display all videos
+				$tagCount = 0;
+				$tagIDs = [];
+				$thisLevelVideos = $this->database->table(self::TABLE_VIDEO_TAG);
 
-			for (; $level < count($this->parameters['structure_tag']); $level++) { // If lower level, display all videos
-				$tag = $this->getTag($this->parameters['structure_tag'][$level], null)->id;
-				$tagIDs[] = $tag;
-				$tagCount++;
+				for (; $level < $levelsCount; $level++) {
+					$tag = $this->getTag($this->parameters['structure_tag'][$level], null)->id;
+					$tagIDs[] = $tag;
+					$tagCount++;
+				}
+
+				$thisLevelVideos->where(self::VIDEO_TAG_TAG, $tagIDs);
+				$thisLevelVideos->group(self::VIDEO_TAG_VIDEO);
+				$thisLevelVideos->having('COUNT(*) = ?', $tagCount);
+
+				$selection->where(self::VIDEO_ID, $thisLevelVideos->fetchPairs(null, self::VIDEO_TAG_VIDEO));
 			}
-
-			$thisLevelVideos->where(self::VIDEO_TAG_TAG, $tagIDs);
-			$thisLevelVideos->group(self::VIDEO_TAG_VIDEO);
-			$thisLevelVideos->having('COUNT(*) = ?', $tagCount);
-
-			$selection->where(self::VIDEO_ID, $thisLevelVideos->fetchPairs(null, self::VIDEO_TAG_VIDEO));
 		}
 
 		$selection->order(self::VIDEO_PUBLISHED.' DESC');
 
 		// If $limit is set
 		if ($limit>0) {
-			return $selection->limit($limit);
+			$selection->limit($limit);
 		}
 
 		return $selection;
