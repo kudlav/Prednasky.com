@@ -10,8 +10,10 @@
     }
 
     function addShareLinkDone(data, bttn) {
-        $(bttn).addClass('d-none');
-        $( '#dShareLink' ).removeClass( "d-none" );
+        $(bttn).removeClass('btn-outline-primary');
+        $(bttn).addClass('btn-outline-danger');
+        bttn.innerText = {_'form.remove_link'};
+        bttn.setAttribute('onclick','delShareLink(this)');
 
         let shareLinkEntry = $( '#shareLinkEntry' );
         shareLinkEntry.attr("value", data.message);
@@ -28,8 +30,10 @@
     }
 
     function delShareLinkDone(data, bttn) {
-        $(bttn).addClass('d-none');
-        $( '#aShareLink' ).removeClass( "d-none" );
+        $(bttn).removeClass('btn-outline-danger');
+        $(bttn).addClass('btn-outline-primary');
+        bttn.innerText = {_'form.create_link'};
+        bttn.setAttribute('onclick','addShareLink(this)');
 
         let shareLinkEntry = $( '#shareLinkEntry' );
         shareLinkEntry.attr("value", {_'form.no_share_link'});

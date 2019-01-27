@@ -8,8 +8,8 @@
 
 'name' : 'Title'
 'created' : 'Created'
-'record_begin' : 'Recording start'
-'record_end' : 'Recording end'
+'date' : 'Record date'
+'time' : 'Recording time'
 'duration' : 'Duration'
 'abstract' : 'Abstract'
 'state' : 'Visibility'

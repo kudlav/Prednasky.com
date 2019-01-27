@@ -53,35 +53,28 @@ class EditVideoFormFactory
 			->setAttribute('class', 'form-control')
 		;
 
-		$record_begin = null;
+		$date = null;
 		$time_begin = null;
 		if ($this->video->record_begin !== null) {
-			$record_begin = $this->video->record_begin->format('j. n. Y');
+			$date = $this->video->record_begin->format('j. n. Y');
 			$time_begin = $this->video->record_begin->format('H:i');
 		}
-		$form->addText('record_date_start', 'video.record_begin')
-			->setDefaultValue($record_begin)
+		$form->addText('date', 'video.date')
+			->setDefaultValue($date)
 			->setAttribute('placeholder', 'form.date_format')
 			->setAttribute('class', 'form-control datepicker')
 		;
 
-		$form->addText('record_time_start')
+		$form->addText('record_time_start', 'video.time')
 			->setDefaultValue($time_begin)
 			->setAttribute('placeholder', 'form.time_format')
 			->setAttribute('class', 'form-control clockpicker')
 		;
 
-		$record_end = null;
 		$time_end = null;
 		if ($this->video->record_end !== null) {
-			$record_end = $this->video->record_end->format('j. n. Y');
 			$time_end = $this->video->record_end->format('H:i');
 		}
-		$form->addText('record_date_end', 'video.record_end')
-			->setDefaultValue($record_end)
-			->setAttribute('placeholder', 'form.date_format')
-			->setAttribute('class', 'form-control datepicker')
-		;
 
 		$form->addText('record_time_end')
 			->setDefaultValue($time_end)
@@ -126,8 +119,8 @@ class EditVideoFormFactory
 
 	public function onSuccess(Form $form, ArrayHash $values): void
 	{
-		$recordBegin = $values->record_date_start==="" ? null : \DateTime::createFromFormat('j. n. Y H:i', $values->record_date_start .' '. $values->record_time_start);
-		$recordEnd = $values->record_date_end==="" ? null : \DateTime::createFromFormat('j. n. Y H:i', $values->record_date_end .' '. $values->record_time_end);
+		$recordBegin = $values->date==="" ? null : \DateTime::createFromFormat('j. n. Y H:i', $values->date .' '. $values->record_time_start);
+		$recordEnd = $values->date==="" ? null : \DateTime::createFromFormat('j. n. Y H:i', $values->date .' '. $values->record_time_end);
 
 		$data = [
 			VideoManager::VIDEO_NAME => $values->title,

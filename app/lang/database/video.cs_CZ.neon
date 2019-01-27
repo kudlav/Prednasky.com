@@ -8,8 +8,8 @@
 
 'name' : 'Název'
 'created' : 'Vytvořeno'
-'record_begin' : 'Začátek nahrávky'
-'record_end' : 'Konec nahrávky'
+'date' : 'Datum nahrávky'
+'time' : 'Čas nahrávky'
 'duration' : 'Délka'
 'abstract' : 'Abstrakt'
 'state' : 'Viditelnost'
