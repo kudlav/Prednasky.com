@@ -20,65 +20,6 @@
 
   <div id="basic" class="tab-pane fade show active">
     {include 'edit-basic.latte'}
-    <div class="row">
-      <div class="col-12">
-        <div class="form-group my-2">
-          {label abstract}
-          {input abstract}
-        </div>
-        <div class="form-group my-2">
-          <label>{_'video.tags'}:</label>
-          <div n:foreach="$structureTags as $tag" class="form-group row my-1">
-            <div class="col-md-3 align-self-center"><p class="m-0 px-2">{_'config.'. $tag|capitalize}:</p></div>
-            <div class="col-md-8">{input $tag}</div>
-          </div>
-        </div>
-        <div class="form-group my-2" id="video-people">
-          <label>{_'form.people'}:</label>
-          {foreach $people as $users}
-            {foreach $users as $person}
-              <div class="row my-1">
-                <div class="align-self-center col-md-2">
-                  <select name="role" class="custom-select frm-usr-role p-0" disabled>
-                    <option value="{$person->role_id}">{_'role.'.$person->ref('role')->name}</option>
-                  </select>
-                </div>
-                <div class="col-md-6">
-                  <input type="text" disabled class="form-control frm-usr-name" value="{$person->ref('user')->fullname.' <'.$person->ref('user')->email.'>'}">
-                </div>
-                <div class="align-self-center col-md-2">
-                  <div class="form-check m-0">
-                    <label class="form-check-label"><input type="checkbox" disabled class="form-check-input frm-usr-show_email" {if $person->show_email}checked{/if}> Show email </label>
-                  </div>
-                </div>
-                <div class="align-self-center col-md-2">
-                  <button type='button' onclick="removePeople(this)" class="btn btn-light text-danger"><i class="fa fa-times" aria-hidden="true"></i> {_'form.remove'}</button>
-                </div>
-              </div>
-            {/foreach}
-          {/foreach}
-          <div class="row my-1">
-            <div class="align-self-center col-md-2">
-              <select name="role" class="custom-select frm-usr-role p-0">
-                <option value="-1" selected disabled>{_'form.choose'|noescape}</option>
-                {foreach $roles as $role}<option value="{$role->id}">{_'role.'.$role->name|noescape}</option>{/foreach}
-              </select>
-            </div>
-            <div class="col-md-6">
-              <input type="text" name="name" class="form-control frm-usr-name frm-usr-role-search" placeholder="Start typing...">
-            </div>
-            <div class="align-self-center col-md-2">
-              <div class="form-check m-0">
-                <label class="form-check-label"><input type="checkbox" name="show_email" class="form-check-input frm-usr-show_email"> Show email </label>
-              </div>
-            </div>
-            <div class="align-self-center col-md-2">
-              <button type='button' onclick="addPeople(this)" class="btn btn-light text-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i> {_'form.add'|noescape}</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 
   <div id="attachments" class="tab-pane fade">
