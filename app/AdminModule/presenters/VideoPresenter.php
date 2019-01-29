@@ -98,6 +98,49 @@ class VideoPresenter extends BasePresenter
 		$this->sendJson($this->link('Video:edit', ['id' => $videoID]));
 	}
 
+	public function renderEdit(int $id): void
+	{
+		// Check if the video exists
+		$this->template->video = $this->videoManager->getVideoById($id, true);
+		if ($this->template->video === null) {
+			$this->error('Video s id '. $id .' neexistuje!', Nette\Http\IResponse::S404_NOT_FOUND);
+		}
+
+		// Check the user rights for this video
+		if (!$this->user->isInRole('admin')) {
+			if (!isset($this->videoManager->getVideosByUser($this->user)[$id])) {
+				$this->error('Nemáte oprávnění k editování totoho videa', Nette\Http\IResponse::S403_FORBIDDEN);
+			}
+		}
+
+		$this->template->shareLink = $this->videoManager->getShareLink($id);
+		if ($this->template->shareLink !== null) {
+			$this->template->shareLink = $this->template->baseUrl . $this->link(':Front:Video:default', [$id, 'p' => $this->template->shareLink]);
+		}
+
+		$this->template->thumbnail = $this->fileManager->getVideoThumbnail($id);
+		if ($this->template->thumbnail !== null) {
+			$this->template->thumbnail = $this->parameters['paths']['url_data_export'] .'/'. $this->template->thumbnail->path;
+		}
+
+		$this->template->relatedVideos = $this->videoManager->getRelatedVideos($id);
+		$this->template->relationTypes = $this->videoManager->getRelationTypes();
+		$this->template->linkVideoEdit = substr($this->link('Video:edit', 0), 0, -1);
+
+		$this->template->structureTags =  $this->parameters['structure_tag'];
+
+		$this->template->people = $this->videoManager->getVideoPeople($id);
+		$this->template->roles = $this->videoManager->getRoles();
+		$this->template->searchUsrUrl = "'". $this->link('searchUsr!'). "&query=' + encodeURIComponent(query)";
+
+		$this->template->resDatepicker = true;
+		$this->template->resClockpicker = true;
+		$this->template->resSelect = true;
+		$this->template->resTinymce = true;
+		$this->template->resFrmUsrName = true;
+		$this->template->resFrmVideoSearch = true;
+	}
+
 	/**
 	 * @throws Nette\Application\AbortException
 	 */
@@ -191,45 +234,6 @@ class VideoPresenter extends BasePresenter
 		$this->sendPayload();
 	}
 
-	public function renderEdit(int $id): void
-	{
-		// Check if the video exists
-		$this->template->video = $this->videoManager->getVideoById($id, true);
-		if ($this->template->video === null) {
-			$this->error('Video s id '. $id .' neexistuje!', Nette\Http\IResponse::S404_NOT_FOUND);
-		}
-
-		// Check the user rights for this video
-		if (!$this->user->isInRole('admin')) {
-			if (!isset($this->videoManager->getVideosByUser($this->user)[$id])) {
-				$this->error('Nemáte oprávnění k editování totoho videa', Nette\Http\IResponse::S403_FORBIDDEN);
-			}
-		}
-
-		$this->template->shareLink = $this->videoManager->getShareLink($id);
-		if ($this->template->shareLink !== null) {
-			$this->template->shareLink = $this->template->baseUrl . $this->link(':Front:Video:default', [$id, 'p' => $this->template->shareLink]);
-		}
-
-		$this->template->thumbnail = $this->fileManager->getVideoThumbnail($id);
-		if ($this->template->thumbnail !== null) {
-			$this->template->thumbnail = $this->parameters['paths']['url_data_export'] .'/'. $this->template->thumbnail->path;
-		}
-
-		$this->template->prevPage = $this->getHttpRequest()->getReferer() ?? $this->link('Videos:');
-		$this->template->structureTags =  $this->parameters['structure_tag'];
-
-		$this->template->people = $this->videoManager->getVideoPeople($id);
-		$this->template->roles = $this->videoManager->getRoles();
-		$this->template->searchUsrUrl = "'". $this->link('searchUsr!'). "&query=' + encodeURIComponent(query)";
-
-		$this->template->resDatepicker = true;
-		$this->template->resClockpicker = true;
-		$this->template->resSelect = true;
-		$this->template->resTinymce = true;
-		$this->template->resFrmUsrName = true;
-	}
-
 	/**
 	 * @secured
 	 * @param int $id Video ID.
@@ -278,6 +282,53 @@ class VideoPresenter extends BasePresenter
 			$msg = $this->translator->translate('alert.video_delete_failed', ['name' => $videoName]);
 			$this->flashMessage($msg, 'danger');
 		}
+	}
+
+	/**
+	 * @throws Nette\Application\AbortException
+	 */
+	public function handleAddRelation(): void
+	{
+		$relationFrom = (int) $this->getParameter('id');
+		$relationType = (int) $this->getParameter('type');
+		$relationTo = (int) $this->getParameter('video');
+
+		if ($this->videoManager->addVideoRelation($relationFrom, $relationTo, $relationType)) {
+			$this->payload->status = 'ok';
+			$videoToRow = $this->videoManager->getVideoById($relationTo, true);
+			$thumbnail = $this->fileManager->getVideoThumbnail($relationTo);
+			$this->payload->videoTo = [
+				'name' => $videoToRow->name,
+				'recorded' => ($videoToRow->record_begin != null) ? $videoToRow->record_begin->format('j. n. Y H:i') : '??',
+				'duration' => ($videoToRow->duration != null) ? gmdate("H:i:s", $videoToRow->duration) : '??',
+				'thumbnail' => ($thumbnail != null) ? $this->parameters['paths']['url_data_export'] . $thumbnail->path : null,
+			];
+		}
+		else {
+			$this->getHttpResponse()->setCode(IResponse::S400_BAD_REQUEST);
+			$this->payload->status = $this->translator->translate('alert.relation_create_error');
+		}
+
+		$this->sendPayload();
+	}
+
+	/**
+	 * @throws Nette\Application\AbortException
+	 */
+	public function handleRemoveRelation(): void
+	{
+		$relationFrom = (int) $this->getParameter('id');
+		$relationType = (int) $this->getParameter('type');
+		$relationTo = (int) $this->getParameter('video');
+
+		if (!$this->videoManager->removeVideoRelation($relationFrom, $relationTo, $relationType)) {
+			$this->payload->status = $this->translator->translate('alert.relation_remove_error');
+			$this->getHttpResponse()->setCode(IResponse::S400_BAD_REQUEST);
+			$this->sendPayload();
+		}
+
+		$this->payload->status = 'ok';
+		$this->sendPayload();
 	}
 
 	protected function createComponentEditVideoForm(): Form

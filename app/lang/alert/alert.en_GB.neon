@@ -25,3 +25,7 @@
 'role_format_error' : 'Invalid user format, retry or contact the administrator.'
 'role_no_user_error' : 'User not found, retry or contact the administrator.'
 'role_ambiguous_user_error' : 'User name and email is not unique, contact the administrator.'
+'empty_relation_type_or_video': 'Choose relation type, video and retry.'
+'relation_create_error' : 'Unable to create related video, retry or contact the administrator.'
+'relation_remove_error' : 'Unable to remove this relation, refresh this page or contact the administrator.'
+

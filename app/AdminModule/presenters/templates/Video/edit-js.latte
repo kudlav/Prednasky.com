@@ -109,4 +109,76 @@
             });
         }
     }
+
+    function removeRelation(bttn) {
+        let rootElement = bttn.parentElement.parentElement;
+        let jqXHR = $.ajax({
+            method: "POST",
+            url: {plink removeRelation!},
+            data: {
+                type: rootElement.getElementsByClassName('frm-relation-type')[0].value,
+                video: rootElement.getElementsByClassName('frm-relation-video')[0].value,
+            }
+        });
+        jqXHR.fail(function (data) {
+            alert(data.responseJSON.status);
+        });
+        jqXHR.done(function() {
+            bttn.parentElement.parentElement.remove();
+        });
+    }
+
+    function addRelation(bttn) {
+        let type = bttn.parentElement.parentElement.getElementsByClassName('frm-relation-type')[0];
+        let video = bttn.parentElement.parentElement.getElementsByClassName('frm-relation-video')[0];
+        if (type.value < 0 || video.value === "") {
+            alert('{_alert.empty_relation_type_or_video|noescape}')
+        }
+        else {
+            let jqXHR = $.ajax({
+                method: "POST",
+                url: {plink addRelation!},
+                data: {
+                    type: type.value,
+                    video: video.value,
+                }
+            });
+            jqXHR.fail(function (data) {
+                alert(data.responseJSON.status);
+            });
+            jqXHR.done(function (data) {
+                bttn.parentElement.parentElement.insertAdjacentHTML('beforebegin', `
+                    <div class="row my-1">
+                      <div class="align-self-center col-md-3">
+                        <select name="role" class="custom-select frm-usr-role p-0" disabled>
+                          <option value="` + type.value + `" selected>` + type.selectedOptions[0].text + `</option>
+                        </select>
+                      </div>
+                      <div class="col-md-7">
+                        <input type="hidden" class="form-control frm-relation-video" value="` + video.value + `">
+                        <a href="{$linkVideoEdit|noescape}` + video.value + `" class="row btn btn-light d-flex">
+                          <div class="col-auto"><i class="fa fa-film text-muted fa-lg d-block py-2"></i></div>
+                            <div class="col">
+                            <div class="row"><span>` + data.videoTo.name + `</span></div>
+                            <div class="row small text-muted">
+                            <i class="fa fa-calendar p-1" aria-hidden="true"></i>
+                            ` + data.videoTo.recorded + `
+                            <i class="fa fa-clock-o p-1 pl-3" aria-hidden="true"></i>
+                            ` + data.videoTo.duration + `
+                            </div>
+                          </div>
+                        </a>
+                      </div>
+
+                      <div class="align-self-center col-md-2">
+                        <button type='button' onclick="removeRelation(this)" class="btn btn-light text-danger"><i class="fa fa-times" aria-hidden="true"></i> {_'form.remove'|noescape}</button>
+                      </div>
+                    </div>
+                `);
+                video.selectize.clear();
+                type.value = '-1';
+                video.value = '';
+            });
+        }
+    }
 </script>

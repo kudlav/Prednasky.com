@@ -58,7 +58,13 @@ class VideoManager
 		// Video_relation table
 		TABLE_VIDEO_RELATION = 'video_relation',
 		VIDEO_RELATION_FROM = 'video_from',
+		VIDEO_RELATION_TO = 'video_to',
 		VIDEO_RELATION_TYPE = 'relation_type_id',
+
+		// Relation_type table
+		TABLE_RELATION_TYPE = 'relation_type',
+		RELATION_ID = 'id',
+		RELATION_NAME = 'name',
 
 		// Role table
 		TABLE_ROLE = 'role',
@@ -542,9 +548,63 @@ class VideoManager
 	}
 
 	/**
+	 * Get all video relation types
+	 *
+	 * @return Selection of relation types.
+	 */
+	public function getRelationTypes(): Selection
+	{
+		return $this->database->table(self::TABLE_RELATION_TYPE);
+	}
+
+	/**
+	 * Add one-way relation between videoFrom and videoTo.
+	 *
+	 * @param $videoFrom
+	 * @param $videoTo
+	 * @param $relation
+	 * @return bool Success/failure.
+	 */
+	public function addVideoRelation($videoFrom, $videoTo, $relation): bool
+	{
+		try {
+			$result = $this->database->table(self::TABLE_VIDEO_RELATION)->insert([
+				self::VIDEO_RELATION_FROM => $videoFrom,
+				self::VIDEO_RELATION_TO => $videoTo,
+				self::VIDEO_RELATION_TYPE => $relation,
+			]);
+		}
+		catch (Nette\Database\UniqueConstraintViolationException $e) {
+			return false;
+		}
+
+		return ($result !== false);
+	}
+
+	/**
+	 * Remove one-way relation between videoFrom and videoTo.
+	 *
+	 * @param $videoFrom
+	 * @param $videoTo
+	 * @param $relation
+	 * @return bool Success/failure.
+	 */
+	public function removeVideoRelation($videoFrom, $videoTo, $relation): bool
+	{
+		$result = $this->database->table(self::TABLE_VIDEO_RELATION)
+			->where(self::VIDEO_RELATION_FROM, $videoFrom)
+			->where(self::VIDEO_RELATION_TO, $videoTo)
+			->where(self::VIDEO_RELATION_TYPE, $relation)
+			->delete()
+		;
+
+		return ($result === 1);
+	}
+
+	/**
 	 * Get available states.
 	 *
-	 * @return array Array containing id => name;
+	 * @return array Array containing id => name.
 	 */
 	public function getStates(): array
 	{

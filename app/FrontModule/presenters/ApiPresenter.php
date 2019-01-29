@@ -41,6 +41,7 @@ class ApiPresenter extends BasePresenter
 			$thumbnail = $this->fileManager->getVideoThumbnail((int) $video->id);
 			if ($thumbnail !== null) $thumbnail = $this->parameters['paths']['url_data_export'] . '/' . $thumbnail->path;
 			$result[] = [
+				'id' => $video->id,
 				'name' => $video->name,
 				'thumbnail' => $thumbnail,
 				'abstract' => $video->abstract,
