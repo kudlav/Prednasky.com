@@ -7672,6 +7672,9 @@ footer img {
 .datagrid {
   padding: 0 !important; }
 
+.selectize-input {
+  line-height: 1.5 !important; }
+
 .selectize-control.api-select::before {
   animation: fa-spin 1s infinite steps(8);
   font: normal normal normal 14px/1 FontAwesome;
@@ -7688,4 +7691,6 @@ footer img {
 .selectize-control.api-select.loading::before {
   opacity: 1; }
 
-/*# sourceMappingURL=bootstrap.source.css.map */
+.custom-select {
+  -webkit-appearance: none;
+  -moz-appearance: none; }

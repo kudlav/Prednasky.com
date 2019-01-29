@@ -51,7 +51,7 @@ $display4-size: 3.5 * $font-size-base;
 $border-radius: .25rem;
 
 // Import file: bootstrap.scss, get entire scss folder from: https://github.com/twbs/bootstrap/releases
-@import 'bootstrap-4.2.1';
+@import 'scss/bootstrap';
 
 body > * {
   background-size: cover;
@@ -167,6 +167,9 @@ footer img {
   padding: 0!important;
 }
 
+.selectize-input {
+  line-height: 1.5!important;
+}
 .selectize-control.api-select::before {
   animation: fa-spin 1s infinite steps(8);
   font: normal normal normal 14px/1 FontAwesome;
@@ -182,4 +185,9 @@ footer img {
 }
 .selectize-control.api-select.loading::before {
   opacity: 1;
+}
+
+.custom-select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }
