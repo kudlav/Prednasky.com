@@ -157,14 +157,16 @@
                       <div class="col-md-7">
                         <input type="hidden" class="form-control frm-relation-video" value="` + video.value + `">
                         <a href="{$linkVideoEdit|noescape}` + video.value + `" class="row btn btn-light d-flex">
-                          <div class="col-auto"><i class="fa fa-film text-muted fa-lg d-block py-2"></i></div>
-                            <div class="col">
+                          <div class="col-auto">
+                            ` + (data.videoTo.thumbnail !== null ? '<img style="height:2rem" src="'+data.videoTo.thumbnail+'">' : '<i class="fa fa-film text-muted fa-lg d-block py-2"></i>') + `
+                          </div>
+                          <div class="col">
                             <div class="row"><span>` + data.videoTo.name + `</span></div>
-                            <div class="row small text-muted">
-                            <i class="fa fa-calendar p-1" aria-hidden="true"></i>
-                            ` + data.videoTo.recorded + `
-                            <i class="fa fa-clock-o p-1 pl-3" aria-hidden="true"></i>
-                            ` + data.videoTo.duration + `
+                              <div class="row small text-muted">
+                              <i class="fa fa-calendar p-1" aria-hidden="true"></i>
+                              ` + data.videoTo.recorded + `
+                              <i class="fa fa-clock-o p-1 pl-3" aria-hidden="true"></i>
+                              ` + data.videoTo.duration + `
                             </div>
                           </div>
                         </a>

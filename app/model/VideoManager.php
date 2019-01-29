@@ -196,7 +196,7 @@ class VideoManager
 	}
 
 	/**
-	 * Search videos by text in name or obstract
+	 * Search videos by text in name, abstract or id
 	 *
 	 * @param string $query Search query.
 	 * @param bool $loggedIn True if user is logged in.
@@ -218,17 +218,17 @@ class VideoManager
 				SELECT *
 				FROM `video`
 				WHERE `state` IN (?)
-				AND (MATCH(`name`,`abstract`) AGAINST (? IN BOOLEAN MODE))
+				AND ((MATCH(`name`,`abstract`) AGAINST (? IN BOOLEAN MODE)) OR `id` = ?)
 				ORDER BY 5 * MATCH(`name`) AGAINST (?) + MATCH(`abstract`) AGAINST (?) DESC
-			', $stateIds, $query, $query, $query);
+			', $stateIds, $query, $query, $query, $query);
 		}
 		else {
 			$result = $this->database->query('
 				SELECT *
 				FROM `video`
 				WHERE `state` IN (?)
-				AND `name` like ? OR `abstract` like ?
-			', $stateIds, '%'.$query.'%', '%'.$query.'%');
+				AND `name` like ? OR `abstract` like ? OR `id` = ?
+			', $stateIds, '%'.$query.'%', '%'.$query.'%', $query);
 		}
 
 		return $result;

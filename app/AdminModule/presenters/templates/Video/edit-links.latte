@@ -1,24 +1,26 @@
 <div class="form-group my-2">
   {foreach $relatedVideos as $rows}
-    <label>{_'relation_type.'.$rows[0]->ref('relation_type')->name, count($rows)}:</label>
+    <label>{_'relation_type.'.$rows[0]['relation_type_name'], count($rows)}:</label>
     {foreach $rows as $row}
       <div class="row my-1">
         <div class="col-md-3 align-self-center">
           <select name="role" class="custom-select frm-relation-type p-0" disabled>
-            <option value="{$row->relation_type}">{_'relation_type.'.$row->ref('relation_type')->name,1}</option>
+            <option value="{$row['relation_type_id']}">{_'relation_type.'.$row['relation_type_name'],1}</option>
           </select>
         </div>
         <div class="col-md-7">
-          <input type="hidden" class="form-control frm-relation-video" value="{$row->video_to}">
-          <a href="{plink Video:edit $row->video_to}" class="row btn btn-light d-flex">
-            <div class="col-auto">{if false}<img style="height:2rem" src="">{else}<i class="fa fa-film text-muted fa-lg d-block py-2"></i>{/if}</div>
+          <input type="hidden" class="form-control frm-relation-video" value="{$row['video_id']}">
+          <a href="{plink Video:edit $row['video_id']}" class="row btn btn-light d-flex">
+            <div class="col-auto">
+              {if $row['thumbnail'] != null}<img style="height:2rem" src="{$row['thumbnail']}">{else}<i class="fa fa-film text-muted fa-lg d-block py-2"></i>{/if}
+            </div>
             <div class="col">
-              <div class="row"><span>{$row->ref('video')->name}</span></div>
+              <div class="row"><span>{$row['video_name']}</span></div>
                 <div class="row small text-muted">
                   <i class="fa fa-calendar p-1" aria-hidden="true"></i>
-                  {if ($row->ref('video')->record_begin != null)}{$row->ref('video')->record_begin|date:'j. n. Y G:i'}{else}??{/if}
+                  {if ($row['record_begin'] != null)}{$row['record_begin']|date:'j. n. Y G:i'}{else}??{/if}
                   <i class="fa fa-clock-o p-1 pl-3" aria-hidden="true"></i>
-                  {if ($row->ref('video')->duration != null)}{gmdate("H:i:s", $row->ref('video')->duration)}{else}??{/if}
+                  {if ($row['duration'] != null)}{gmdate("H:i:s", $row['duration'])}{else}??{/if}
                 </div>
               </div>
             </a>

@@ -123,9 +123,26 @@ class VideoPresenter extends BasePresenter
 			$this->template->thumbnail = $this->parameters['paths']['url_data_export'] .'/'. $this->template->thumbnail->path;
 		}
 
-		$this->template->relatedVideos = $this->videoManager->getRelatedVideos($id);
-		$this->template->relationTypes = $this->videoManager->getRelationTypes();
 		$this->template->linkVideoEdit = substr($this->link('Video:edit', 0), 0, -1);
+		$this->template->relationTypes = $this->videoManager->getRelationTypes();
+		$this->template->urlDataExport =  $this->parameters['paths']['url_data_export'];
+		$relatedVideos = $this->videoManager->getRelatedVideos($id);
+		$this->template->relatedVideos = [];
+		foreach ($relatedVideos as $category => $rows) {
+			$this->template->relatedVideos[$category] = [];
+			foreach ($rows as $index => $row) {
+				$thumbnail = $this->fileManager->getVideoThumbnail($row->video_to);
+				$this->template->relatedVideos[$category][$index] = [
+					'relation_type_name' => $row->ref('relation_type')->name,
+					'relation_type_id' => $row->relation_type_id,
+					'video_id' => $row->video_to,
+					'video_name' => $row->ref('video', 'video_to')->name,
+					'record_begin' => $row->ref('video', 'video_to')->record_begin,
+					'duration' => $row->ref('video', 'video_to')->duration,
+					'thumbnail' => ($thumbnail != null) ? $this->parameters['paths']['url_data_export'] . '/' . $thumbnail->path : null,
+				];
+			}
+		}
 
 		$this->template->structureTags =  $this->parameters['structure_tag'];
 
@@ -301,7 +318,7 @@ class VideoPresenter extends BasePresenter
 				'name' => $videoToRow->name,
 				'recorded' => ($videoToRow->record_begin != null) ? $videoToRow->record_begin->format('j. n. Y H:i') : '??',
 				'duration' => ($videoToRow->duration != null) ? gmdate("H:i:s", $videoToRow->duration) : '??',
-				'thumbnail' => ($thumbnail != null) ? $this->parameters['paths']['url_data_export'] . $thumbnail->path : null,
+				'thumbnail' => ($thumbnail != null) ? $this->parameters['paths']['url_data_export'] . '/' . $thumbnail->path : null,
 			];
 		}
 		else {
