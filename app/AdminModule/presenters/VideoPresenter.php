@@ -53,7 +53,7 @@ class VideoPresenter extends BasePresenter
 		$this->sendJson('success');
 	}
 
-	public function handleUploadEnd()
+	public function handleUploadEnd(): void
 	{
 		// Compile upload
 		$httpRequest = $this->getHttpRequest();
@@ -101,7 +101,7 @@ class VideoPresenter extends BasePresenter
 	/**
 	 * @throws Nette\Application\AbortException
 	 */
-	public function handleAddPeople()
+	public function handleAddPeople(): void
 	{
 		$info = $this->managePeople();
 
@@ -119,7 +119,7 @@ class VideoPresenter extends BasePresenter
 	/**
 	 * @throws Nette\Application\AbortException
 	 */
-	public function handleRemovePeople()
+	public function handleRemovePeople(): void
 	{
 		$info = $this->managePeople();
 
@@ -138,7 +138,8 @@ class VideoPresenter extends BasePresenter
 	 * @return array Contains: showEmail, videoId, roleId, userId
 	 * @throws Nette\Application\AbortException
 	 */
-	public function managePeople() {
+	public function managePeople(): array
+	{
 		$user = (string) $this->getParameter('name');
 		$info = [
 			'showEmail' => (bool) ($this->getParameter('show_email') == "true"),
@@ -177,7 +178,7 @@ class VideoPresenter extends BasePresenter
 	 * @param string $query
 	 * @throws Nette\Application\AbortException
 	 */
-	public function handleSearchUsr(string $query = "")
+	public function handleSearchUsr(string $query = ""): void
 	{
 		$this->payload->users = [];
 		if (!empty($query)) {
@@ -234,7 +235,7 @@ class VideoPresenter extends BasePresenter
 	 * @param int $id Video ID.
 	 * @throws Nette\Application\AbortException
 	 */
-	public function handleAddLink(int $id)
+	public function handleAddLink(int $id): void
 	{
 		try {
 			$token = $this->videoManager->setShareLink($id);
@@ -253,7 +254,7 @@ class VideoPresenter extends BasePresenter
 	 * @param int $id Video ID.
 	 * @throws Nette\Application\AbortException
 	 */
-	public function handleDelLink(int $id)
+	public function handleDelLink(int $id): void
 	{
 		$this->payload->message = $this->videoManager->setShareLink($id, true);
 		$this->payload->status = 'ok';
@@ -261,7 +262,11 @@ class VideoPresenter extends BasePresenter
 		$this->sendPayload();
 	}
 
-	public function handleDel(int $id)
+	/**
+	 * @param int $id
+	 * @throws Nette\Application\AbortException
+	 */
+	public function handleDel(int $id): void
 	{
 		$videoName = $this->videoManager->getVideoById($id, true)->name;
 		if ($this->videoManager->removeVideo($id)) {

@@ -52,7 +52,7 @@ class VideoPresenter extends BasePresenter
 
 		$this->template->people = $this->videoManager->getVideoPeople($id);
 
-		$this->template->relatedVideos = $this->videoManager->getRelatedVideos($id);;
+		$this->template->relatedVideos = $this->videoManager->getRelatedVideos($id);
 	}
 
 	protected function createComponentVideoCard(): VideoCard
