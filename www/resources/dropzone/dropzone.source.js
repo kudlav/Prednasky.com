@@ -2987,7 +2987,7 @@ Dropzone.discover = function () {
 //
 Dropzone.blacklistedBrowsers = [
 // The mac os and windows phone version of opera 12 seems to have a problem with the File drag'n'drop API.
-/opera.*(Macintosh|Windows Phone).*version\/12/i];
+  /opera.*(Macintosh|Windows Phone).*version\/12/i];
 
 // Checks if the browser is supported
 Dropzone.isBrowserSupported = function () {

@@ -4,72 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "57f65872c953769c424c7f5a30046ac2",
+    "content-hash": "a3496cf3ff77ad425f8b2bfd3f532c62",
     "packages": [
         {
-            "name": "analog/analog",
-            "version": "1.0.11-stable",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/jbroadway/analog.git",
-                "reference": "f04906be5a740794959ecceaaae307792cfe3b58"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/jbroadway/analog/zipball/f04906be5a740794959ecceaaae307792cfe3b58",
-                "reference": "f04906be5a740794959ecceaaae307792cfe3b58",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.2",
-                "psr/log": "1.*"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^4.8.36 || ^5.7 || ^6.5"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Analog": "lib/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Johnny Broadway",
-                    "email": "johnny@johnnybroadway.com",
-                    "homepage": "http://www.johnnybroadway.com/"
-                }
-            ],
-            "description": "PHP logging class that can be extended via closures. Includes several pre-built handlers including file, mail, syslog, HTTP post, and MongoDB.",
-            "homepage": "https://github.com/jbroadway/analog",
-            "keywords": [
-                "alerts",
-                "debug",
-                "debugging",
-                "error",
-                "log",
-                "logger",
-                "logging",
-                "syslog"
-            ],
-            "time": "2018-12-08T15:36:38+00:00"
-        },
-        {
             "name": "dg/adminer-custom",
-            "version": "v1.16.0",
+            "version": "v1.17.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dg/adminer-custom.git",
-                "reference": "186f1a6af7c6ef0d2ddaec645ef5f58ef60f47f1"
+                "reference": "cdd53328cc6ec81b0b406d2f394d9bd0fbc10b48"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dg/adminer-custom/zipball/186f1a6af7c6ef0d2ddaec645ef5f58ef60f47f1",
-                "reference": "186f1a6af7c6ef0d2ddaec645ef5f58ef60f47f1",
+                "url": "https://api.github.com/repos/dg/adminer-custom/zipball/cdd53328cc6ec81b0b406d2f394d9bd0fbc10b48",
+                "reference": "cdd53328cc6ec81b0b406d2f394d9bd0fbc10b48",
                 "shasum": ""
             },
             "type": "library",
@@ -85,63 +33,7 @@
                 "postgresql",
                 "sqlite"
             ],
-            "time": "2018-11-26T15:13:02+00:00"
-        },
-        {
-            "name": "greenlion/php-sql-parser",
-            "version": "v4.1.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/greenlion/PHP-SQL-Parser.git",
-                "reference": "b4e8522ebca3e5c8bbd4e2c25edaef155a96db20"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/greenlion/PHP-SQL-Parser/zipball/b4e8522ebca3e5c8bbd4e2c25edaef155a96db20",
-                "reference": "b4e8522ebca3e5c8bbd4e2c25edaef155a96db20",
-                "shasum": ""
-            },
-            "require": {
-                "analog/analog": "^1.0.6",
-                "php": ">=5.3.2"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^4.0.14",
-                "squizlabs/php_codesniffer": "^1.5.1"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "PHPSQLParser\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "André Rothe",
-                    "email": "phosco@gmx.de",
-                    "homepage": "https://www.phosco.info",
-                    "role": "Committer"
-                },
-                {
-                    "name": "Justin Swanhart",
-                    "email": "greenlion@gmail.com",
-                    "homepage": "http://code.google.com/u/greenlion@gmail.com/",
-                    "role": "Owner"
-                }
-            ],
-            "description": "A pure PHP SQL (non validating) parser w/ focus on MySQL dialect of SQL",
-            "homepage": "https://github.com/greenlion/PHP-SQL-Parser",
-            "keywords": [
-                "creator",
-                "mysql",
-                "parser",
-                "sql"
-            ],
-            "time": "2017-05-16T21:20:45+00:00"
+            "time": "2019-01-26T14:52:00+00:00"
         },
         {
             "name": "kdyby/console",
@@ -1636,16 +1528,16 @@
         },
         {
             "name": "symfony/config",
-            "version": "v4.2.1",
+            "version": "v4.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/config.git",
-                "reference": "005d9a083d03f588677d15391a716b1ac9b887c0"
+                "reference": "a7a7d0a0244cfc82f040729ccf769e6cf55a78fb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/config/zipball/005d9a083d03f588677d15391a716b1ac9b887c0",
-                "reference": "005d9a083d03f588677d15391a716b1ac9b887c0",
+                "url": "https://api.github.com/repos/symfony/config/zipball/a7a7d0a0244cfc82f040729ccf769e6cf55a78fb",
+                "reference": "a7a7d0a0244cfc82f040729ccf769e6cf55a78fb",
                 "shasum": ""
             },
             "require": {
@@ -1695,20 +1587,20 @@
             ],
             "description": "Symfony Config Component",
             "homepage": "https://symfony.com",
-            "time": "2018-11-30T22:21:14+00:00"
+            "time": "2019-01-03T09:07:35+00:00"
         },
         {
             "name": "symfony/console",
-            "version": "v4.2.1",
+            "version": "v4.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "4dff24e5d01e713818805c1862d2e3f901ee7dd0"
+                "reference": "b0a03c1bb0fcbe288629956cf2f1dd3f1dc97522"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/4dff24e5d01e713818805c1862d2e3f901ee7dd0",
-                "reference": "4dff24e5d01e713818805c1862d2e3f901ee7dd0",
+                "url": "https://api.github.com/repos/symfony/console/zipball/b0a03c1bb0fcbe288629956cf2f1dd3f1dc97522",
+                "reference": "b0a03c1bb0fcbe288629956cf2f1dd3f1dc97522",
                 "shasum": ""
             },
             "require": {
@@ -1764,7 +1656,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2018-11-27T07:40:44+00:00"
+            "time": "2019-01-04T15:13:53+00:00"
         },
         {
             "name": "symfony/contracts",
@@ -1836,16 +1728,16 @@
         },
         {
             "name": "symfony/filesystem",
-            "version": "v4.2.1",
+            "version": "v4.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/filesystem.git",
-                "reference": "2f4c8b999b3b7cadb2a69390b01af70886753710"
+                "reference": "c2ffd9a93f2d6c5be2f68a0aa7953cc229f871f8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/filesystem/zipball/2f4c8b999b3b7cadb2a69390b01af70886753710",
-                "reference": "2f4c8b999b3b7cadb2a69390b01af70886753710",
+                "url": "https://api.github.com/repos/symfony/filesystem/zipball/c2ffd9a93f2d6c5be2f68a0aa7953cc229f871f8",
+                "reference": "c2ffd9a93f2d6c5be2f68a0aa7953cc229f871f8",
                 "shasum": ""
             },
             "require": {
@@ -1882,20 +1774,20 @@
             ],
             "description": "Symfony Filesystem Component",
             "homepage": "https://symfony.com",
-            "time": "2018-11-11T19:52:12+00:00"
+            "time": "2019-01-03T09:07:35+00:00"
         },
         {
             "name": "symfony/inflector",
-            "version": "v4.2.1",
+            "version": "v4.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/inflector.git",
-                "reference": "f9a637c0359f74404d44cf0da0a3ce53bae0787e"
+                "reference": "9f64271222922ef1a10e43f77d88baf72bf22b0e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/inflector/zipball/f9a637c0359f74404d44cf0da0a3ce53bae0787e",
-                "reference": "f9a637c0359f74404d44cf0da0a3ce53bae0787e",
+                "url": "https://api.github.com/repos/symfony/inflector/zipball/9f64271222922ef1a10e43f77d88baf72bf22b0e",
+                "reference": "9f64271222922ef1a10e43f77d88baf72bf22b0e",
                 "shasum": ""
             },
             "require": {
@@ -1940,7 +1832,7 @@
                 "symfony",
                 "words"
             ],
-            "time": "2018-11-11T19:52:12+00:00"
+            "time": "2019-01-03T09:07:35+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -2061,16 +1953,16 @@
         },
         {
             "name": "symfony/property-access",
-            "version": "v4.2.1",
+            "version": "v4.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/property-access.git",
-                "reference": "b6df4e1849f389468edb36e2e59877d4a8170723"
+                "reference": "a21d40670000f61a1a4b90a607d54696aad914cd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/property-access/zipball/b6df4e1849f389468edb36e2e59877d4a8170723",
-                "reference": "b6df4e1849f389468edb36e2e59877d4a8170723",
+                "url": "https://api.github.com/repos/symfony/property-access/zipball/a21d40670000f61a1a4b90a607d54696aad914cd",
+                "reference": "a21d40670000f61a1a4b90a607d54696aad914cd",
                 "shasum": ""
             },
             "require": {
@@ -2124,20 +2016,20 @@
                 "property path",
                 "reflection"
             ],
-            "time": "2018-11-29T14:48:32+00:00"
+            "time": "2019-01-05T16:37:49+00:00"
         },
         {
             "name": "symfony/translation",
-            "version": "v4.2.1",
+            "version": "v4.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation.git",
-                "reference": "c0e2191e9bed845946ab3d99767513b56ca7dcd6"
+                "reference": "939fb792d73f2ce80e6ae9019d205fc480f1c9a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/translation/zipball/c0e2191e9bed845946ab3d99767513b56ca7dcd6",
-                "reference": "c0e2191e9bed845946ab3d99767513b56ca7dcd6",
+                "url": "https://api.github.com/repos/symfony/translation/zipball/939fb792d73f2ce80e6ae9019d205fc480f1c9a0",
+                "reference": "939fb792d73f2ce80e6ae9019d205fc480f1c9a0",
                 "shasum": ""
             },
             "require": {
@@ -2197,7 +2089,7 @@
             ],
             "description": "Symfony Translation Component",
             "homepage": "https://symfony.com",
-            "time": "2018-12-06T10:45:32+00:00"
+            "time": "2019-01-03T09:07:35+00:00"
         },
         {
             "name": "tracy/tracy",
@@ -2325,61 +2217,6 @@
                 "nette"
             ],
             "time": "2018-10-08T10:51:45+00:00"
-        },
-        {
-            "name": "ublaboo/datagrid-nette-database-data-source",
-            "version": "v1.1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ublaboo/datagrid-nette-database-data-source.git",
-                "reference": "0a6a93580eb252eef73edead20353764cb4069ce"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ublaboo/datagrid-nette-database-data-source/zipball/0a6a93580eb252eef73edead20353764cb4069ce",
-                "reference": "0a6a93580eb252eef73edead20353764cb4069ce",
-                "shasum": ""
-            },
-            "require": {
-                "greenlion/php-sql-parser": "~4.0",
-                "nette/application": "^2.3|^2.4",
-                "nette/caching": "^2.3|^2.4",
-                "nette/database": "^2.3|^2.4",
-                "ublaboo/datagrid": "~2.3|~3.0|~4.0|~5.0"
-            },
-            "require-dev": {
-                "mockery/mockery": "~0.9",
-                "nette/tester": "~1.6.1",
-                "tracy/tracy": "^2.3|^2.4"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Ublaboo\\NetteDatabaseDataSource\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Pavel Janda",
-                    "homepage": "http://paveljanda.com"
-                }
-            ],
-            "description": "Utility that makes possible to use Nette\\Database native query with Ublaboo\\DataGrid",
-            "homepage": "https://ublaboo.org/datagrid-nette-database-data-source",
-            "keywords": [
-                "data",
-                "database",
-                "datagrid",
-                "grid",
-                "nette",
-                "source",
-                "ublaboo"
-            ],
-            "time": "2018-01-09T21:55:26+00:00"
         },
         {
             "name": "ublaboo/mailing",
@@ -2555,7 +2392,8 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">= 7.1"
+        "php": ">= 7.1",
+        "ext-ldap": "*"
     },
     "platform-dev": []
 }
