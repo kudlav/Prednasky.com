@@ -132,18 +132,19 @@ class VideoPresenter extends BasePresenter
 			$this->template->relatedVideos[$category] = [];
 			foreach ($rows as $index => $row) {
 				$thumbnail = $this->fileManager->getVideoThumbnail($row->video_to);
+				$duration = $row->ref('video', 'video_to')->duration;
 				$this->template->relatedVideos[$category][$index] = [
 					'relation_type_name' => $row->ref('relation_type')->name,
 					'relation_type_id' => $row->relation_type_id,
 					'video_id' => $row->video_to,
 					'video_name' => $row->ref('video', 'video_to')->name,
-					'record_begin' => $row->ref('video', 'video_to')->record_begin,
+					'record_date' => $row->ref('video', 'video_to')->record_date,
+					'record_time' => $row->ref('video', 'video_to')->record_time_begin,
 					'duration' => $row->ref('video', 'video_to')->duration,
 					'thumbnail' => ($thumbnail != null) ? $this->parameters['paths']['url_data_export'] . '/' . $thumbnail->path : null,
 				];
 			}
 		}
-
 		$this->template->structureTags =  $this->parameters['structure_tag'];
 
 		$this->template->people = $this->videoManager->getVideoPeople($id);
@@ -314,10 +315,14 @@ class VideoPresenter extends BasePresenter
 			$this->payload->status = 'ok';
 			$videoToRow = $this->videoManager->getVideoById($relationTo, true);
 			$thumbnail = $this->fileManager->getVideoThumbnail($relationTo);
+			$recorded = isset($videoToRow->record_date) ? $videoToRow->record_date->format('j. n. Y') : '??';
+			if (isset($videoToRow->record_time_begin)) {
+				$recorded .= ' ' . $videoToRow->record_time_begin->H . sprintf(':%02d', $videoToRow->record_time_begin->i);
+			}
 			$this->payload->videoTo = [
 				'name' => $videoToRow->name,
-				'recorded' => ($videoToRow->record_begin != null) ? $videoToRow->record_begin->format('j. n. Y H:i') : '??',
-				'duration' => ($videoToRow->duration != null) ? gmdate("H:i:s", $videoToRow->duration) : '??',
+				'recorded' => $recorded,
+				'duration' => isset($videoToRow->duration) ? gmdate("H:i:s", $videoToRow->duration) : '??',
 				'thumbnail' => ($thumbnail != null) ? $this->parameters['paths']['url_data_export'] . '/' . $thumbnail->path : null,
 			];
 		}

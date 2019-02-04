@@ -228,6 +228,36 @@ CREATE FUNCTION `database_version` () RETURNS varchar(5) CHARACTER SET 'utf8'
 RETURN "1.9";$$
 DELIMITER ;
 
+-- 1.9 => 1.10 --
+ALTER TABLE `prednasky`.`video`
+DROP COLUMN `record_end`,
+DROP COLUMN `record_begin`,
+ADD COLUMN `record_date` DATE NULL DEFAULT NULL AFTER `published`,
+ADD COLUMN `record_time_begin` TIME NULL DEFAULT NULL AFTER `record_date`,
+ADD COLUMN `record_time_end` TIME NULL DEFAULT NULL AFTER `record_time_begin`,
+CHANGE COLUMN `created` `created` TIMESTAMP NOT NULL ,
+CHANGE COLUMN `complete` `complete` TINYINT(1) NOT NULL ,
+CHANGE COLUMN `duration` `duration` INT(10) UNSIGNED NULL DEFAULT NULL ,
+CHANGE COLUMN `public_link` `public_link` VARCHAR(100) NULL DEFAULT NULL ;
+ALTER TABLE `prednasky`.`file`
+ADD COLUMN `user` INT(10) UNSIGNED NULL DEFAULT NULL AFTER `path`,
+ADD INDEX `fk_file_user1_idx` (`user` ASC); ;
+ALTER TABLE `prednasky`.`video_has_file`
+DROP COLUMN `show`,
+ADD COLUMN `type` VARCHAR(45) NOT NULL COMMENT 'thumbnail, video, attachment' AFTER `file_id`;
+ALTER TABLE `prednasky`.`file`
+ADD CONSTRAINT `fk_file_user1`
+  FOREIGN KEY (`user`)
+  REFERENCES `prednasky`.`user` (`id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+DROP function IF EXISTS `prednasky`.`database_version`;
+DELIMITER $$
+USE `prednasky`$$
+CREATE FUNCTION `database_version` () RETURNS varchar(5) CHARACTER SET 'utf8'
+RETURN "1.10";$$
+DELIMITER ;
+
 -- END HERE --
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

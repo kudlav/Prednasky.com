@@ -38,15 +38,21 @@ class ApiPresenter extends BasePresenter
 		$result = [];
 		$videoRows = $this->videoManager->searchVideos($query, $this->user->loggedIn);
 		foreach ($videoRows as $video) {
-			$thumbnail = $this->fileManager->getVideoThumbnail((int) $video->id);
-			if ($thumbnail !== null) $thumbnail = $this->parameters['paths']['url_data_export'] . '/' . $thumbnail->path;
+			$thumbnail = $this->fileManager->getVideoThumbnail((int)$video->id);
+			if (isset($thumbnail)) {
+				$thumbnail = $this->parameters['paths']['url_data_export'] . '/' . $thumbnail->path;
+			}
+			$record_begin = (isset($video->record_date)) ? $video->record_date->format('j. n. Y') : null;
+			if (isset($record_begin, $video->record_time_begin)) {
+				$record_begin .= ' ' . $video->record_time_begin->h . sprintf(':%02d', $video->record_time_begin->i);
+			}
 			$result[] = [
 				'id' => $video->id,
 				'name' => $video->name,
 				'thumbnail' => $thumbnail,
 				'abstract' => $video->abstract,
-				'record_begin' => ($video->record_begin !== null ? $video->record_begin->format('j. n. Y H:i') : null),
-				'duration' => ($video->duration !== null ? gmdate("H:i:s",$video->duration) : null) ,
+				'record_begin' => $record_begin,
+				'duration' => (isset($video->duration) ? gmdate("H:i:s",$video->duration) : null) ,
 				'url' => $this->link('Video:', ['id' => $video->id]),
 			];
 		}

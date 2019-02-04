@@ -79,15 +79,13 @@ class FileManager
 	 *
 	 * @param int $videoId ID of video.
 	 * @param int $fileId ID if file.
-	 * @param bool $show If attachment, show in file list under video.
 	 * @return bool True on success, otherwise false.
 	 */
-	private function linkVideoFile(int $videoId, int $fileId, bool $show=false): bool
+	private function linkVideoFile(int $videoId, int $fileId): bool
 	{
 		$row = $this->database->table(self::TABLE_VIDEO_FILE)->insert([
 			self::VIDEO_FILE_VIDEO => $videoId,
 			self::VIDEO_FILE_FILE => $fileId,
-			self::VIDEO_FILE_SHOW => $show,
 		]);
 
 		if ($row) {

@@ -25,8 +25,9 @@ class VideoManager
 		VIDEO_CREATED = 'created',
 		VIDEO_STATE = 'state',
 		VIDEO_PUBLISHED = 'published',
-		VIDEO_RECORD_BEGIN = 'record_begin',
-		VIDEO_RECORD_END = 'record_end',
+		VIDEO_RECORD_DATE = 'record_date',
+		VIDEO_RECORD_BEGIN = 'record_time_begin',
+		VIDEO_RECORD_END = 'record_time_end',
 		VIDEO_DURATION = 'duration',
 		VIDEO_ABSTRACT = 'abstract',
 		VIDEO_LINK = 'public_link',
@@ -90,18 +91,19 @@ class VideoManager
 	 * @param User $user Owner of video
 	 * @param string $name Name of video
 	 * @param int $state State according to `video_state` table
-	 * @param int|null $record_begin Timestamp when the recording was started
-	 * @param int|null $record_end Timestamp when the recording was stopped
+	 * @param string|null $date Date when the recording was started
+	 * @param string|null $record_begin Time when the recording was started
+	 * @param string|null $record_end Time when the recording was stopped
 	 * @param string|null $abstract Video abstract
-	 *
 	 * @return int|null ID of new video or null
 	 */
-	public function newVideo(?User $user=null, string $name="Unnamed", int $state=1, int $record_begin=null, int $record_end=null, string $abstract=null): ?int
+	public function newVideo(?User $user=null, string $name="Unnamed", int $state=1, ?string $date=null, ?string $record_begin=null, ?string $record_end=null, string $abstract=null): ?int
 	{
 		$row = $this->database->table(self::TABLE_VIDEO)->insert([
 			self::VIDEO_NAME => $name,
 			self::VIDEO_CREATED => date('Y-m-d H:i:s'),
 			self::VIDEO_STATE => $state,
+			self::VIDEO_RECORD_DATE => $date,
 			self::VIDEO_RECORD_BEGIN => $record_begin,
 			self::VIDEO_RECORD_END => $record_end,
 			self::VIDEO_ABSTRACT => $abstract,
@@ -109,12 +111,12 @@ class VideoManager
 		]);
 
 		if ($row) {
-			\Tracy\Debugger::log("VideoManager: Created video 'id':'$row->id'", \Tracy\ILogger::INFO);
+			Debugger::log("VideoManager: Created video 'id':'$row->id'", \Tracy\ILogger::INFO);
 
 			foreach ($this->parameters['structure_tag'] as $tag) {
 				$result = $this->setVideoTagValue((int) $row->id, $tag, (int) $this->getTag($tag, null)->id);
 				if (!$result) {
-					\Tracy\Debugger::log("VideoManager: Creating video 'id':'$row->id', unable to set default $tag tag", \Tracy\ILogger::ERROR);
+					Debugger::log("VideoManager: Creating video 'id':'$row->id', unable to set default $tag tag", \Tracy\ILogger::ERROR);
 				}
 			}
 
@@ -132,13 +134,13 @@ class VideoManager
 				]);
 
 				if (!$userHasVideo) {
-					\Tracy\Debugger::log("VideoManager: Unable to assign video '$row->id' to user '$user->id'", \Tracy\ILogger::ERROR);
+					Debugger::log("VideoManager: Unable to assign video '$row->id' to user '$user->id'", \Tracy\ILogger::ERROR);
 				}
 			}
 
 			return (int) $row->id;
 		}
-		\Tracy\Debugger::log("VideoManager: Unable to create video '$name'", \Tracy\ILogger::ERROR);
+		Debugger::log("VideoManager: Unable to create video '$name'", \Tracy\ILogger::ERROR);
 		return null;
 	}
 

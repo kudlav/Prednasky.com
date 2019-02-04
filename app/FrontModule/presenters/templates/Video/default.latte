@@ -28,9 +28,16 @@
       <div class="row" style="font-size: 110%">
         <div class="col-md-6">
           <p>{_'Published'}: {$video->published|date:'j. n. Y - H:i'}
-            {ifset $video->record_begin, $video->record_end}
-            <br>{_'Recorded'}: {$video->record_begin|date:'j. n. Y H:i'}{$video->record_end|date:'-H:i'}</p>
+            {ifset $video->record_date, $video->record_date}
+              <br>{_'Recorded'}: {$video->record_date|date:'j. n. Y'}
+              {ifset $video->record_time_begin}
+                {$video->record_time_begin->h}:{$video->record_time_begin->i|padLeft:2,'0'}
+                {ifset $video->record_time_end}
+                  - {$video->record_time_end->h}:{$video->record_time_end->i|padLeft:2,'0'}
+                {/ifset}
+              {/ifset}
             {/ifset}
+          </p>
         </div>
         <div class="col-md-6">
           <p>{_'video.duration'}: {gmdate("H:i:s",$video->duration)}</p>

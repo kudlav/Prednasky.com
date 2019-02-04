@@ -12,15 +12,17 @@
           <input type="hidden" class="form-control frm-relation-video" value="{$row['video_id']}">
           <a href="{plink Video:edit $row['video_id']}" class="row btn btn-light d-flex">
             <div class="col-auto">
-              {if $row['thumbnail'] != null}<img style="height:2rem" src="{$row['thumbnail']}">{else}<i class="fa fa-film text-muted fa-lg d-block py-2"></i>{/if}
+              {ifset $row['thumbnail']}<img style="height:2rem" src="{$row['thumbnail']}">{else}<i class="fa fa-film text-muted fa-lg d-block py-2"></i>{/ifset}
             </div>
             <div class="col">
               <div class="row"><span>{$row['video_name']}</span></div>
                 <div class="row small text-muted">
                   <i class="fa fa-calendar p-1" aria-hidden="true"></i>
-                  {if ($row['record_begin'] != null)}{$row['record_begin']|date:'j. n. Y G:i'}{else}??{/if}
+                  {ifset $row['record_date']}{$row['record_date']|date:'j. n. Y'}
+                    {ifset $row['record_time']}{$row['record_time']->h}{sprintf(':%02d', $row['record_time']->i)}{/ifset}
+                  {else}??{/ifset}
                   <i class="fa fa-clock-o p-1 pl-3" aria-hidden="true"></i>
-                  {if ($row['duration'] != null)}{gmdate("H:i:s", $row['duration'])}{else}??{/if}
+                  {ifset $row['duration']}{gmdate("H:i:s", $row['duration'])}{else}??{/ifset}
                 </div>
               </div>
             </a>

@@ -54,10 +54,8 @@ class EditVideoFormFactory
 		;
 
 		$date = null;
-		$time_begin = null;
-		if ($this->video->record_begin !== null) {
-			$date = $this->video->record_begin->format('j. n. Y');
-			$time_begin = $this->video->record_begin->format('H:i');
+		if (isset($this->video->record_date)) {
+			$date = $this->video->record_date->format('j. n. Y');
 		}
 		$form->addText('date', 'video.date')
 			->setDefaultValue($date)
@@ -65,19 +63,22 @@ class EditVideoFormFactory
 			->setAttribute('class', 'form-control datepicker')
 		;
 
-		$form->addText('record_time_start', 'video.time')
-			->setDefaultValue($time_begin)
+		$time = null;
+		if (isset($this->video->record_time_begin)) {
+			$time = $this->video->record_time_begin->h . sprintf(':%02d', $this->video->record_time_begin->i);
+		}
+		$form->addText('record_time_begin', 'video.time')
+			->setDefaultValue($time)
 			->setAttribute('placeholder', 'form.time_format')
 			->setAttribute('class', 'form-control clockpicker')
 		;
 
-		$time_end = null;
-		if ($this->video->record_end !== null) {
-			$time_end = $this->video->record_end->format('H:i');
+		$time = null;
+		if (isset($this->video->record_time_end)) {
+			$time = $this->video->record_time_end->h . sprintf(':%02d', $this->video->record_time_end->i);
 		}
-
 		$form->addText('record_time_end')
-			->setDefaultValue($time_end)
+			->setDefaultValue($time)
 			->setAttribute('placeholder', 'form.time_format')
 			->setAttribute('class', 'form-control clockpicker')
 		;
@@ -119,14 +120,27 @@ class EditVideoFormFactory
 
 	public function onSuccess(Form $form, ArrayHash $values): void
 	{
-		$recordBegin = $values->date==="" ? null : \DateTime::createFromFormat('j. n. Y H:i', $values->date .' '. $values->record_time_start);
-		$recordEnd = $values->date==="" ? null : \DateTime::createFromFormat('j. n. Y H:i', $values->date .' '. $values->record_time_end);
+		$date = null;
+		$match = [];
+		if (isset($values->date) && preg_match('/(\d\d?).\s?(\d\d?).\s?(\d{4})/', $values->date, $match)) {
+			$date = "$match[3]-$match[2]-$match[1]";
+		}
+
+		$record_time_begin =  null;
+		if (isset($values->record_time_begin) && $values->record_time_begin !== "") {
+			$record_time_begin = $values->record_time_begin;
+		}
+		$record_time_end =  null;
+		if (isset($values->record_time_end) && $values->record_time_end !== "") {
+			$record_time_end = $values->record_time_end;
+		}
 
 		$data = [
 			VideoManager::VIDEO_NAME => $values->title,
 			VideoManager::VIDEO_STATE => $values->visibility,
-			VideoManager::VIDEO_RECORD_BEGIN => $recordBegin,
-			VideoManager::VIDEO_RECORD_END => $recordEnd,
+			VideoManager::VIDEO_RECORD_DATE => $date,
+			VideoManager::VIDEO_RECORD_BEGIN => $record_time_begin,
+			VideoManager::VIDEO_RECORD_END => $record_time_end,
 			VideoManager::VIDEO_ABSTRACT => $values->abstract,
 		];
 
