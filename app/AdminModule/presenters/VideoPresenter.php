@@ -317,7 +317,7 @@ class VideoPresenter extends BasePresenter
 			$thumbnail = $this->fileManager->getVideoThumbnail($relationTo);
 			$recorded = isset($videoToRow->record_date) ? $videoToRow->record_date->format('j. n. Y') : '??';
 			if (isset($videoToRow->record_time_begin)) {
-				$recorded .= ' ' . $videoToRow->record_time_begin->H . sprintf(':%02d', $videoToRow->record_time_begin->i);
+				$recorded .= ' ' . $videoToRow->record_time_begin->h . sprintf(':%02d', $videoToRow->record_time_begin->i);
 			}
 			$this->payload->videoTo = [
 				'name' => $videoToRow->name,
