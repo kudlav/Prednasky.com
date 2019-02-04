@@ -10,6 +10,7 @@
 'file_video' : 'Video soubor'
 'course_empty' : 'U štítků je nutné vyplnit alespoň první štítek.'
 'video_empty_name' : 'Název videa nemůže být prázdný!'
+'video_empty_visibility' : 'Viditelnost videa musí být zadána!'
 'template_empty_name' : 'Název šablony nemůže být prázdný!'
 'url_empty' : 'URL nesmí být prázdné!'
 'save' : 'Uložit'

@@ -90,6 +90,7 @@ class EditVideoFormFactory
 
 		$form->addSelect('visibility', 'video.state', $visibilityValues)
 			->setDefaultValue($this->video->state)
+			->setRequired('form.video_empty_visibility')
 			->setAttribute('class', 'custom-select')
 		;
 
