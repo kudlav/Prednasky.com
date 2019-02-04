@@ -38,9 +38,8 @@
     </div>
   </div>
   <div class="col-md-6">
-    <br>
-    <label><b>{_'Edit video'}:</b></label>
-    <a href="#" class="btn btn-outline-primary">{_'Video editor'}</a>
+    <a href="#" class="btn btn-outline-primary disabled mt-2 d-block float-right">{_'Video creator'}</a>
+    <div class="clearfix"></div>
     <div class="form-group my-2">
       <label>{_'form.thumbnail'}:</label>
       <div class="d-block position-relative">
@@ -50,11 +49,6 @@
           <i class="d-block media-box fa fa-film text-muted w-100 text-center fa-4x py-5"></i>
         {/ifset}
       </div>
-      {ifset $thumbnail}
-        <a href="#" class="btn btn-outline-danger my-2">{_'form.remove_thumbnail'}</a>
-      {else}
-        <a href="#" class="btn btn-outline-primary my-2">{_'form.upload_thumbnail'}</a>
-      {/ifset}
     </div>
   </div>
 </div>

@@ -31,6 +31,7 @@
 	<nav class="navbar navbar-expand-md bg-primary navbar-dark p-1">
 		<div class="container">
 			<div class="navbar-brand">
+				<span class="badge badge-secondary">Beta</span>
 				<i class="fa fa-lg fa-user {if $user->isInRole('admin')}text-danger{elseif $user->isInRole('teacher')}text-warning{/if}"></i>
 				<b>{if $user->loggedIn}{$user->identity->fullname}{else}{_'Not logged'}{/if}</b>
 			</div>
@@ -66,6 +67,7 @@
 				<div class="align-self-center col-1"><a href="https://www.fit.vutbr.cz/" target="_blank"><img src="{$basePath}/resources/images/fit_icon.png"></a></div>
 				<div class="align-self-center col-11">
 					<div class="container">
+						<div class="text-dark"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> <i class="fa fa-thumbs-o-down" aria-hidden="true"></i> {_'Feel free to send your suggestions, complains and bugs to '} xkudla15@<span style="display: none;">ignoruj mě</span>stud.fit.vutbr.cz, <a href="https://git.fit.vutbr.cz/szoke/Prednasky.com/issues" target="_blank" rel="noopener">Github</a>.</div>
 						<div class="row">
 							<div class="align-self-center col-sm"><p class="m-0 text-right">Božetěchova 1/2 • 612 66 Brno{_' • Czech Republic'}</p></div>
 							<div class="align-self-center col-sm"><p class="m-0 text-right">© {_'Faculty of Information Technology, BUT'}</p></div>
