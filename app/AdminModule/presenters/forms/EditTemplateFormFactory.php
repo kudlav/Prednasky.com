@@ -44,6 +44,7 @@ class EditTemplateFormFactory
 		$form->addText('name', 'Name')
 			->setDefaultValue($this->template->name)
 			->setRequired('form.template_empty_name')
+			->addRule(Form::MAX_LENGTH, 'form.template_long_name', 45)
 			->setAttribute('placeholder', 'Template name')
 			->setAttribute('class', 'form-control')
 		;
