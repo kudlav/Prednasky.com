@@ -171,7 +171,7 @@ class VideoManager
 		$files = $this->database->table(FileManager::TABLE_VIDEO_FILE)
 			->select(FileManager::VIDEO_FILE_FILE .','. FileManager::TABLE_FILE .'.'. FileManager::FILE_TYPE)
 			->where(FileManager::VIDEO_FILE_VIDEO, $videoID)
-			->where(FileManager::FILE_TYPE .' = "thumbnail" OR '. FileManager::FILE_TYPE .' LIKE "video/%"')
+			->where(FileManager::TABLE_FILE .'.'. FileManager::FILE_TYPE .' = "thumbnail" OR '. FileManager::TABLE_FILE .'.'. FileManager::FILE_TYPE .' LIKE "video/%"')
 			->fetchPairs(null, FileManager::VIDEO_FILE_FILE)
 		;
 		$deleted = $this->database->table(FileManager::TABLE_FILE)
