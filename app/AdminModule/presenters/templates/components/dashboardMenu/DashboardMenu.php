@@ -27,6 +27,10 @@ class DashboardMenu extends Control
 			case 'Admin:Files':
 				$this->template->files = true;
 				break;
+
+			case 'Admin:Users':
+				$this->template->users = true;
+				break;
 		}
 
 		$this->template->render();

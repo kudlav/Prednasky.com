@@ -13,6 +13,10 @@
     {_'Tasks and templates'}
   </a>
 
+  <a n:if="$user->isInRole('admin')" href="{plink 'Users:'}" class="list-group-item list-group-item-action{ifset $users} active{/ifset}">
+    {_'Users'}
+  </a>
+
   <a href="{plink ':Front:Homepage:default'}" class="list-group-item list-group-item-action">
     <i class="fa fa-share"></i> {_'back to videoportal'}
   </a>

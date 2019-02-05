@@ -10,3 +10,8 @@
 'semester' : 'semester'
 'course' : 'course'
 'type' : 'type'
+'disabled' : 'disabled'
+'guest' : 'guest'
+'student' : 'student'
+'teacher' : 'teacher'
+'admin' : 'admin'

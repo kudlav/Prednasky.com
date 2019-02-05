@@ -258,6 +258,17 @@ CREATE FUNCTION `database_version` () RETURNS varchar(5) CHARACTER SET 'utf8'
 RETURN "1.10";$$
 DELIMITER ;
 
+-- 1.10 => 1.11 --
+ALTER TABLE `prednasky`.`user`
+  DROP COLUMN `active`,
+  CHANGE COLUMN `right_group` `right_group` TINYINT(3) UNSIGNED NOT NULL COMMENT  'disabled, guest, student, teacher, admin';
+DROP function IF EXISTS `prednasky`.`database_version`;
+DELIMITER $$
+USE `prednasky`$$
+CREATE FUNCTION `database_version` () RETURNS varchar(5) CHARACTER SET 'utf8'
+RETURN "1.11";$$
+DELIMITER ;
+
 -- END HERE --
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

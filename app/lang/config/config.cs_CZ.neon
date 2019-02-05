@@ -10,3 +10,8 @@
 'semester' : 'semestr'
 'course' : 'kurz'
 'type' : 'typ'
+'disabled' : 'zablokován'
+'guest' : 'návštěvník'
+'student' : 'student'
+'teacher' : 'učitel'
+'admin' : 'administrátor'
