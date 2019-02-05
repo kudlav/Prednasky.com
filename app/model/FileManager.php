@@ -30,9 +30,8 @@ class FileManager
 		TABLE_VIDEO_FILE = 'video_has_file',
 		VIDEO_FILE_VIDEO = 'video_id',
 		VIDEO_FILE_FILE = 'file_id',
-		VIDEO_FILE_SHOW = 'show'
+		VIDEO_FILE_TYPE = 'type'
 	;
-
 
 	/**
 	 * @var string $tmpDir
@@ -86,6 +85,7 @@ class FileManager
 		$row = $this->database->table(self::TABLE_VIDEO_FILE)->insert([
 			self::VIDEO_FILE_VIDEO => $videoId,
 			self::VIDEO_FILE_FILE => $fileId,
+			self::VIDEO_FILE_TYPE => 'general',
 		]);
 
 		if ($row) {
